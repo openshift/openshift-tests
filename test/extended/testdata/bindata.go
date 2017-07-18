@@ -7439,7 +7439,7 @@ spec:
       scripts: "http://example.org/scripts"
       env:
         - name: http_proxy
-          value: ":http://example.org"
+          value: "http://%"
 `)
 
 func testExtendedTestdataStatusfailGenericreasonYamlBytes() ([]byte, error) {
