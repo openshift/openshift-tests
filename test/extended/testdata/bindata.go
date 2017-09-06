@@ -25519,6 +25519,10 @@ var _examplesJenkinsJenkinsEphemeralTemplateJson = []byte(`{
                     "value": "true"
                   },
                   {
+                    "name": "JENKINS_SERVICE_NAME",
+                    "value": "${JENKINS_SERVICE_NAME}"
+                  },
+                  {
                     "name": "JNLP_SERVICE_NAME",
                     "value": "${JNLP_SERVICE_NAME}"
                   }
@@ -25841,6 +25845,10 @@ var _examplesJenkinsJenkinsPersistentTemplateJson = []byte(`{
                   {
                     "name": "KUBERNETES_TRUST_CERTIFICATES",
                     "value": "true"
+                  },
+                  {
+                    "name": "JENKINS_SERVICE_NAME",
+                    "value": "${JENKINS_SERVICE_NAME}"
                   },
                   {
                     "name": "JNLP_SERVICE_NAME",
