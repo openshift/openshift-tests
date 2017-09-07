@@ -14460,7 +14460,7 @@ var _examplesImageStreamsImageStreamsCentos7Json = []byte(`{
       "metadata": {
         "name": "httpd",
         "annotations": {
-          "openshift.io/display-name": "Httpd"
+          "openshift.io/display-name": "Apache HTTP Server (httpd)"
         }
       },
       "spec": {
@@ -14468,8 +14468,8 @@ var _examplesImageStreamsImageStreamsCentos7Json = []byte(`{
           {
             "name": "latest",
             "annotations": {
-              "openshift.io/display-name": "Httpd (Latest)",
-              "description": "Build and serve static content via Httpd on CentOS 7. For more information about using this builder image, including OpenShift considerations, see https://github.com/sclorg/httpd-container/blob/master/2.4/README.md.\n\nWARNING: By selecting this tag, your application will automatically update to use the latest version of Httpd available on OpenShift, including major versions updates.",
+              "openshift.io/display-name": "Apache HTTP Server (Latest)",
+              "description": "Build and serve static content via Apache HTTP Server (httpd) on CentOS 7. For more information about using this builder image, including OpenShift considerations, see https://github.com/sclorg/httpd-container/blob/master/2.4/README.md.\n\nWARNING: By selecting this tag, your application will automatically update to use the latest version of Httpd available on OpenShift, including major versions updates.",
               "iconClass": "icon-apache",
               "tags": "builder,httpd",
               "supports":"httpd",
@@ -14483,8 +14483,8 @@ var _examplesImageStreamsImageStreamsCentos7Json = []byte(`{
           {
             "name": "2.4",
             "annotations": {
-              "openshift.io/display-name": "Httpd 2.4",
-              "description": "Build and serve static content via Httpd on CentOS 7. For more information about using this builder image, including OpenShift considerations, see https://github.com/sclorg/httpd-container/blob/master/2.4/README.md.",
+              "openshift.io/display-name": "Apache HTTP Server 2.4",
+              "description": "Build and serve static content via Apache HTTP Server (httpd) 2.4 on CentOS 7. For more information about using this builder image, including OpenShift considerations, see https://github.com/sclorg/httpd-container/blob/master/2.4/README.md.",
               "iconClass": "icon-apache",
               "tags": "builder,httpd",
               "supports":"httpd",
@@ -14522,7 +14522,7 @@ var _examplesImageStreamsImageStreamsCentos7Json = []byte(`{
             },
             "from": {
               "kind": "ImageStreamTag",
-              "name": "2.3"
+              "name": "2.4"
             }
           },
           {
@@ -14571,6 +14571,22 @@ var _examplesImageStreamsImageStreamsCentos7Json = []byte(`{
             "from": {
               "kind": "DockerImage",
               "name": "centos/ruby-23-centos7:latest"
+            }
+          },
+          {
+            "name": "2.4",
+            "annotations": {
+              "openshift.io/display-name": "Ruby 2.4",
+              "description": "Build and run Ruby 2.4 applications on CentOS 7. For more information about using this builder image, including OpenShift considerations, see https://github.com/sclorg/s2i-ruby-container/blob/master/2.4/README.md.",
+              "iconClass": "icon-ruby",
+              "tags": "builder,ruby",
+              "supports": "ruby:2.4,ruby",
+              "version": "2.4",
+              "sampleRepo": "https://github.com/openshift/ruby-ex.git"
+            },
+            "from": {
+              "kind": "DockerImage",
+              "name": "centos/ruby-24-centos7:latest"
             }
           }
         ]
@@ -15367,7 +15383,7 @@ var _examplesImageStreamsImageStreamsRhel7Json = []byte(`{
       "metadata": {
         "name": "httpd",
         "annotations": {
-          "openshift.io/display-name": "Httpd"
+          "openshift.io/display-name": "Apache HTTP Server (httpd)"
         }
       },
       "spec": {
@@ -15375,8 +15391,8 @@ var _examplesImageStreamsImageStreamsRhel7Json = []byte(`{
           {
             "name": "latest",
             "annotations": {
-              "openshift.io/display-name": "Httpd (Latest)",
-              "description": "Build and serve static content via Httpd on RHEL 7. For more information about using this builder image, including OpenShift considerations, see https://github.com/sclorg/httpd-container/blob/master/2.4/README.md.\n\nWARNING: By selecting this tag, your application will automatically update to use the latest version of Httpd available on OpenShift, including major versions updates.",
+              "openshift.io/display-name": "Apache HTTP Server (Latest)",
+              "description": "Build and serve static content via Apache HTTP Server (httpd) on RHEL 7. For more information about using this builder image, including OpenShift considerations, see https://github.com/sclorg/httpd-container/blob/master/2.4/README.md.\n\nWARNING: By selecting this tag, your application will automatically update to use the latest version of Httpd available on OpenShift, including major versions updates.",
               "iconClass": "icon-apache",
               "tags": "builder,httpd",
               "supports":"httpd",
@@ -15390,8 +15406,8 @@ var _examplesImageStreamsImageStreamsRhel7Json = []byte(`{
           {
             "name": "2.4",
             "annotations": {
-              "openshift.io/display-name": "Httpd 2.4",
-              "description": "Build and serve static content via Httpd on RHEL 7. For more information about using this builder image, including OpenShift considerations, see https://github.com/sclorg/httpd-container/blob/master/2.4/README.md.",
+              "openshift.io/display-name": "Apache HTTP Server 2.4",
+              "description": "Build and serve static content via Apache HTTP Server (httpd) 2.4 on RHEL 7. For more information about using this builder image, including OpenShift considerations, see https://github.com/sclorg/httpd-container/blob/master/2.4/README.md.",
               "iconClass": "icon-apache",
               "tags": "builder,httpd",
               "supports":"httpd",
@@ -15429,7 +15445,7 @@ var _examplesImageStreamsImageStreamsRhel7Json = []byte(`{
             },
             "from": {
               "kind": "ImageStreamTag",
-              "name": "2.3"
+              "name": "2.4"
             }
           },
           {
@@ -15478,6 +15494,22 @@ var _examplesImageStreamsImageStreamsRhel7Json = []byte(`{
             "from": {
               "kind": "DockerImage",
               "name": "registry.access.redhat.com/rhscl/ruby-23-rhel7:latest"
+            }
+          },
+          {
+            "name": "2.4",
+            "annotations": {
+              "openshift.io/display-name": "Ruby 2.4",
+              "description": "Build and run Ruby 2.4 applications on RHEL 7. For more information about using this builder image, including OpenShift considerations, see https://github.com/sclorg/s2i-ruby-container/blob/master/2.4/README.md.",
+              "iconClass": "icon-ruby",
+              "tags": "builder,ruby",
+              "supports": "ruby:2.4,ruby",
+              "version": "2.4",
+              "sampleRepo": "https://github.com/openshift/ruby-ex.git"
+            },
+            "from": {
+              "kind": "DockerImage",
+              "name": "registry.access.redhat.com/rhscl/ruby-24-rhel7:latest"
             }
           }
         ]
@@ -21693,11 +21725,11 @@ var _examplesQuickstartsHttpdJson = []byte(`{
   "metadata": {
     "name": "httpd-example",
     "annotations": {
-      "openshift.io/display-name": "Httpd",
-      "description": "An example Httpd application that serves static content. For more information about using this template, including OpenShift considerations, see https://github.com/openshift/httpd-ex/blob/master/README.md.",
+      "openshift.io/display-name": "Apache HTTP Server",
+      "description": "An example Apache HTTP Server (httpd) application that serves static content. For more information about using this template, including OpenShift considerations, see https://github.com/openshift/httpd-ex/blob/master/README.md.",
       "tags": "quickstart,httpd",
       "iconClass": "icon-apache",
-      "template.openshift.io/long-description": "This template defines resources needed to develop a static application served by httpd, including a build configuration and application deployment configuration.",
+      "template.openshift.io/long-description": "This template defines resources needed to develop a static application served by Apache HTTP Server (httpd), including a build configuration and application deployment configuration.",
       "template.openshift.io/provider-display-name": "Red Hat, Inc.",
       "template.openshift.io/documentation-url": "https://github.com/openshift/httpd-ex",
       "template.openshift.io/support-url": "https://access.redhat.com"
