@@ -41,7 +41,6 @@ import (
 	deployutil "github.com/openshift/origin/pkg/apps/util"
 	buildapi "github.com/openshift/origin/pkg/build/apis/build"
 	buildtypedclientset "github.com/openshift/origin/pkg/build/generated/internalclientset/typed/build/internalversion"
-	"github.com/openshift/origin/pkg/client"
 	imageapi "github.com/openshift/origin/pkg/image/apis/image"
 	imagetypeclientset "github.com/openshift/origin/pkg/image/generated/internalclientset/typed/image/internalversion"
 	"github.com/openshift/origin/test/extended/testdata"
@@ -606,7 +605,7 @@ func WaitForABuild(c buildtypedclientset.BuildResourceInterface, name string, is
 	}
 	// wait longer for the build to run to completion
 	err = wait.Poll(5*time.Second, 60*time.Minute, func() (bool, error) {
-		list, err := c.List(metav1.ListOptions{FieldSelector: fields.Set{"name": name}.AsSelector().String()})
+		list, err := c.List(metav1.ListOptions{FieldSelector: fields.Set{"metadata.name": name}.AsSelector().String()})
 		if err != nil {
 			e2e.Logf("error listing builds: %v", err)
 			return false, err
@@ -676,7 +675,7 @@ func WaitForAnImageStream(client imagetypeclientset.ImageStreamInterface,
 	name string,
 	isOK, isFailed func(*imageapi.ImageStream) bool) error {
 	for {
-		list, err := client.List(metav1.ListOptions{FieldSelector: fields.Set{"name": name}.AsSelector().String()})
+		list, err := client.List(metav1.ListOptions{FieldSelector: fields.Set{"metadata.name": name}.AsSelector().String()})
 		if err != nil {
 			return err
 		}
@@ -691,7 +690,7 @@ func WaitForAnImageStream(client imagetypeclientset.ImageStreamInterface,
 		}
 
 		rv := list.ResourceVersion
-		w, err := client.Watch(metav1.ListOptions{FieldSelector: fields.Set{"name": name}.AsSelector().String(), ResourceVersion: rv})
+		w, err := client.Watch(metav1.ListOptions{FieldSelector: fields.Set{"metadata.name": name}.AsSelector().String(), ResourceVersion: rv})
 		if err != nil {
 			return err
 		}
@@ -1003,7 +1002,7 @@ func WaitUntilPodIsGone(c kcoreclient.PodInterface, podName string, timeout time
 
 // GetDockerImageReference retrieves the full Docker pull spec from the given ImageStream
 // and tag
-func GetDockerImageReference(c client.ImageStreamInterface, name, tag string) (string, error) {
+func GetDockerImageReference(c imagetypeclientset.ImageStreamInterface, name, tag string) (string, error) {
 	imageStream, err := c.Get(name, metav1.GetOptions{})
 	if err != nil {
 		return "", err
