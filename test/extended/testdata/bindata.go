@@ -22072,12 +22072,7 @@ var _examplesQuickstartsHttpdJson = []byte(`{
                     }
                 },
                 "env": [
-                ],
-                "resources": {
-                  "limits": {
-                    "memory": "${MEMORY_LIMIT}"
-                  }
-                }
+                ]
               }
             ]
           }
@@ -25538,7 +25533,8 @@ var _examplesJenkinsJenkinsEphemeralTemplateJson = []byte(`{
   },
   "message": "A Jenkins service has been created in your project.  Log into Jenkins with your OpenShift account.  The tutorial at https://github.com/openshift/origin/blob/master/examples/jenkins/README.md contains more information about using this template.",
   "labels": {
-      "app": "jenkins-ephemeral"
+    "app": "jenkins-ephemeral",
+    "template": "jenkins-ephemeral-template"
   },
   "objects": [
     {
@@ -25802,10 +25798,7 @@ var _examplesJenkinsJenkinsEphemeralTemplateJson = []byte(`{
       "description": "Name of the ImageStreamTag to be used for the Jenkins image.",
       "value": "jenkins:2"
     }
-  ],
-  "labels": {
-    "template": "jenkins-ephemeral-template"
-  }
+  ]
 }
 `)
 
@@ -25842,7 +25835,8 @@ var _examplesJenkinsJenkinsPersistentTemplateJson = []byte(`{
   },
   "message": "A Jenkins service has been created in your project.  Log into Jenkins with your OpenShift account.  The tutorial at https://github.com/openshift/origin/blob/master/examples/jenkins/README.md contains more information about using this template.",
   "labels": {
-      "app": "jenkins-persistent"
+    "app": "jenkins-persistent",
+    "template": "jenkins-persistent-template"
   },
   "objects": [
     {
@@ -26130,10 +26124,7 @@ var _examplesJenkinsJenkinsPersistentTemplateJson = []byte(`{
       "description": "Name of the ImageStreamTag to be used for the Jenkins image.",
       "value": "jenkins:2"
     }
-  ],
-  "labels": {
-    "template": "jenkins-persistent-template"
-  }
+  ]
 }
 `)
 
