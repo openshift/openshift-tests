@@ -19103,6 +19103,7 @@ var _examplesQuickstartsCakephpMysqlPersistentJson = []byte(`{
                 "readinessProbe": {
                   "timeoutSeconds": 3,
                   "initialDelaySeconds": 3,
+                  "periodSeconds": 60,
                   "httpGet": {
                     "path": "/health.php",
                     "port": 8080
@@ -19111,6 +19112,7 @@ var _examplesQuickstartsCakephpMysqlPersistentJson = []byte(`{
                 "livenessProbe": {
                   "timeoutSeconds": 3,
                   "initialDelaySeconds": 30,
+                  "periodSeconds": 60,
                   "httpGet": {
                     "path": "/health.php",
                     "port": 8080
@@ -19707,6 +19709,7 @@ var _examplesQuickstartsCakephpMysqlJson = []byte(`{
                 "readinessProbe": {
                   "timeoutSeconds": 3,
                   "initialDelaySeconds": 3,
+                  "periodSeconds": 60,                  
                   "httpGet": {
                     "path": "/health.php",
                     "port": 8080
@@ -19715,6 +19718,7 @@ var _examplesQuickstartsCakephpMysqlJson = []byte(`{
                 "livenessProbe": {
                   "timeoutSeconds": 3,
                   "initialDelaySeconds": 30,
+                  "periodSeconds": 60,
                   "httpGet": {
                     "path": "/health.php",
                     "port": 8080
@@ -22531,10 +22535,10 @@ var _examplesQuickstartsNginxJson = []byte(`{
       "description": "An example Nginx HTTP server and a reverse proxy (nginx) application that serves static content. For more information about using this template, including OpenShift considerations, see https://github.com/sclorg/nginx-ex/blob/master/README.md.",
       "tags": "quickstart,nginx",
       "iconClass": "icon-nginx",
-      "template.openshift.io/long-description": "This template defines resources needed to develop a static application served by Nginx HTTP server and a reverse proxy (nginx), including a build configuration and application deployment configuration.",
-      "template.openshift.io/provider-display-name": "Red Hat, Inc.",
-      "template.openshift.io/documentation-url": "https://github.com/sclorg/nginx-ex",
-      "template.openshift.io/support-url": "https://access.redhat.com"
+      "openshift.io/long-description": "This template defines resources needed to develop a static application served by Nginx HTTP server and a reverse proxy (nginx), including a build configuration and application deployment configuration.",
+      "openshift.io/provider-display-name": "Red Hat, Inc.",
+      "openshift.io/documentation-url": "https://github.com/sclorg/nginx-ex",
+      "openshift.io/support-url": "https://access.redhat.com"
     }
   },
   "message": "The following service(s) have been created in your project: ${NAME}.\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/sclorg/nginx-ex/blob/master/README.md.",
@@ -28459,6 +28463,7 @@ var _examplesQuickstartsCakephpMysqlJsonCakephpMysqlJson = []byte(`{
                 "readinessProbe": {
                   "timeoutSeconds": 3,
                   "initialDelaySeconds": 3,
+                  "periodSeconds": 60,                  
                   "httpGet": {
                     "path": "/health.php",
                     "port": 8080
@@ -28467,6 +28472,7 @@ var _examplesQuickstartsCakephpMysqlJsonCakephpMysqlJson = []byte(`{
                 "livenessProbe": {
                   "timeoutSeconds": 3,
                   "initialDelaySeconds": 30,
+                  "periodSeconds": 60,
                   "httpGet": {
                     "path": "/health.php",
                     "port": 8080
