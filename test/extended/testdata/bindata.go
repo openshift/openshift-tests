@@ -25846,6 +25846,7 @@ objects:
           - -tls-key=/etc/tls/private/tls.key
           - -client-secret-file=/var/run/secrets/kubernetes.io/serviceaccount/token
           - -cookie-secret-file=/etc/proxy/secrets/session_secret
+          - -skip-auth-regex=^/metrics
           volumeMounts:
           - mountPath: /etc/tls/private
             name: alerts-tls-secret
@@ -25860,9 +25861,6 @@ objects:
           volumeMounts:
           - mountPath: /alert-buffer
             name: alerts-data
-          ports:
-          - containerPort: 9099
-            name: alert-buf
 
         - name: alertmanager-proxy
           image: ${IMAGE_PROXY}
@@ -25897,9 +25895,6 @@ objects:
           - --config.file=/etc/alertmanager/alertmanager.yml
           image: ${IMAGE_ALERTMANAGER}
           imagePullPolicy: IfNotPresent
-          ports:
-          - containerPort: 9093
-            name: web
           volumeMounts:
           - mountPath: /etc/alertmanager
             name: alertmanager-config
