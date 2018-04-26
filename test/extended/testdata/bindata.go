@@ -31246,7 +31246,7 @@ spec:
   hostNetwork: true
   containers:
   - name: etcd
-    image: OPENSHIFT_IMAGE
+    image: IMAGE
     imagePullPolicy: OPENSHIFT_PULL_POLICY
     workingDir: /var/lib/etcd
     command: ["/bin/bash", "-c"]
@@ -31299,7 +31299,7 @@ spec:
   hostNetwork: true
   containers:
   - name: api
-    image: OPENSHIFT_IMAGE
+    image: IMAGE
     imagePullPolicy: OPENSHIFT_PULL_POLICY
     command: ["/bin/bash", "-c"]
     args:
@@ -31365,7 +31365,7 @@ spec:
   hostNetwork: true
   containers:
   - name: controllers
-    image: OPENSHIFT_IMAGE
+    image: IMAGE
     imagePullPolicy: OPENSHIFT_PULL_POLICY
     command: ["hyperkube", "kube-controller-manager"]
     args:
@@ -31430,7 +31430,7 @@ metadata:
 parameters:
 - name: NAMESPACE
   value: kube-dns
-- name: OPENSHIFT_IMAGE
+- name: IMAGE
   value: openshift/origin-control-plane:latest
 - name: OPENSHIFT_PULL_POLICY
   value: Always
@@ -31468,9 +31468,9 @@ objects:
         serviceAccountName: kube-dns
         containers:
         - name: kube-proxy
-          image: ${OPENSHIFT_IMAGE}
+          image: ${IMAGE}
           imagePullPolicy: ${OPENSHIFT_PULL_POLICY}
-          command: ["openshift", "start", "node"]
+          command: ["openshift", "start", "network"]
           args:
           - "--enable=dns"
           - "--config=/etc/origin/node/node-config.yaml"
@@ -31530,7 +31530,7 @@ kind: Template
 metadata:
   name: kube-proxy
 parameters:
-- name: OPENSHIFT_IMAGE
+- name: IMAGE
   value: openshift/origin-control-plane
 - name: OPENSHIFT_PULL_POLICY
   value: Always
@@ -31582,9 +31582,9 @@ objects:
         hostNetwork: true
         containers:
         - name: kube-proxy
-          image: ${OPENSHIFT_IMAGE}
+          image: ${IMAGE}
           imagePullPolicy: ${OPENSHIFT_PULL_POLICY}
-          command: ["openshift", "start", "node"]
+          command: ["openshift", "start", "network"]
           args:
           - "--enable=proxy"
           - "--listen=https://0.0.0.0:8444"
@@ -31630,7 +31630,7 @@ spec:
   hostNetwork: true
   containers:
   - name: scheduler
-    image: OPENSHIFT_IMAGE
+    image: IMAGE
     imagePullPolicy: OPENSHIFT_PULL_POLICY
     command: ["hyperkube", "kube-scheduler"]
     args:
@@ -31679,7 +31679,7 @@ kind: Template
 metadata:
   name: openshift-apiserver
 parameters:
-- name: OPENSHIFT_IMAGE
+- name: IMAGE
   value: openshift/origin-control-plane:latest
 - name: OPENSHIFT_PULL_POLICY
   value: Always
@@ -31717,7 +31717,7 @@ objects:
         hostNetwork: true
         containers:
         - name: apiserver
-          image: ${OPENSHIFT_IMAGE}
+          image: ${IMAGE}
           imagePullPolicy: ${OPENSHIFT_PULL_POLICY}
           env:
           - name: ADDITIONAL_ALLOWED_REGISTRIES
@@ -32098,7 +32098,7 @@ kind: Template
 metadata:
   name: openshift-controller-manager
 parameters:
-- name: OPENSHIFT_IMAGE
+- name: IMAGE
   value: openshift/origin-control-plane:latest
 - name: OPENSHIFT_PULL_POLICY
   value: Always
@@ -32137,7 +32137,7 @@ objects:
         hostNetwork: true
         containers:
         - name: c
-          image: ${OPENSHIFT_IMAGE}
+          image: ${IMAGE}
           imagePullPolicy: ${OPENSHIFT_PULL_POLICY}
           command: ["hypershift", "openshift-controller-manager"]
           args:
@@ -32231,7 +32231,7 @@ func installOpenshiftWebConsoleOperatorInstallRbacYaml() (*asset, error) {
 var _installOpenshiftWebConsoleOperatorInstallYaml = []byte(`apiVersion: template.openshift.io/v1
 kind: Template
 parameters:
-- name: OPENSHIFT_IMAGE
+- name: IMAGE
   value: openshift/origin-control-plane:latest
 - name: OPENSHIFT_PULL_POLICY
   value: Always
@@ -32282,7 +32282,7 @@ objects:
         serviceAccountName: openshift-web-console-operator
         containers:
         - name: operator
-          image: ${OPENSHIFT_IMAGE}
+          image: ${IMAGE}
           imagePullPolicy: ${OPENSHIFT_PULL_POLICY}
           command: ["hypershift", "experimental", "openshift-webconsole-operator"]
           args:
