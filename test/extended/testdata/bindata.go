@@ -32365,7 +32365,7 @@ objects:
         serviceAccountName: openshift-cluster-kube-apiserver-operator
         containers:
         - name: operator
-          image: openshift/origin-cluster-kube-apiserver-operator:latest
+          image: openshift/origin-cluster-kube-apiserver-operator:v4.0
           imagePullPolicy: IfNotPresent
           command: ["cluster-kube-apiserver-operator", "operator"]
           args:
@@ -32399,7 +32399,7 @@ objects:
     name: instance
   spec:
     managementState: Managed
-    imagePullSpec: openshift/origin-hypershift:latest
+    imagePullSpec: openshift/origin-hypershift:v4.0
     version: 3.11.0
     logging:
       level: 4
@@ -32528,7 +32528,7 @@ objects:
     name: instance
   spec:
     managementState: Managed
-    imagePullSpec: openshift/origin-hypershift:latest
+    imagePullSpec: openshift/origin-hypershift:v4.0
     version: 3.11.0
     logging:
       level: 4
@@ -32656,10 +32656,11 @@ objects:
     name: instance
   spec:
     managementState: Managed
-    imagePullSpec: openshift/origin-hypershift:latest
+    imagePullSpec: openshift/origin-hypershift:v4.0
     version: 3.11.0
     logging:
-      level: 4`)
+      level: 4
+`)
 
 func installClusterOpenshiftControllerManagerOperatorInstallYamlBytes() ([]byte, error) {
 	return _installClusterOpenshiftControllerManagerOperatorInstallYaml, nil
