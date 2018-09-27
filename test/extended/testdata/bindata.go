@@ -4934,7 +4934,7 @@ spec:
         name: myapp
         command:
         - /bin/sleep
-        - "10"
+        - "infinity"
   triggers:
   - type: ConfigChange
 `)
