@@ -12056,7 +12056,6 @@ objects:
   spec:
     tls:
       termination: edge
-      insecureEdgeTerminationPolicy: Allow
     to:
       kind: Service
       name: gitserver-tokenauth
@@ -12252,7 +12251,6 @@ objects:
   spec:
     tls:
       termination: edge
-      insecureEdgeTerminationPolicy: Allow
     to:
       kind: Service
       name: gitserver
