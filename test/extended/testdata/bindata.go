@@ -2297,7 +2297,7 @@ metadata:
 spec:
   resources:
     limits:
-      memory: 10Mi
+      memory: 50Mi
   source:
     git:
       uri: "https://github.com/openshift/ruby-hello-world"
@@ -2307,6 +2307,7 @@ spec:
       from:
         kind: DockerImage
         name: centos/ruby-23-centos7:latest
+      forcePull: true
 `)
 
 func testExtendedTestdataBuildsStatusfailOomkilledYamlBytes() ([]byte, error) {
