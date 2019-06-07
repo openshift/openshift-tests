@@ -13199,7 +13199,7 @@ func testExtendedTestdataWeightedRouterYaml() (*asset, error) {
 	return a, nil
 }
 
-var _testIntegrationTestdataProjectRequestTemplateWithQuotaYaml = []byte(`apiVersion: v1
+var _testIntegrationTestdataProjectRequestTemplateWithQuotaYaml = []byte(`apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
   creationTimestamp: 2015-10-24T18:25:22Z
@@ -13313,7 +13313,8 @@ parameters:
 - name: PROJECT_NAME
 - name: PROJECT_DISPLAYNAME
 - name: PROJECT_DESCRIPTION
-- name: PROJECT_ADMIN_USER`)
+- name: PROJECT_ADMIN_USER
+`)
 
 func testIntegrationTestdataProjectRequestTemplateWithQuotaYamlBytes() ([]byte, error) {
 	return _testIntegrationTestdataProjectRequestTemplateWithQuotaYaml, nil
