@@ -13720,7 +13720,7 @@ func testIntegrationTestdataTestImageStreamJson() (*asset, error) {
 
 var _testIntegrationTestdataTestImageJson = []byte(`{
   "kind": "Image",
-  "apiVersion": "v1",
+  "apiVersion": "image.openshift.io/v1",
   "metadata": {
     "name": "test",
     "creationTimestamp": null
@@ -13735,7 +13735,8 @@ var _testIntegrationTestdataTestImageJson = []byte(`{
     "Config": {}
   },
   "dockerImageMetadataVersion": "1.0"
-}`)
+}
+`)
 
 func testIntegrationTestdataTestImageJsonBytes() ([]byte, error) {
 	return _testIntegrationTestdataTestImageJson, nil
