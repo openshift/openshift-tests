@@ -46738,7 +46738,7 @@ spec:
     spec:
       terminationGracePeriodSeconds: 0
       containers:
-      - image: "docker.io/centos:centos7"
+      - image: "registry.access.redhat.com/ubi8/ubi-minimal:latest"
         imagePullPolicy: IfNotPresent
         name: myapp
         command:
@@ -46845,12 +46845,12 @@ spec:
         name: history-limit
     spec:
       containers:
-      - image: "docker.io/centos:centos7"
+      - image: "registry.access.redhat.com/ubi8/ubi-minimal:latest"
         imagePullPolicy: IfNotPresent
         name: myapp
         command:
         - /bin/sleep
-        - "100"
+        - "infinity"
   triggers:
   - type: ConfigChange
   revisionHistoryLimit: 3
@@ -46888,12 +46888,12 @@ spec:
     spec:
       terminationGracePeriodSeconds: 0
       containers:
-      - image: "docker.io/centos:centos7"
+      - image: "registry.access.redhat.com/ubi8/ubi-minimal:latest"
         imagePullPolicy: IfNotPresent
         name: myapp
         command:
         - /bin/sleep
-        - "10000"
+        - "infinity"
 `)
 
 func testExtendedTestdataDeploymentsDeploymentIgnoresDeployerYamlBytes() ([]byte, error) {
@@ -46920,15 +46920,16 @@ spec:
   - name: pullthrough
     from:
       kind: DockerImage
-      name: docker.io/centos:centos7
+      name: "registry.access.redhat.com/ubi8/ubi-minimal:latest"
     referencePolicy:
       type: Local
   - name: direct
     from:
       kind: DockerImage
-      name: docker.io/centos:centos7
+      name: "registry.access.redhat.com/ubi8/ubi-minimal:latest"
     referencePolicy:
-     type: Source`)
+     type: Source
+`)
 
 func testExtendedTestdataDeploymentsDeploymentImageResolutionIsYamlBytes() ([]byte, error) {
 	return _testExtendedTestdataDeploymentsDeploymentImageResolutionIsYaml, nil
@@ -47023,12 +47024,12 @@ spec:
     spec:
       terminationGracePeriodSeconds: 0
       containers:
-      - image: "docker.io/centos:centos7"
+      - image: "registry.access.redhat.com/ubi8/ubi-minimal:latest"
         imagePullPolicy: IfNotPresent
         name: myapp
         command:
         - /bin/sleep
-        - "10000"
+        - "infinity"
 `)
 
 func testExtendedTestdataDeploymentsDeploymentMinReadySecondsYamlBytes() ([]byte, error) {
@@ -47063,7 +47064,7 @@ spec:
         name: deployment-simple
     spec:
       containers:
-      - image: "docker.io/centos:centos7"
+      - image: "registry.access.redhat.com/ubi8/ubi-minimal:latest"
         imagePullPolicy: IfNotPresent
         command:
           - /bin/sleep
@@ -47072,7 +47073,7 @@ spec:
         readinessProbe:
           exec:
             command:
-            - uptime
+            - "true"
   triggers:
   - type: ConfigChange
 `)
@@ -47167,7 +47168,7 @@ spec:
         name: deployment-simple
     spec:
       containers:
-      - image: "openshift/origin-base:latest"
+      - image: "registry.access.redhat.com/ubi8/ubi-minimal:latest"
         command: [ "/bin/bash", "-c", "sleep infinity" ]
         imagePullPolicy: IfNotPresent
         name: myapp
@@ -47213,7 +47214,7 @@ spec:
         name: hook
     spec:
       containers:
-      - image: "docker.io/centos:centos7"
+      - image: "registry.access.redhat.com/ubi8/ubi-minimal:latest"
         command:
           - /bin/sleep
           - infinity
@@ -47261,12 +47262,12 @@ spec:
         name: generation-test
     spec:
       containers:
-      - image: "docker.io/centos:centos7"
+      - image: "registry.access.redhat.com/ubi8/ubi-minimal:latest"
         imagePullPolicy: IfNotPresent
         name: myapp
         command:
         - /bin/sleep
-        - "100"
+        - "infinity"
   triggers:
   - type: ConfigChange
 `)
@@ -47359,12 +47360,12 @@ spec:
         name: paused
     spec:
       containers:
-      - image: "docker.io/centos:centos7"
+      - image: "registry.access.redhat.com/ubi8/ubi-minimal:latest"
         imagePullPolicy: IfNotPresent
         name: myapp
         command:
         - /bin/sleep
-        - "100"
+        - "infinity"
 `)
 
 func testExtendedTestdataDeploymentsPausedDeploymentYamlBytes() ([]byte, error) {
@@ -47400,8 +47401,8 @@ spec:
       containers:
       - command:
         - /bin/sleep
-        - "10000"
-        image: docker.io/centos:centos7
+        - "infinity"
+        image: "registry.access.redhat.com/ubi8/ubi-minimal:latest"
         imagePullPolicy: IfNotPresent
         name: never-ready
         readinessProbe:
@@ -47452,7 +47453,7 @@ spec:
         name: tag-images
     spec:
       containers:
-      - image: openshift/origin-pod
+      - image: "openshift/origin-pod"
         imagePullPolicy: IfNotPresent
         name: sample-name
         ports:
@@ -47502,12 +47503,12 @@ spec:
         name: brokendeployment
     spec:
       containers:
-      - image: "docker.io/centos:centos7"
+      - image: "registry.access.redhat.com/ubi8/ubi-minimal:latest"
         imagePullPolicy: IfNotPresent
         name: myapp
         command:
         - /bin/sleep
-        - "100"
+        - "infinity"
   triggers:
   - type: ConfigChange
 `)
@@ -47555,12 +47556,12 @@ spec:
     spec:
       terminationGracePeriodSeconds: 0
       containers:
-      - image: "docker.io/centos:centos7"
+      - image: "registry.access.redhat.com/ubi8/ubi-minimal:latest"
         imagePullPolicy: IfNotPresent
         name: myapp
         command:
         - /bin/sleep
-        - "100"
+        - "infinity"
   test: true
   triggers:
   - type: ConfigChange
