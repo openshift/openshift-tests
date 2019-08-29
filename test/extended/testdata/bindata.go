@@ -47111,7 +47111,7 @@ spec:
         name: test
         command:
         - /bin/sleep
-        - "100"
+        - "infinity"
   test: false
   triggers:
   - imageChangeParams:
@@ -47453,7 +47453,7 @@ spec:
         name: tag-images
     spec:
       containers:
-      - image: "openshift/origin-pod"
+      - image: openshift/origin-pod
         imagePullPolicy: IfNotPresent
         name: sample-name
         ports:
