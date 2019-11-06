@@ -15272,7 +15272,6 @@ var _examplesHelloOpenshiftHelloPodJson = []byte(`{
         ],
         "terminationMessagePath": "/dev/termination-log",
         "imagePullPolicy": "IfNotPresent",
-        "capabilities": {},
         "securityContext": {
           "capabilities": {},
           "privileged": false
@@ -15763,7 +15762,6 @@ var _examplesJenkinsJenkinsEphemeralTemplateJson = []byte(`{
                     "spec": {
                         "containers": [
                             {
-                                "capabilities": {},
                                 "env": [
                                     {
                                         "name": "OPENSHIFT_ENABLE_OAUTH",
@@ -15990,7 +15988,8 @@ var _examplesJenkinsJenkinsEphemeralTemplateJson = []byte(`{
             "value": "jenkins:2"
         }
     ]
-}`)
+}
+`)
 
 func examplesJenkinsJenkinsEphemeralTemplateJsonBytes() ([]byte, error) {
 	return _examplesJenkinsJenkinsEphemeralTemplateJson, nil
@@ -39985,7 +39984,6 @@ var _testExtendedTestdataCmdTestCmdTestdataHelloOpenshiftHelloPodJson = []byte(`
         ],
         "terminationMessagePath": "/dev/termination-log",
         "imagePullPolicy": "IfNotPresent",
-        "capabilities": {},
         "securityContext": {
           "capabilities": {},
           "privileged": false
@@ -41827,7 +41825,6 @@ var _testExtendedTestdataCmdTestCmdTestdataJenkinsJenkinsEphemeralTemplateJson =
                     "spec": {
                         "containers": [
                             {
-                                "capabilities": {},
                                 "env": [
                                     {
                                         "name": "OPENSHIFT_ENABLE_OAUTH",
@@ -42054,7 +42051,8 @@ var _testExtendedTestdataCmdTestCmdTestdataJenkinsJenkinsEphemeralTemplateJson =
             "value": "jenkins:2"
         }
     ]
-}`)
+}
+`)
 
 func testExtendedTestdataCmdTestCmdTestdataJenkinsJenkinsEphemeralTemplateJsonBytes() ([]byte, error) {
 	return _testExtendedTestdataCmdTestCmdTestdataJenkinsJenkinsEphemeralTemplateJson, nil
@@ -45271,7 +45269,6 @@ var _testExtendedTestdataCmdTestCmdTestdataTemplatesGuestbookJson = []byte(`{
             "resources": {},
             "terminationMessagePath": "/dev/termination-log",
             "imagePullPolicy": "IfNotPresent",
-            "capabilities": {},
             "securityContext": {
               "capabilities": {},
               "privileged": false
@@ -45335,7 +45332,6 @@ var _testExtendedTestdataCmdTestCmdTestdataTemplatesGuestbookJson = []byte(`{
                 "resources": {},
                 "terminationMessagePath": "/dev/termination-log",
                 "imagePullPolicy": "IfNotPresent",
-                "capabilities": {},
                 "securityContext": {
                   "capabilities": {},
                   "privileged": false
@@ -45395,7 +45391,6 @@ var _testExtendedTestdataCmdTestCmdTestdataTemplatesGuestbookJson = []byte(`{
                 "resources": {},
                 "terminationMessagePath": "/dev/termination-log",
                 "imagePullPolicy": "IfNotPresent",
-                "capabilities": {},
                 "securityContext": {
                   "capabilities": {},
                   "privileged": false
@@ -45438,7 +45433,8 @@ var _testExtendedTestdataCmdTestCmdTestdataTemplatesGuestbookJson = []byte(`{
       "value": "redis-slave"
     }
   ]
-}`)
+}
+`)
 
 func testExtendedTestdataCmdTestCmdTestdataTemplatesGuestbookJsonBytes() ([]byte, error) {
 	return _testExtendedTestdataCmdTestCmdTestdataTemplatesGuestbookJson, nil
@@ -46239,7 +46235,6 @@ var _testExtendedTestdataCmdTestCmdTestdataTestImageJson = []byte(`{
     "kind": "DockerImage",
     "apiVersion": "1.0",
     "Id": "",
-    "Created": null,
     "ContainerConfig": {},
     "Config": {}
   },
@@ -49933,7 +49928,6 @@ var _testExtendedTestdataImageTestImageJson = []byte(`{
     "kind": "DockerImage",
     "apiVersion": "1.0",
     "Id": "",
-    "Created": null,
     "ContainerConfig": {},
     "Config": {}
   },
@@ -53125,7 +53119,6 @@ spec:
   selector:
     app: test-oauth-server
   type: ClusterIP
-  serviceAffinitiy: None
 ---
 
 apiVersion: route.openshift.io/v1
@@ -55574,7 +55567,6 @@ var _testExtendedTestdataTemplatesGuestbookJson = []byte(`{
             "resources": {},
             "terminationMessagePath": "/dev/termination-log",
             "imagePullPolicy": "IfNotPresent",
-            "capabilities": {},
             "securityContext": {
               "capabilities": {},
               "privileged": false
@@ -55638,7 +55630,6 @@ var _testExtendedTestdataTemplatesGuestbookJson = []byte(`{
                 "resources": {},
                 "terminationMessagePath": "/dev/termination-log",
                 "imagePullPolicy": "IfNotPresent",
-                "capabilities": {},
                 "securityContext": {
                   "capabilities": {},
                   "privileged": false
@@ -55698,7 +55689,6 @@ var _testExtendedTestdataTemplatesGuestbookJson = []byte(`{
                 "resources": {},
                 "terminationMessagePath": "/dev/termination-log",
                 "imagePullPolicy": "IfNotPresent",
-                "capabilities": {},
                 "securityContext": {
                   "capabilities": {},
                   "privileged": false
@@ -57464,7 +57454,6 @@ var _testIntegrationTestdataTestImageJson = []byte(`{
     "kind": "DockerImage",
     "apiVersion": "1.0",
     "Id": "",
-    "Created": null,
     "ContainerConfig": {},
     "Config": {}
   },
