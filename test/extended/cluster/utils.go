@@ -28,8 +28,8 @@ import (
 	"k8s.io/kubernetes/test/e2e/framework/pod"
 
 	"github.com/openshift/library-go/pkg/template/templateprocessingclient"
-	"github.com/openshift/origin/test/extended/cluster/metrics"
-	exutil "github.com/openshift/origin/test/extended/util"
+	"github.com/openshift/extended-platform-tests/test/extended/cluster/metrics"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 )
 
 // The number of times we re-try to create a pod

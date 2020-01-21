@@ -6,7 +6,7 @@ import (
 
 	g "github.com/onsi/ginkgo"
 	o "github.com/onsi/gomega"
-	"k8s.io/kubernetes/staging/src/k8s.io/apimachinery/pkg/api/apitesting"
+	"k8s.io/apimachinery/pkg/api/apitesting"
 
 	corev1 "k8s.io/api/core/v1"
 	storagev1 "k8s.io/api/storage/v1"
@@ -22,7 +22,7 @@ import (
 	templatev1 "github.com/openshift/api/template/v1"
 	userv1 "github.com/openshift/api/user/v1"
 
-	exutil "github.com/openshift/origin/test/extended/util"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 )
 
 // Check that objects created through the TemplateInstance mechanism are done

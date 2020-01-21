@@ -17,7 +17,7 @@ import (
 	imagev1client "github.com/openshift/client-go/image/clientset/versioned"
 	"github.com/openshift/library-go/pkg/apps/appsutil"
 	"github.com/openshift/library-go/pkg/image/imageutil"
-	exutil "github.com/openshift/origin/test/extended/util"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 )
 
 var _ = g.Describe("[Feature:OpenShiftControllerManager]", func() {

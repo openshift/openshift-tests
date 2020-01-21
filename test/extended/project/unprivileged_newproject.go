@@ -10,7 +10,7 @@ import (
 	authorizationv1 "github.com/openshift/api/authorization/v1"
 	projectv1 "github.com/openshift/api/project/v1"
 	projectv1client "github.com/openshift/client-go/project/clientset/versioned/typed/project/v1"
-	exutil "github.com/openshift/origin/test/extended/util"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 	kubeauthorizationv1 "k8s.io/api/authorization/v1"
 	kapierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"

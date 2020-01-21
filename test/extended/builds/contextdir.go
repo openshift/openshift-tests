@@ -7,8 +7,8 @@ import (
 	g "github.com/onsi/ginkgo"
 	o "github.com/onsi/gomega"
 
-	imageeco "github.com/openshift/origin/test/extended/image_ecosystem"
-	exutil "github.com/openshift/origin/test/extended/util"
+	imageeco "github.com/openshift/extended-platform-tests/test/extended/image_ecosystem"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 

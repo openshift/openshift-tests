@@ -15,7 +15,7 @@ import (
 
 	userv1client "github.com/openshift/client-go/user/clientset/versioned"
 	"github.com/openshift/library-go/pkg/crypto"
-	exutil "github.com/openshift/origin/test/extended/util"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 )
 
 const (

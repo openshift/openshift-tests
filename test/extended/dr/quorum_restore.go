@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"k8s.io/kubernetes/staging/src/k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -28,8 +28,8 @@ import (
 	"k8s.io/kubernetes/test/e2e/upgrades"
 	apps "k8s.io/kubernetes/test/e2e/upgrades/apps"
 
-	exutil "github.com/openshift/origin/test/extended/util"
-	"github.com/openshift/origin/test/extended/util/disruption"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	"github.com/openshift/extended-platform-tests/test/extended/util/disruption"
 )
 
 const (

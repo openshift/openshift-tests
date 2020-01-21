@@ -6,7 +6,7 @@ import (
 	g "github.com/onsi/ginkgo"
 	o "github.com/onsi/gomega"
 
-	exutil "github.com/openshift/origin/test/extended/util"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 )
 
 var _ = g.Describe("[Feature:Builds][Conformance] build without output image", func() {

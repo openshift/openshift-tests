@@ -6,9 +6,9 @@ import (
 
 	"k8s.io/kubectl/pkg/util/templates"
 
-	"github.com/openshift/origin/pkg/test/ginkgo"
+	"github.com/openshift/extended-platform-tests/pkg/test/ginkgo"
 
-	_ "github.com/openshift/origin/test/extended"
+	_ "github.com/openshift/extended-platform-tests/test/extended"
 )
 
 // staticSuites are all known test suites this binary should run

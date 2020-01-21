@@ -31,7 +31,7 @@ import (
 	osinv1 "github.com/openshift/api/osin/v1"
 	clusteroperatorhelpers "github.com/openshift/library-go/pkg/config/clusteroperator/v1helpers"
 
-	exutil "github.com/openshift/origin/test/extended/util"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 )
 
 func init() {

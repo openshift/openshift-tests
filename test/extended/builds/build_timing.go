@@ -8,7 +8,7 @@ import (
 	o "github.com/onsi/gomega"
 
 	buildv1 "github.com/openshift/api/build/v1"
-	exutil "github.com/openshift/origin/test/extended/util"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 )
 
 func verifyStages(stages []buildv1.StageInfo, expectedStages map[string][]string) {

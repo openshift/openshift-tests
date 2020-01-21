@@ -13,7 +13,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	authorizationv1 "github.com/openshift/api/authorization/v1"
-	exutil "github.com/openshift/origin/test/extended/util"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 )
 
 var _ = g.Describe("[Feature: RoleBinding Restrictions] RoleBindingRestrictions should be functional", func() {

@@ -12,7 +12,7 @@ import (
 	"k8s.io/apimachinery/pkg/util/wait"
 
 	buildv1 "github.com/openshift/api/build/v1"
-	exutil "github.com/openshift/origin/test/extended/util"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 )
 
 // These build pruning tests create 4 builds and check that 2-3 of them are left after pruning.

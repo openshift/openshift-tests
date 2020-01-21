@@ -13,7 +13,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/openshift/origin/pkg/monitor"
+	"github.com/openshift/extended-platform-tests/pkg/monitor"
 )
 
 type testStatus struct {

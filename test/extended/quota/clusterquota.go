@@ -17,7 +17,7 @@ import (
 	imagev1 "github.com/openshift/api/image/v1"
 	quotav1 "github.com/openshift/api/quota/v1"
 	quotaclient "github.com/openshift/client-go/quota/clientset/versioned"
-	exutil "github.com/openshift/origin/test/extended/util"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 )
 
 var _ = g.Describe("[Feature:ClusterResourceQuota] ", func() {

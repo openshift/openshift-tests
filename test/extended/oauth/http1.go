@@ -9,7 +9,7 @@ import (
 
 	"k8s.io/client-go/rest"
 
-	exutil "github.com/openshift/origin/test/extended/util"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 )
 
 var _ = g.Describe("[Feature:OAuthServer] OAuth server", func() {

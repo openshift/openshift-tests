@@ -13,8 +13,8 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/wait"
 
-	exutil "github.com/openshift/origin/test/extended/util"
-	exurl "github.com/openshift/origin/test/extended/util/url"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	exurl "github.com/openshift/extended-platform-tests/test/extended/util/url"
 )
 
 var _ = g.Describe("[Feature:Platform] Managed cluster should", func() {

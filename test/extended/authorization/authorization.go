@@ -32,7 +32,7 @@ import (
 	"github.com/openshift/api/oauth"
 	authorizationv1client "github.com/openshift/client-go/authorization/clientset/versioned"
 	authorizationv1typedclient "github.com/openshift/client-go/authorization/clientset/versioned/typed/authorization/v1"
-	exutil "github.com/openshift/origin/test/extended/util"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 )
 
 var _ = g.Describe("[Feature:OpenShiftAuthorization] authorization", func() {

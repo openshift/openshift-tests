@@ -10,7 +10,7 @@ import (
 
 	"k8s.io/apimachinery/pkg/util/wait"
 
-	exutil "github.com/openshift/origin/test/extended/util"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 )
 
 const (

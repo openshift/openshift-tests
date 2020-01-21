@@ -23,9 +23,9 @@ import (
 	reale2e "k8s.io/kubernetes/test/e2e"
 	e2e "k8s.io/kubernetes/test/e2e/framework"
 
-	"github.com/openshift/origin/test/extended/cluster/metrics"
-	"github.com/openshift/origin/test/extended/util"
-	exutil "github.com/openshift/origin/test/extended/util"
+	"github.com/openshift/extended-platform-tests/test/extended/cluster/metrics"
+	"github.com/openshift/extended-platform-tests/test/extended/util"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 )
 
 const checkDeleteProjectInterval = 10 * time.Second

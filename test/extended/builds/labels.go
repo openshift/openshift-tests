@@ -7,8 +7,8 @@ import (
 	g "github.com/onsi/ginkgo"
 	o "github.com/onsi/gomega"
 
-	eximages "github.com/openshift/origin/test/extended/images"
-	exutil "github.com/openshift/origin/test/extended/util"
+	eximages "github.com/openshift/extended-platform-tests/test/extended/images"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 )
 
 var _ = g.Describe("[Feature:Builds] result image should have proper labels set", func() {

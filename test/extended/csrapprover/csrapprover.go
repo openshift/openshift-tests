@@ -24,7 +24,7 @@ import (
 	certclientv1beta1 "k8s.io/client-go/kubernetes/typed/certificates/v1beta1"
 	restclient "k8s.io/client-go/rest"
 
-	exutil "github.com/openshift/origin/test/extended/util"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 )
 
 var _ = g.Describe("node client cert requests armoring:", func() {

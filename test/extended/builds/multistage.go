@@ -11,8 +11,8 @@ import (
 	e2e "k8s.io/kubernetes/test/e2e/framework"
 
 	buildv1 "github.com/openshift/api/build/v1"
-	eximages "github.com/openshift/origin/test/extended/images"
-	exutil "github.com/openshift/origin/test/extended/util"
+	eximages "github.com/openshift/extended-platform-tests/test/extended/images"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 )
 
 var _ = g.Describe("[Feature:Builds] Multi-stage image builds", func() {

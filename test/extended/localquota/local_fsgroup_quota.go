@@ -13,7 +13,7 @@ import (
 	o "github.com/onsi/gomega"
 	"k8s.io/kubernetes/pkg/volume/emptydirquota"
 
-	exutil "github.com/openshift/origin/test/extended/util"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 )
 
 const (

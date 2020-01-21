@@ -12,8 +12,8 @@ import (
 	"k8s.io/client-go/rest"
 	"k8s.io/kube-openapi/pkg/util/sets"
 
-	"github.com/openshift/origin/test/extended/util"
-	"github.com/openshift/origin/test/extended/util/oauthserver"
+	"github.com/openshift/extended-platform-tests/test/extended/util"
+	"github.com/openshift/extended-platform-tests/test/extended/util/oauthserver"
 )
 
 var _ = g.Describe("[Feature:OAuthServer] [Headers]", func() {

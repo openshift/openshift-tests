@@ -11,7 +11,7 @@ import (
 
 	g "github.com/onsi/ginkgo"
 
-	exutil "github.com/openshift/origin/test/extended/util"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 )
 
 // RunInPodContainer will run provided command in the specified pod container.

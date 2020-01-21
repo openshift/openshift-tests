@@ -16,8 +16,8 @@ import (
 	e2elog "k8s.io/kubernetes/test/e2e/framework/log"
 	e2essh "k8s.io/kubernetes/test/e2e/framework/ssh"
 
-	"github.com/openshift/origin/test/e2e/upgrade"
-	exutil "github.com/openshift/origin/test/extended/util"
+	"github.com/openshift/extended-platform-tests/test/e2e/upgrade"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 
 	o "github.com/onsi/gomega"
 	"github.com/stretchr/objx"

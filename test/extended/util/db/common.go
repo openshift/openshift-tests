@@ -5,7 +5,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/openshift/origin/test/extended/util"
+	"github.com/openshift/extended-platform-tests/test/extended/util"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	kcoreclient "k8s.io/client-go/kubernetes/typed/core/v1"
 )

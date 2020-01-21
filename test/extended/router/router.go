@@ -12,8 +12,8 @@ import (
 	"k8s.io/apimachinery/pkg/util/wait"
 
 	routeclientset "github.com/openshift/client-go/route/clientset/versioned"
-	exutil "github.com/openshift/origin/test/extended/util"
-	"github.com/openshift/origin/test/extended/util/url"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	"github.com/openshift/extended-platform-tests/test/extended/util/url"
 )
 
 var _ = g.Describe("[Conformance][Area:Networking][Feature:Router]", func() {

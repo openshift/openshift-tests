@@ -8,7 +8,7 @@ import (
 
 	"k8s.io/apimachinery/pkg/runtime"
 
-	"github.com/openshift/origin/test/extended/scheme"
+	"github.com/openshift/extended-platform-tests/test/extended/scheme"
 )
 
 func ReadFixture(path string) (runtime.Object, error) {

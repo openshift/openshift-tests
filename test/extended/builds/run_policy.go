@@ -14,7 +14,7 @@ import (
 
 	buildv1 "github.com/openshift/api/build/v1"
 	buildclientv1 "github.com/openshift/client-go/build/clientset/versioned/typed/build/v1"
-	exutil "github.com/openshift/origin/test/extended/util"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 )
 
 func hasConditionState(build *buildv1.Build, condition buildv1.BuildPhase, expectedStatus bool) bool {

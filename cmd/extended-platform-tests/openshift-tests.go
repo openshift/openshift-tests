@@ -23,10 +23,10 @@ import (
 	e2e "k8s.io/kubernetes/test/e2e/framework"
 
 	"github.com/openshift/library-go/pkg/serviceability"
-	"github.com/openshift/origin/pkg/monitor"
-	testginkgo "github.com/openshift/origin/pkg/test/ginkgo"
-	exutil "github.com/openshift/origin/test/extended/util"
-	exutilcloud "github.com/openshift/origin/test/extended/util/cloud"
+	"github.com/openshift/extended-platform-tests/pkg/monitor"
+	testginkgo "github.com/openshift/extended-platform-tests/pkg/test/ginkgo"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	exutilcloud "github.com/openshift/extended-platform-tests/test/extended/util/cloud"
 
 	// these are loading important global flags that we need to get and set
 	_ "k8s.io/kubernetes/test/e2e"

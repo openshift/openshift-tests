@@ -3,7 +3,7 @@ package builds
 import (
 	g "github.com/onsi/ginkgo"
 
-	exutil "github.com/openshift/origin/test/extended/util"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 )
 
 var _ = g.Describe("[Feature:Builds][Slow] build controller", func() {

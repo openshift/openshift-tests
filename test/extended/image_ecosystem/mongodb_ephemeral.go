@@ -8,8 +8,8 @@ import (
 
 	"time"
 
-	exutil "github.com/openshift/origin/test/extended/util"
-	"github.com/openshift/origin/test/extended/util/db"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	"github.com/openshift/extended-platform-tests/test/extended/util/db"
 )
 
 var _ = g.Describe("[image_ecosystem][mongodb] openshift mongodb image", func() {

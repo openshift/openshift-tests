@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	o "github.com/onsi/gomega"
-	exutil "github.com/openshift/origin/test/extended/util"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 
 	e2e "k8s.io/kubernetes/test/e2e/framework"
 )

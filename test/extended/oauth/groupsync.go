@@ -12,8 +12,8 @@ import (
 
 	"time"
 
-	"github.com/openshift/origin/test/extended/testdata"
-	testutil "github.com/openshift/origin/test/extended/util"
+	"github.com/openshift/extended-platform-tests/test/extended/testdata"
+	testutil "github.com/openshift/extended-platform-tests/test/extended/util"
 	"k8s.io/apimachinery/pkg/util/wait"
 	e2e "k8s.io/kubernetes/test/e2e/framework"
 )

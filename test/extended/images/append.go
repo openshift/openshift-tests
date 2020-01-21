@@ -13,7 +13,7 @@ import (
 	"github.com/openshift/api/image/docker10"
 	"github.com/openshift/library-go/pkg/image/imageutil"
 
-	exutil "github.com/openshift/origin/test/extended/util"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 )
 
 func cliPodWithPullSecret(cli *exutil.CLI, shell string) *kapiv1.Pod {

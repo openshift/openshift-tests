@@ -20,7 +20,7 @@ import (
 	o "github.com/onsi/gomega"
 	templateapi "github.com/openshift/api/template/v1"
 	"github.com/openshift/library-go/pkg/template/templateprocessingclient"
-	exutil "github.com/openshift/origin/test/extended/util"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 )
 
 var _ = g.Describe("[Conformance][templates] template-api", func() {

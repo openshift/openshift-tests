@@ -33,9 +33,9 @@ import (
 
 	buildv1client "github.com/openshift/client-go/build/clientset/versioned"
 
-	osbclient "github.com/openshift/origin/test/extended/templates/openservicebroker/client"
+	osbclient "github.com/openshift/extended-platform-tests/test/extended/templates/openservicebroker/client"
 
-	exutil "github.com/openshift/origin/test/extended/util"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 )
 
 var readinessScheme = runtime.NewScheme()

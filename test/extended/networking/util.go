@@ -12,7 +12,7 @@ import (
 	"github.com/openshift/library-go/pkg/network/networkutils"
 	"k8s.io/kubernetes/test/e2e/framework/pod"
 
-	testexutil "github.com/openshift/origin/test/extended/util"
+	testexutil "github.com/openshift/extended-platform-tests/test/extended/util"
 
 	corev1 "k8s.io/api/core/v1"
 	kapierrs "k8s.io/apimachinery/pkg/api/errors"

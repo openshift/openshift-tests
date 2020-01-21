@@ -7,7 +7,7 @@ import (
 	g "github.com/onsi/ginkgo"
 
 	appsv1 "github.com/openshift/api/apps/v1"
-	exutil "github.com/openshift/origin/test/extended/util"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/diff"

@@ -56,7 +56,7 @@ import (
 	"github.com/openshift/library-go/pkg/build/naming"
 	"github.com/openshift/library-go/pkg/git"
 	"github.com/openshift/library-go/pkg/image/imageutil"
-	"github.com/openshift/origin/test/extended/testdata"
+	"github.com/openshift/extended-platform-tests/test/extended/testdata"
 
 	. "github.com/onsi/gomega"
 )

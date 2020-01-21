@@ -10,7 +10,7 @@ import (
 	"github.com/apparentlymart/go-cidr/cidr"
 	g "github.com/onsi/ginkgo"
 	o "github.com/onsi/gomega"
-	exutil "github.com/openshift/origin/test/extended/util"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"

@@ -8,8 +8,8 @@ import (
 	o "github.com/onsi/gomega"
 
 	"github.com/openshift/api/template"
-	exutil "github.com/openshift/origin/test/extended/util"
-	"github.com/openshift/origin/test/extended/util/db"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	"github.com/openshift/extended-platform-tests/test/extended/util/db"
 
 	//	kapiv1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"

@@ -15,8 +15,8 @@ import (
 	oauthv1 "github.com/openshift/api/oauth/v1"
 	userv1client "github.com/openshift/client-go/user/clientset/versioned/typed/user/v1"
 
-	"github.com/openshift/origin/test/extended/util"
-	"github.com/openshift/origin/test/extended/util/oauthserver"
+	"github.com/openshift/extended-platform-tests/test/extended/util"
+	"github.com/openshift/extended-platform-tests/test/extended/util/oauthserver"
 )
 
 var _ = g.Describe("[Feature:OAuthServer] [Token Expiration]", func() {

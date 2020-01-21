@@ -15,8 +15,8 @@ import (
 	configv1 "github.com/openshift/api/config/v1"
 	osinv1 "github.com/openshift/api/osin/v1"
 	userv1client "github.com/openshift/client-go/user/clientset/versioned/typed/user/v1"
-	testutil "github.com/openshift/origin/test/extended/util"
-	oauthutil "github.com/openshift/origin/test/extended/util/oauthserver"
+	testutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	oauthutil "github.com/openshift/extended-platform-tests/test/extended/util/oauthserver"
 )
 
 var _ = g.Describe("[Suite:openshift/oauth] LDAP IDP", func() {

@@ -14,7 +14,7 @@ import (
 	imagev1 "github.com/openshift/api/image/v1"
 	buildv1client "github.com/openshift/client-go/build/clientset/versioned"
 	imagev1client "github.com/openshift/client-go/image/clientset/versioned"
-	exutil "github.com/openshift/origin/test/extended/util"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 )
 
 var _ = g.Describe("[Feature:Image][triggers] Image change build triggers", func() {

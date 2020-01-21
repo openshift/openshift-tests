@@ -18,8 +18,8 @@ import (
 	e2epv "k8s.io/kubernetes/test/e2e/framework/pv"
 
 	buildv1 "github.com/openshift/api/build/v1"
-	exutil "github.com/openshift/origin/test/extended/util"
-	"github.com/openshift/origin/test/extended/util/jenkins"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	"github.com/openshift/extended-platform-tests/test/extended/util/jenkins"
 )
 
 const (

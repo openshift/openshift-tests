@@ -11,8 +11,8 @@ import (
 	osinv1 "github.com/openshift/api/osin/v1"
 	"github.com/openshift/library-go/pkg/oauth/oauthdiscovery"
 
-	"github.com/openshift/origin/test/extended/util"
-	"github.com/openshift/origin/test/extended/util/oauthserver"
+	"github.com/openshift/extended-platform-tests/test/extended/util"
+	"github.com/openshift/extended-platform-tests/test/extended/util/oauthserver"
 )
 
 func deployOAuthServer(oc *util.CLI) (oauthserver.NewRequestTokenOptionsFunc, func(), error) {

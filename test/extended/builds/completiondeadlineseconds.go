@@ -9,7 +9,7 @@ import (
 
 	buildv1 "github.com/openshift/api/build/v1"
 	"github.com/openshift/library-go/pkg/build/naming"
-	exutil "github.com/openshift/origin/test/extended/util"
+	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
 )
 
 var _ = g.Describe("[Feature:Builds][Slow] builds should have deadlines", func() {
