@@ -9,6 +9,7 @@ import (
 	"github.com/openshift/openshift-tests/pkg/test/ginkgo"
 
 	_ "github.com/openshift/openshift-tests/test/extended"
+	_ "github.com/openshift/openshift-tests/test/extended/util/annotate/generated"
 )
 
 // staticSuites are all known test suites this binary should run

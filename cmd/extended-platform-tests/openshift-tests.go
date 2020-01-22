@@ -215,7 +215,6 @@ func initProvider(provider string, dryRun bool) error {
 	exutil.TestContext.MaxNodesToGather = 0
 	reale2e.SetViperConfig(os.Getenv("VIPERCONFIG"))
 
-	exutil.AnnotateTestSuite()
 	err := exutil.InitTest(dryRun)
 	gomega.RegisterFailHandler(ginkgo.Fail)
 
