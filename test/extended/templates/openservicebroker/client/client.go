@@ -13,7 +13,7 @@ import (
 	"k8s.io/apimachinery/pkg/util/validation/field"
 	"k8s.io/apiserver/pkg/authentication/user"
 
-	openservicebrokerapi "github.com/openshift/extended-platform-tests/test/extended/templates/openservicebroker/api"
+	openservicebrokerapi "github.com/openshift/openshift-tests/test/extended/templates/openservicebroker/api"
 )
 
 type Client interface {

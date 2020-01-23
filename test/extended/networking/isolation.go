@@ -5,7 +5,7 @@ import (
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	testexutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	testexutil "github.com/openshift/openshift-tests/test/extended/util"
 )
 
 var _ = Describe("[Area:Networking] network isolation", func() {

@@ -12,7 +12,7 @@ import (
 	"k8s.io/client-go/dynamic"
 	"sigs.k8s.io/yaml"
 
-	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	exutil "github.com/openshift/openshift-tests/test/extended/util"
 )
 
 var _ = g.Describe("[Feature:APIServer]", func() {

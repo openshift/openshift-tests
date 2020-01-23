@@ -23,7 +23,7 @@ import (
 
 	routev1 "github.com/openshift/api/route/v1"
 	routeclientset "github.com/openshift/client-go/route/clientset/versioned"
-	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	exutil "github.com/openshift/openshift-tests/test/extended/util"
 )
 
 var _ = g.Describe("[Conformance][Area:Networking][Feature:Router]", func() {

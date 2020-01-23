@@ -14,7 +14,7 @@ import (
 
 	"github.com/openshift/library-go/pkg/oauth/oauthdiscovery"
 
-	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	exutil "github.com/openshift/openshift-tests/test/extended/util"
 )
 
 var _ = g.Describe("[Feature:OAuthServer] well-known endpoint", func() {

@@ -12,9 +12,9 @@ import (
 	"k8s.io/kubernetes/test/e2e/cloud/gcp"
 	"k8s.io/kubernetes/test/e2e/upgrades"
 
-	"github.com/openshift/extended-platform-tests/pkg/test/ginkgo"
-	"github.com/openshift/extended-platform-tests/test/e2e/upgrade"
-	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	"github.com/openshift/openshift-tests/pkg/test/ginkgo"
+	"github.com/openshift/openshift-tests/test/e2e/upgrade"
+	exutil "github.com/openshift/openshift-tests/test/extended/util"
 )
 
 // upgradeSuites are all known upgade test suites this binary should run

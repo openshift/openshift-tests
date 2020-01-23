@@ -13,7 +13,7 @@ import (
 	"k8s.io/apimachinery/pkg/util/wait"
 	e2e "k8s.io/kubernetes/test/e2e/framework"
 
-	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	exutil "github.com/openshift/openshift-tests/test/extended/util"
 )
 
 var _ = g.Describe("[image_ecosystem][ruby][Slow] hot deploy for openshift ruby image", func() {

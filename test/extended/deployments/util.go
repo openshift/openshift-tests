@@ -31,7 +31,7 @@ import (
 	appstypedclient "github.com/openshift/client-go/apps/clientset/versioned/typed/apps/v1"
 	"github.com/openshift/library-go/pkg/apps/appsutil"
 
-	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	exutil "github.com/openshift/openshift-tests/test/extended/util"
 )
 
 type updateConfigFunc func(d *appsv1.DeploymentConfig)
@@ -109,7 +109,7 @@ func checkDeployerPodInvariants(deploymentName string, pods []*corev1.Pod) (isRu
 				}
 			default:
 				if completed {
-					// TODO: we need to tighten guarantees around hook pods: https://github.com/openshift/extended-platform-tests/issues/8500
+					// TODO: we need to tighten guarantees around hook pods: https://github.com/openshift/openshift-tests/issues/8500
 					//for i := range pods {
 					//	e2e.Logf("deployment %q pod[%d]: %#v", deploymentName, i, pods[i])
 					//}
@@ -140,7 +140,7 @@ func checkDeploymentInvariants(dc *appsv1.DeploymentConfig, rcs []*corev1.Replic
 			}
 		}
 		for k := range existing {
-			// TODO: we are missing RCs? https://github.com/openshift/extended-platform-tests/pull/8483#issuecomment-209150611
+			// TODO: we are missing RCs? https://github.com/openshift/openshift-tests/pull/8483#issuecomment-209150611
 			e2e.Logf("ANOMALY: Deployer pod found for %q but no RC exists", k)
 			//return fmt.Errorf("more deployer pods found than deployments: %#v %#v", deployers, rcs)
 		}
@@ -716,7 +716,7 @@ func (d *deployerPodInvariantChecker) UpdatePod(pod *corev1.Pod) {
 
 	// Check for sanity.
 	// This is not paranoid; kubelet has already been broken this way:
-	// https://github.com/openshift/extended-platform-tests/issues/17011
+	// https://github.com/openshift/openshift-tests/issues/17011
 	oldPod := d.cache[key][index]
 	oldPhase := oldPod.Status.Phase
 	oldPhaseIsTerminated := oldPhase == corev1.PodSucceeded || oldPhase == corev1.PodFailed

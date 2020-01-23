@@ -6,7 +6,7 @@ import (
 	g "github.com/onsi/ginkgo"
 
 	"github.com/openshift/library-go/pkg/crypto"
-	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	exutil "github.com/openshift/openshift-tests/test/extended/util"
 )
 
 var _ = g.Describe("[Feature:APIServer]", func() {

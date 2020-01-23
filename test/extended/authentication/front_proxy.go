@@ -14,8 +14,8 @@ import (
 	"k8s.io/client-go/rest"
 
 	userv1 "github.com/openshift/api/user/v1"
-	"github.com/openshift/extended-platform-tests/test/extended/scheme"
-	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	"github.com/openshift/openshift-tests/test/extended/scheme"
+	exutil "github.com/openshift/openshift-tests/test/extended/util"
 )
 
 var _ = g.Describe("[Feature:Authentication] ", func() {

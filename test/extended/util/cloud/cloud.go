@@ -10,7 +10,7 @@ import (
 
 	configv1 "github.com/openshift/api/config/v1"
 	configclient "github.com/openshift/client-go/config/clientset/versioned"
-	"github.com/openshift/extended-platform-tests/test/extended/util/azure"
+	"github.com/openshift/openshift-tests/test/extended/util/azure"
 )
 
 // LoadConfig uses the cluster to setup the cloud provider config.

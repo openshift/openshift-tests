@@ -4,7 +4,7 @@ import (
 	g "github.com/onsi/ginkgo"
 	o "github.com/onsi/gomega"
 
-	testutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	testutil "github.com/openshift/openshift-tests/test/extended/util"
 )
 
 var _ = g.Describe("[Suite:openshift/oauth] LDAP", func() {

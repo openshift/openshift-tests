@@ -16,7 +16,7 @@ import (
 
 	"github.com/openshift/library-go/pkg/crypto"
 	"github.com/openshift/library-go/pkg/operator/resource/resourceread"
-	"github.com/openshift/extended-platform-tests/test/extended/testdata"
+	"github.com/openshift/openshift-tests/test/extended/testdata"
 )
 
 const (

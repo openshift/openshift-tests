@@ -23,8 +23,8 @@ import (
 	projectv1 "github.com/openshift/api/project/v1"
 	"github.com/openshift/apiserver-library-go/pkg/authorization/scope"
 	projectv1client "github.com/openshift/client-go/project/clientset/versioned/typed/project/v1"
-	"github.com/openshift/extended-platform-tests/test/extended/authorization"
-	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	"github.com/openshift/openshift-tests/test/extended/authorization"
+	exutil "github.com/openshift/openshift-tests/test/extended/util"
 )
 
 var _ = g.Describe("[Feature:ProjectAPI] ", func() {
