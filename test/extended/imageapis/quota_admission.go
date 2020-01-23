@@ -19,7 +19,7 @@ import (
 	o "github.com/onsi/gomega"
 
 	imagev1 "github.com/openshift/api/image/v1"
-	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	exutil "github.com/openshift/openshift-tests/test/extended/util"
 )
 
 const (

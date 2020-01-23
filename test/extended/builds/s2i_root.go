@@ -9,7 +9,7 @@ import (
 	"k8s.io/client-go/util/retry"
 
 	buildv1 "github.com/openshift/api/build/v1"
-	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	exutil "github.com/openshift/openshift-tests/test/extended/util"
 )
 
 func Before(oc *exutil.CLI) {

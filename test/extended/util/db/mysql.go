@@ -5,7 +5,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/openshift/extended-platform-tests/test/extended/util"
+	"github.com/openshift/openshift-tests/test/extended/util"
 )
 
 // MySQL is a MySQL helper for executing commands.

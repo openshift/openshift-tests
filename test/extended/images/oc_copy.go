@@ -28,7 +28,7 @@ import (
 	imageapiv1 "github.com/openshift/api/image/v1"
 	imageclienttyped "github.com/openshift/client-go/image/clientset/versioned/typed/image/v1"
 	"github.com/openshift/library-go/pkg/build/naming"
-	"github.com/openshift/extended-platform-tests/test/extended/scheme"
+	"github.com/openshift/openshift-tests/test/extended/scheme"
 
 	"github.com/openshift/library-go/pkg/apps/appsserialization"
 	"github.com/openshift/library-go/pkg/apps/appsutil"

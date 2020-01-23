@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/openshift/extended-platform-tests/test/extended/csi"
+	"github.com/openshift/openshift-tests/test/extended/csi"
 
 	"k8s.io/kubernetes/test/e2e/framework/testfiles"
 	"k8s.io/kubernetes/test/e2e/storage/external"

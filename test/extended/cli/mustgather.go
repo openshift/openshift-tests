@@ -22,7 +22,7 @@ import (
 	oauthv1client "github.com/openshift/client-go/oauth/clientset/versioned/typed/oauth/v1"
 	"github.com/openshift/library-go/pkg/image/imageutil"
 
-	"github.com/openshift/extended-platform-tests/test/extended/util"
+	"github.com/openshift/openshift-tests/test/extended/util"
 )
 
 var _ = g.Describe("[cli] oc adm must-gather", func() {

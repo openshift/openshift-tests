@@ -8,7 +8,7 @@ import (
 	networkapi "github.com/openshift/api/network/v1"
 	networkclient "github.com/openshift/client-go/network/clientset/versioned/typed/network/v1"
 	"github.com/openshift/library-go/pkg/network/networkutils"
-	testexutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	testexutil "github.com/openshift/openshift-tests/test/extended/util"
 
 	kapiv1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"

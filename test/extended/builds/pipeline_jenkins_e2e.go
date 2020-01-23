@@ -22,8 +22,8 @@ import (
 	e2epv "k8s.io/kubernetes/test/e2e/framework/pv"
 
 	buildv1 "github.com/openshift/api/build/v1"
-	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
-	"github.com/openshift/extended-platform-tests/test/extended/util/jenkins"
+	exutil "github.com/openshift/openshift-tests/test/extended/util"
+	"github.com/openshift/openshift-tests/test/extended/util/jenkins"
 )
 
 var _ = g.Describe("[Feature:Jenkins][Slow]jenkins repos e2e openshift using slow openshift pipeline build", func() {

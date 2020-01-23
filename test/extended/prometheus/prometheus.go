@@ -29,8 +29,8 @@ import (
 	"k8s.io/kubernetes/pkg/client/conditions"
 	e2e "k8s.io/kubernetes/test/e2e/framework"
 
-	"github.com/openshift/extended-platform-tests/test/extended/networking"
-	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	"github.com/openshift/openshift-tests/test/extended/networking"
+	exutil "github.com/openshift/openshift-tests/test/extended/util"
 )
 
 var _ = g.Describe("[Feature:Prometheus][Conformance] Prometheus", func() {

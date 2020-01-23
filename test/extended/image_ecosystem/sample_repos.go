@@ -12,7 +12,7 @@ import (
 
 	e2e "k8s.io/kubernetes/test/e2e/framework"
 
-	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	exutil "github.com/openshift/openshift-tests/test/extended/util"
 )
 
 var htmlCountValueNonZeroRegexp = `<span class="code" id="count-value">[^0][0-9]*</span>`

@@ -18,7 +18,7 @@ import (
 
 	unidlingapi "github.com/openshift/api/unidling/v1alpha1"
 
-	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	exutil "github.com/openshift/openshift-tests/test/extended/util"
 )
 
 const MaxHeldConnections = 16

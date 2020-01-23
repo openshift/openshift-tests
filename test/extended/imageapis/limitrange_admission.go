@@ -16,8 +16,8 @@ import (
 	"github.com/openshift/library-go/pkg/image/reference"
 	"github.com/openshift/library-go/pkg/quota/quotautil"
 
-	imagesutil "github.com/openshift/extended-platform-tests/test/extended/images"
-	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	imagesutil "github.com/openshift/openshift-tests/test/extended/images"
+	exutil "github.com/openshift/openshift-tests/test/extended/util"
 )
 
 const (

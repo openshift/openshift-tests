@@ -6,7 +6,7 @@ import (
 
 	g "github.com/onsi/ginkgo"
 	o "github.com/onsi/gomega"
-	exeutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	exeutil "github.com/openshift/openshift-tests/test/extended/util"
 
 	batchv1 "k8s.io/api/batch/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"

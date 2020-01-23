@@ -28,8 +28,8 @@ import (
 	"k8s.io/kubernetes/test/e2e/upgrades"
 	apps "k8s.io/kubernetes/test/e2e/upgrades/apps"
 
-	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
-	"github.com/openshift/extended-platform-tests/test/extended/util/disruption"
+	exutil "github.com/openshift/openshift-tests/test/extended/util"
+	"github.com/openshift/openshift-tests/test/extended/util/disruption"
 )
 
 const (

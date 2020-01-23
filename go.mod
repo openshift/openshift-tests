@@ -1,4 +1,4 @@
-module github.com/openshift/extended-platform-tests
+module github.com/openshift/openshift-tests
 
 go 1.13
 
