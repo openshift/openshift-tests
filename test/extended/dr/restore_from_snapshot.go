@@ -14,7 +14,7 @@ import (
 	"k8s.io/client-go/dynamic"
 	e2e "k8s.io/kubernetes/test/e2e/framework"
 
-	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	exutil "github.com/openshift/openshift-tests/test/extended/util"
 
 	g "github.com/onsi/ginkgo"
 	o "github.com/onsi/gomega"

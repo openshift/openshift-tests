@@ -4,8 +4,8 @@ import (
 	g "github.com/onsi/ginkgo"
 	o "github.com/onsi/gomega"
 
-	deployutil "github.com/openshift/extended-platform-tests/test/extended/deployments"
-	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	deployutil "github.com/openshift/openshift-tests/test/extended/deployments"
+	exutil "github.com/openshift/openshift-tests/test/extended/util"
 )
 
 const (

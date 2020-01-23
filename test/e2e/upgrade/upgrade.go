@@ -26,7 +26,7 @@ import (
 
 	configv1 "github.com/openshift/api/config/v1"
 	configv1client "github.com/openshift/client-go/config/clientset/versioned"
-	"github.com/openshift/extended-platform-tests/test/extended/util/disruption"
+	"github.com/openshift/openshift-tests/test/extended/util/disruption"
 )
 
 func AllTests() []upgrades.Test {

@@ -19,7 +19,7 @@ import (
 	"k8s.io/kubernetes/test/e2e/framework"
 	frameworkpod "k8s.io/kubernetes/test/e2e/framework/pod"
 
-	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	exutil "github.com/openshift/openshift-tests/test/extended/util"
 )
 
 const podStartupTimeout = 3 * time.Minute

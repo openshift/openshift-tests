@@ -7,8 +7,8 @@ import (
 	g "github.com/onsi/ginkgo"
 	//	o "github.com/onsi/gomega"
 
-	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
-	dbutil "github.com/openshift/extended-platform-tests/test/extended/util/db"
+	exutil "github.com/openshift/openshift-tests/test/extended/util"
+	dbutil "github.com/openshift/openshift-tests/test/extended/util/db"
 	//	kapiv1 "k8s.io/api/core/v1"
 	//	e2e "k8s.io/kubernetes/test/e2e/framework"
 )

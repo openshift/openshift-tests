@@ -27,10 +27,10 @@ import (
 	authorizationv1 "github.com/openshift/api/authorization/v1"
 	templatev1 "github.com/openshift/api/template/v1"
 	"github.com/openshift/library-go/pkg/template/templateprocessingclient"
-	"github.com/openshift/extended-platform-tests/test/extended/templates/openservicebroker/api"
-	"github.com/openshift/extended-platform-tests/test/extended/templates/openservicebroker/client"
+	"github.com/openshift/openshift-tests/test/extended/templates/openservicebroker/api"
+	"github.com/openshift/openshift-tests/test/extended/templates/openservicebroker/client"
 
-	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	exutil "github.com/openshift/openshift-tests/test/extended/util"
 )
 
 var _ = g.Describe("[Conformance][templates] templateservicebroker end-to-end test", func() {

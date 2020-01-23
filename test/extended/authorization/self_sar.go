@@ -8,7 +8,7 @@ import (
 	g "github.com/onsi/ginkgo"
 	authorizationv1 "github.com/openshift/api/authorization/v1"
 	authorizationv1typedclient "github.com/openshift/client-go/authorization/clientset/versioned/typed/authorization/v1"
-	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
+	exutil "github.com/openshift/openshift-tests/test/extended/util"
 )
 
 var _ = g.Describe("[Feature:OpenShiftAuthorization] self-SAR compatibility", func() {

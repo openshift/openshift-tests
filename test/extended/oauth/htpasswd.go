@@ -12,8 +12,8 @@ import (
 
 	osinv1 "github.com/openshift/api/osin/v1"
 
-	exutil "github.com/openshift/extended-platform-tests/test/extended/util"
-	utiloauth "github.com/openshift/extended-platform-tests/test/extended/util/oauthserver"
+	exutil "github.com/openshift/openshift-tests/test/extended/util"
+	utiloauth "github.com/openshift/openshift-tests/test/extended/util/oauthserver"
 )
 
 var (

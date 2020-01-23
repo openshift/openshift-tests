@@ -15713,7 +15713,7 @@ var _examplesJenkinsJenkinsEphemeralTemplateJson = []byte(`{
         "app": "jenkins-ephemeral",
         "template": "jenkins-ephemeral-template"
     },
-    "message": "A Jenkins service has been created in your project.  Log into Jenkins with your OpenShift account.  The tutorial at https://github.com/openshift/extended-platform-tests/blob/master/examples/jenkins/README.md contains more information about using this template.",
+    "message": "A Jenkins service has been created in your project.  Log into Jenkins with your OpenShift account.  The tutorial at https://github.com/openshift/openshift-tests/blob/master/examples/jenkins/README.md contains more information about using this template.",
     "metadata": {
         "annotations": {
             "description": "Jenkins service, without persistent storage.\n\nWARNING: Any data stored will be lost upon pod destruction. Only use this template for testing.",
@@ -16026,7 +16026,7 @@ var _examplesJenkinsJenkinsPersistentTemplateJson = []byte(`{
         "app": "jenkins-persistent",
         "template": "jenkins-persistent-template"
     },
-    "message": "A Jenkins service has been created in your project.  Log into Jenkins with your OpenShift account.  The tutorial at https://github.com/openshift/extended-platform-tests/blob/master/examples/jenkins/README.md contains more information about using this template.",
+    "message": "A Jenkins service has been created in your project.  Log into Jenkins with your OpenShift account.  The tutorial at https://github.com/openshift/openshift-tests/blob/master/examples/jenkins/README.md contains more information about using this template.",
     "metadata": {
         "annotations": {
             "description": "Jenkins service, with persistent storage.\n\nNOTE: You must have persistent volumes available in your cluster to use this template.",
@@ -29144,7 +29144,7 @@ function os::test::junit::declare_suite_start() {
     local suite_name=$1
     local num_suites=${NUM_OS_JUNIT_SUITES_IN_FLIGHT:-0}
 
-    echo "=== BEGIN TEST SUITE github.com/openshift/extended-platform-tests/test/${suite_name} ===" >> "${JUNIT_REPORT_OUTPUT:-/dev/null}"
+    echo "=== BEGIN TEST SUITE github.com/openshift/openshift-tests/test/${suite_name} ===" >> "${JUNIT_REPORT_OUTPUT:-/dev/null}"
     NUM_OS_JUNIT_SUITES_IN_FLIGHT=$(( ${num_suites} + 1 ))
     export NUM_OS_JUNIT_SUITES_IN_FLIGHT
 }
@@ -29316,7 +29316,7 @@ function os::test::junit::internal::generate_report() {
     os::log::info "jUnit XML report placed at $( os::util::repository_relative_path ${report_file} )"
     junitreport --type "${report_type}"             \
                 --suites nested                     \
-                --roots github.com/openshift/extended-platform-tests \
+                --roots github.com/openshift/openshift-tests \
                 --output "${report_file}"           \
                 <"${JUNIT_REPORT_OUTPUT}"
 
@@ -34698,11 +34698,11 @@ os::cmd::expect_failure_and_text 'oc secrets unlink deployer foobar basicauth' '
 os::cmd::expect_failure 'oc get serviceaccounts/deployer -o yaml |grep -q basicauth'
 
 # Make sure that removing a real but unlinked secret succeeds
-# https://github.com/openshift/extended-platform-tests/pull/9234#discussion_r70832486
+# https://github.com/openshift/openshift-tests/pull/9234#discussion_r70832486
 os::cmd::expect_failure_and_text 'oc secrets unlink deployer basicauth', 'No valid secrets found or secrets not linked to service account'
 
 # Make sure that it succeeds if *any* of the secrets are linked
-# https://github.com/openshift/extended-platform-tests/pull/9234#discussion_r70832486
+# https://github.com/openshift/openshift-tests/pull/9234#discussion_r70832486
 os::cmd::expect_success 'oc secrets unlink deployer basicauth sshauth'
 
 # Confirm that the linked one was removed
@@ -41842,7 +41842,7 @@ var _testExtendedTestdataCmdTestCmdTestdataJenkinsJenkinsEphemeralTemplateJson =
         "app": "jenkins-ephemeral",
         "template": "jenkins-ephemeral-template"
     },
-    "message": "A Jenkins service has been created in your project.  Log into Jenkins with your OpenShift account.  The tutorial at https://github.com/openshift/extended-platform-tests/blob/master/examples/jenkins/README.md contains more information about using this template.",
+    "message": "A Jenkins service has been created in your project.  Log into Jenkins with your OpenShift account.  The tutorial at https://github.com/openshift/openshift-tests/blob/master/examples/jenkins/README.md contains more information about using this template.",
     "metadata": {
         "annotations": {
             "description": "Jenkins service, without persistent storage.\n\nWARNING: Any data stored will be lost upon pod destruction. Only use this template for testing.",
