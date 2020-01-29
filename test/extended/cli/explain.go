@@ -14,7 +14,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	e2e "k8s.io/kubernetes/test/e2e/framework"
 
-	exutil "github.com/openshift/openshift-tests/test/extended/util"
+	exutil "github.com/openshift/origin/test/extended/util"
 )
 
 type explainExceptions struct {
@@ -137,13 +137,6 @@ var (
 		{Group: "samples.operator.openshift.io", Version: "v1", Resource: "configs"},
 
 		{Group: "tuned.openshift.io", Version: "v1", Resource: "tuneds"},
-
-		// FIXME
-		// {Group: "network.openshift.io", Version: "v1", Resource: "clusternetworks"},
-		// {Group: "network.openshift.io", Version: "v1", Resource: "egressnetworkpolicies"},
-		// {Group: "network.openshift.io", Version: "v1", Resource: "hostsubnets"},
-		// {Group: "network.openshift.io", Version: "v1", Resource: "netnamespaces"},
-		// {Group: "network.operator.openshift.io", Version: "v1", Resource: "operatorpkis"},
 	}
 
 	specialTypes = []explainExceptions{
@@ -323,6 +316,29 @@ var (
 			pattern: `DESCRIPTION\:.*`,
 		},
 	}
+
+	specialNetworkingTypes = []explainExceptions{
+		{
+			gv:      schema.GroupVersion{Group: "network.openshift.io", Version: "v1"},
+			field:   "clusternetworks",
+			pattern: `DESCRIPTION\:.*`,
+		},
+		{
+			gv:      schema.GroupVersion{Group: "network.openshift.io", Version: "v1"},
+			field:   "hostsubnets",
+			pattern: `DESCRIPTION\:.*`,
+		},
+		{
+			gv:      schema.GroupVersion{Group: "network.openshift.io", Version: "v1"},
+			field:   "netnamespaces",
+			pattern: `DESCRIPTION\:.*`,
+		},
+		{
+			gv:      schema.GroupVersion{Group: "network.openshift.io", Version: "v1"},
+			field:   "egressnetworkpolicies",
+			pattern: `DESCRIPTION\:.*`,
+		},
+	}
 )
 
 var _ = g.Describe("[cli] oc explain", func() {
@@ -347,6 +363,20 @@ var _ = g.Describe("[cli] oc explain", func() {
 
 	g.It("should contain proper fields description for special types", func() {
 		for _, st := range specialTypes {
+			e2e.Logf("Checking %s, Field=%s...", st.gv, st.field)
+			o.Expect(verifyExplain(oc, nil, schema.GroupVersionResource{},
+				st.pattern, st.field, fmt.Sprintf("--api-version=%s", st.gv))).NotTo(o.HaveOccurred())
+		}
+	})
+})
+
+var _ = g.Describe("[cli] oc explain networking types", func() {
+	defer g.GinkgoRecover()
+
+	oc := exutil.NewCLI("oc-explain", exutil.KubeConfigPath())
+
+	g.It("should contain proper fields description for special networking types", func() {
+		for _, st := range specialNetworkingTypes {
 			e2e.Logf("Checking %s, Field=%s...", st.gv, st.field)
 			o.Expect(verifyExplain(oc, nil, schema.GroupVersionResource{},
 				st.pattern, st.field, fmt.Sprintf("--api-version=%s", st.gv))).NotTo(o.HaveOccurred())
