@@ -226,4 +226,28 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 		}
 
 	})
+
+	// OCP-24818 - Checking OLM descriptors
+	// author: tbuskey@redhat.com
+	g.It("to explain OLM descriptors", func() {
+		olmErr := 0
+		olmErrDescriptor := []string{""}
+		olmExplains := []string{"InstallPlan", "ClusterServiceVersion", "Subscription", "CatalogSource", "OperatorSource", "OperatorGroup", "PackageManifest", "CatalogSourceConfig"}
+		for _, olmExplain := range olmExplains {
+			msg, err := oc.AsAdmin().WithoutNamespace().Run("explain").Args(olmExplain).Output()
+			if err != nil {
+				olmErr++
+				olmErrDescriptor = append(olmErrDescriptor, olmExplain)
+			}
+			o.Expect(err).NotTo(o.HaveOccurred())
+			if strings.Contains(msg, "<empty>") {
+				olmErr++
+				olmErrDescriptor = append(olmErrDescriptor, olmExplain)
+			}
+		}
+		if olmErr != 0 {
+			// fmt.Printf("explain errors: %d\n", olmErr)
+			e2e.Failf("%v errors in explaining the following OLM descriptors: %v", olmErr, olmErrDescriptor)
+		}
+	})
 })
