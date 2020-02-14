@@ -10,13 +10,13 @@ import (
 
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/dynamic"
 	e2e "k8s.io/kubernetes/test/e2e/framework"
 	e2elog "k8s.io/kubernetes/test/e2e/framework/log"
 	e2essh "k8s.io/kubernetes/test/e2e/framework/ssh"
 
-	"github.com/openshift/openshift-tests/test/e2e/upgrade"
 	exutil "github.com/openshift/openshift-tests/test/extended/util"
 
 	o "github.com/onsi/gomega"
@@ -86,9 +86,55 @@ func constructEtcdConnectionString(masters []string) string {
 func waitForMastersToUpdate(oc *exutil.CLI, mcps dynamic.NamespaceableResourceInterface) {
 	e2elog.Logf("Waiting for MachineConfig master to finish rolling out")
 	err := wait.Poll(30*time.Second, 30*time.Minute, func() (done bool, err error) {
-		return upgrade.IsPoolUpdated(mcps, "master")
+		return isPoolUpdated(mcps, "master")
 	})
 	o.Expect(err).NotTo(o.HaveOccurred())
+}
+
+// TODO(runcom): drop this when MCO types are in openshift/api and we can use the typed client directly
+func isPoolUpdated(dc dynamic.NamespaceableResourceInterface, name string) (bool, error) {
+	pool, err := dc.Get(name, metav1.GetOptions{})
+	if err != nil {
+		e2elog.Logf("error getting pool %s: %v", name, err)
+		return false, nil
+	}
+	conditions, found, err := unstructured.NestedFieldNoCopy(pool.Object, "status", "conditions")
+	if err != nil || !found {
+		return false, nil
+	}
+	original, ok := conditions.([]interface{})
+	if !ok {
+		return false, nil
+	}
+	var updated, updating, degraded bool
+	for _, obj := range original {
+		o, ok := obj.(map[string]interface{})
+		if !ok {
+			return false, nil
+		}
+		t, found, err := unstructured.NestedString(o, "type")
+		if err != nil || !found {
+			return false, nil
+		}
+		s, found, err := unstructured.NestedString(o, "status")
+		if err != nil || !found {
+			return false, nil
+		}
+		if t == "Updated" && s == "True" {
+			updated = true
+		}
+		if t == "Updating" && s == "True" {
+			updating = true
+		}
+		if t == "Degraded" && s == "True" {
+			degraded = true
+		}
+	}
+	if updated && !updating && !degraded {
+		return true, nil
+	}
+	e2elog.Logf("Pool %s is still reporting (Updated: %v, Updating: %v, Degraded: %v)", name, updated, updating, degraded)
+	return false, nil
 }
 
 func waitForOperatorsToSettle(coc dynamic.NamespaceableResourceInterface) {

@@ -54,7 +54,6 @@ func main() {
 
 	root.AddCommand(
 		newRunCommand(),
-		newRunUpgradeCommand(),
 		newRunTestCommand(),
 		newRunMonitorCommand(),
 	)
@@ -137,71 +136,6 @@ func newRunCommand() *cobra.Command {
 	return cmd
 }
 
-func newRunUpgradeCommand() *cobra.Command {
-	opt := &testginkgo.Options{Suites: upgradeSuites}
-	upgradeOpt := &UpgradeOptions{}
-
-	cmd := &cobra.Command{
-		Use:   "run-upgrade SUITE",
-		Short: "Run an upgrade suite",
-		Long: templates.LongDesc(`
-		Run an upgrade test suite against an OpenShift server
-
-		This command will run one of the following suites against a cluster identified by the current
-		KUBECONFIG file. See the suite description for more on what actions the suite will take.
-
-		If you specify the --dry-run argument, the actions the suite will take will be printed to the
-		output.
-
-		Supported options:
-
-		* abort-at=NUMBER - Set to a number between 0 and 100 to control the percent of operators
-		at which to stop the current upgrade and roll back to the current version.
-		* disrupt-reboot=POLICY - During upgrades, periodically reboot master nodes. If set to 'graceful'
-		the reboot will allow the node to shut down services in an orderly fashion. If set to 'force' the
-		machine will terminate immediately without clean shutdown.
-
-		`) + testginkgo.SuitesString(opt.Suites, "\n\nAvailable upgrade suites:\n\n"),
-
-		SilenceUsage:  true,
-		SilenceErrors: true,
-		RunE: func(cmd *cobra.Command, args []string) error {
-			return mirrorToFile(opt, func() error {
-				if len(upgradeOpt.ToImage) == 0 {
-					return fmt.Errorf("--to-image must be specified to run an upgrade test")
-				}
-
-				if len(args) > 0 {
-					for _, suite := range opt.Suites {
-						if suite.Name == args[0] {
-							upgradeOpt.Suite = suite.Name
-							upgradeOpt.JUnitDir = opt.JUnitDir
-							value := upgradeOpt.ToEnv()
-							if err := initUpgrade(value); err != nil {
-								return err
-							}
-							opt.SuiteOptions = value
-							break
-						}
-					}
-				}
-
-				if err := initProvider(opt.Provider, opt.DryRun); err != nil {
-					return err
-				}
-				e2e.AfterReadingAllFlags(exutil.TestContext)
-				e2e.TestContext.DumpLogsOnFailure = true
-				exutil.TestContext.DumpLogsOnFailure = true
-				return opt.Run(args)
-			})
-		},
-	}
-
-	bindOptions(opt, cmd.Flags())
-	bindUpgradeOptions(upgradeOpt, cmd.Flags())
-	return cmd
-}
-
 func newRunTestCommand() *cobra.Command {
 	testOpt := &testginkgo.TestOptions{
 		Out:    os.Stdout,
@@ -222,9 +156,6 @@ func newRunTestCommand() *cobra.Command {
 		SilenceErrors: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if err := initProvider(os.Getenv("TEST_PROVIDER"), testOpt.DryRun); err != nil {
-				return err
-			}
-			if err := initUpgrade(os.Getenv("TEST_SUITE_OPTIONS")); err != nil {
 				return err
 			}
 			e2e.AfterReadingAllFlags(exutil.TestContext)
@@ -283,10 +214,6 @@ func initProvider(provider string, dryRun bool) error {
 	exutil.TestContext.AllowedNotReadyNodes = 100
 	exutil.TestContext.MaxNodesToGather = 0
 	reale2e.SetViperConfig(os.Getenv("VIPERCONFIG"))
-
-	if err := initCSITests(dryRun); err != nil {
-		return err
-	}
 
 	exutil.AnnotateTestSuite()
 	err := exutil.InitTest(dryRun)
