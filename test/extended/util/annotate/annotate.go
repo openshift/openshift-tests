@@ -193,7 +193,7 @@ func (r *ginkgoTestRenamer) generateRename(name string, node types.TestNode) {
 			name += " [Suite:openshift/conformance/parallel]"
 		}
 	}
-	if strings.Contains(node.CodeLocation().FileName, "/origin/test/") && !strings.Contains(name, "[Suite:openshift") {
+	if strings.Contains(node.CodeLocation().FileName, "/openshift-tests/test/") && !strings.Contains(name, "[Suite:openshift") {
 		name += " [Suite:openshift]"
 	}
 	if strings.Contains(node.CodeLocation().FileName, "/kubernetes/test/e2e/") {

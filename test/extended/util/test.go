@@ -143,7 +143,7 @@ func isPackage(pkg string) bool {
 
 // TODO: For both is*Test functions, use either explicit tags (k8s.io) or https://github.com/onsi/ginkgo/pull/228
 func isOriginTest() bool {
-	return isPackage("/origin/test/")
+	return isPackage("/openshift-tests/test/")
 }
 
 func isKubernetesE2ETest() bool {

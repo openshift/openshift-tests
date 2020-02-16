@@ -2,7 +2,7 @@ package main
 
 import (
 	// ensure all the ginkgo tests are loaded
-	_ "github.com/openshift/origin/test/extended"
+	_ "github.com/openshift/openshift-tests/test/extended"
 )
 
 var (

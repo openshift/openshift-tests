@@ -12,8 +12,8 @@ import (
 	reale2e "k8s.io/kubernetes/test/e2e"
 	e2e "k8s.io/kubernetes/test/e2e/framework"
 
-	exutil "github.com/openshift/origin/test/extended/util"
-	exutilcloud "github.com/openshift/origin/test/extended/util/cloud"
+	exutil "github.com/openshift/openshift-tests/test/extended/util"
+	exutilcloud "github.com/openshift/openshift-tests/test/extended/util/cloud"
 
 	// these are loading important global flags that we need to get and set
 	_ "k8s.io/kubernetes/test/e2e"

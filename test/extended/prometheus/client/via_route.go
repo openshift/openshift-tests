@@ -18,7 +18,7 @@ import (
 
 	routev1 "github.com/openshift/api/route/v1"
 
-	"github.com/openshift/origin/test/extended/util"
+	"github.com/openshift/openshift-tests/test/extended/util"
 )
 
 // NewE2EPrometheusRouterClient returns a Prometheus HTTP API client configured to

@@ -8,8 +8,8 @@ import (
 	o "github.com/onsi/gomega"
 	"github.com/prometheus/common/model"
 
-	"github.com/openshift/origin/test/extended/prometheus/client"
-	exutil "github.com/openshift/origin/test/extended/util"
+	"github.com/openshift/openshift-tests/test/extended/prometheus/client"
+	exutil "github.com/openshift/openshift-tests/test/extended/util"
 )
 
 var _ = g.Describe("etcd", func() {

@@ -16,7 +16,7 @@ function os::test::junit::declare_suite_start() {
     local suite_name=$1
     local num_suites=${NUM_OS_JUNIT_SUITES_IN_FLIGHT:-0}
 
-    echo "=== BEGIN TEST SUITE github.com/openshift/origin/test/${suite_name} ===" >> "${JUNIT_REPORT_OUTPUT:-/dev/null}"
+    echo "=== BEGIN TEST SUITE github.com/openshift/openshift-tests/test/${suite_name} ===" >> "${JUNIT_REPORT_OUTPUT:-/dev/null}"
     NUM_OS_JUNIT_SUITES_IN_FLIGHT=$(( ${num_suites} + 1 ))
     export NUM_OS_JUNIT_SUITES_IN_FLIGHT
 }
