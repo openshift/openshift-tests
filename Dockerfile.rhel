@@ -1,12 +1,24 @@
 FROM registry.svc.ci.openshift.org/openshift/release:golang-1.13 AS builder
-WORKDIR /go/src/github.com/openshift/extended-platform-tests
+WORKDIR /go/src/github.com/openshift/openshift-tests
 COPY . .
 RUN make build WHAT=cmd/extended-platform-tests && \
     mkdir -p /tmp/build && \
-    cp /go/src/github.com/openshift/extended-platform-tests/extended-platform-tests /tmp/build/extended-platform-tests
+    cp /go/src/github.com/openshift/openshift-tests/extended-platform-tests /tmp/build/extended-platform-tests
 
-FROM registry.svc.ci.openshift.org/ocp/4.3:cli
+FROM registry.svc.ci.openshift.org/ocp/4.4:tests-kubernetes AS builder1
+RUN mkdir -p /tmp/build && \
+    cp /usr/bin/openshift-tests-kubernetes /tmp/build/openshift-tests-kubernetes
+
+# this is temporary, remove once we transition from openshift-tests binary to openshift-tests-kubernetes,extended-platorm-tests
+FROM registry.svc.ci.openshift.org/ocp/4.4:tests AS builder2
+RUN mkdir -p /tmp/build && \
+    cp /usr/bin/openshift-tests /tmp/build/openshift-tests
+
+FROM registry.svc.ci.openshift.org/ocp/4.4:cli
 COPY --from=builder /tmp/build/extended-platform-tests /usr/bin/
+COPY --from=builder1 /tmp/build/openshift-tests-kubernetes /usr/bin/
+# this will be removed once transition from openshift-tests binary to openshift-tests-kubernetes,extended-platform-tests
+COPY --from=builder2 /tmp/build/openshift-tests /usr/bin/
 LABEL io.k8s.display-name="OpenShift Extended Platform Tests" \
       io.k8s.description="OpenShift is a platform for developing, building, and deploying containerized applications." \
       io.openshift.tags="openshift,tests,extended-platform"
