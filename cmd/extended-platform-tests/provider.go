@@ -38,9 +38,6 @@ func initializeTestFramework(context *e2e.TestContextType, config *exutilcloud.C
 	context.MaxNodesToGather = 0
 	reale2e.SetViperConfig(os.Getenv("VIPERCONFIG"))
 
-	if err := initCSITests(dryRun); err != nil {
-		return nil, err
-	}
 	if err := exutil.InitTest(dryRun); err != nil {
 		return nil, err
 	}

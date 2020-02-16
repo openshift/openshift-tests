@@ -154,7 +154,6 @@ func newRunTestCommand() *cobra.Command {
 			if _, err := initializeTestFramework(exutil.TestContext, config, testOpt.DryRun); err != nil {
 				return err
 			}
-			exutil.TestContext.ReportDir = upgradeOpts.JUnitDir
 
 			return testOpt.Run(args)
 		},
