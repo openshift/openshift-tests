@@ -124,9 +124,6 @@ type Config struct {
 	// allows one to setup monitoring and alerting of unexpected rotation
 	// behavior and track trends in rotation frequency.
 	CertificateRotation Histogram
-	// CertifcateRenewFailure will record a metric that keeps track of
-	// certificate renewal failures.
-	CertificateRenewFailure Counter
 }
 
 // Store is responsible for getting and updating the current certificate.
@@ -157,11 +154,6 @@ type Histogram interface {
 	Observe(float64)
 }
 
-// Counter will wrap a counter with labels
-type Counter interface {
-	Inc()
-}
-
 // NoCertKeyError indicates there is no cert/key currently available.
 type NoCertKeyError string
 
@@ -185,9 +177,8 @@ type manager struct {
 
 	certStore Store
 
-	certificateExpiration   Gauge
-	certificateRotation     Histogram
-	certificateRenewFailure Counter
+	certificateExpiration Gauge
+	certificateRotation   Histogram
 
 	// the following variables must only be accessed under certAccessLock
 	certAccessLock sync.RWMutex
@@ -222,18 +213,17 @@ func NewManager(config *Config) (Manager, error) {
 	}
 
 	m := manager{
-		stopCh:                  make(chan struct{}),
-		clientFn:                config.ClientFn,
-		getTemplate:             getTemplate,
-		dynamicTemplate:         config.GetTemplate != nil,
-		usages:                  config.Usages,
-		certStore:               config.CertificateStore,
-		cert:                    cert,
-		forceRotation:           forceRotation,
-		certificateExpiration:   config.CertificateExpiration,
-		certificateRotation:     config.CertificateRotation,
-		certificateRenewFailure: config.CertificateRenewFailure,
-		now:                     time.Now,
+		stopCh:                make(chan struct{}),
+		clientFn:              config.ClientFn,
+		getTemplate:           getTemplate,
+		dynamicTemplate:       config.GetTemplate != nil,
+		usages:                config.Usages,
+		certStore:             config.CertificateStore,
+		cert:                  cert,
+		forceRotation:         forceRotation,
+		certificateExpiration: config.CertificateExpiration,
+		certificateRotation:   config.CertificateRotation,
+		now:                   time.Now,
 	}
 
 	return &m, nil
@@ -414,9 +404,6 @@ func (m *manager) rotateCerts() (bool, error) {
 	template, csrPEM, keyPEM, privateKey, err := m.generateCSR()
 	if err != nil {
 		utilruntime.HandleError(fmt.Errorf("Unable to generate a certificate signing request: %v", err))
-		if m.certificateRenewFailure != nil {
-			m.certificateRenewFailure.Inc()
-		}
 		return false, nil
 	}
 
@@ -424,9 +411,6 @@ func (m *manager) rotateCerts() (bool, error) {
 	client, err := m.getClient()
 	if err != nil {
 		utilruntime.HandleError(fmt.Errorf("Unable to load a client to request certificates: %v", err))
-		if m.certificateRenewFailure != nil {
-			m.certificateRenewFailure.Inc()
-		}
 		return false, nil
 	}
 
@@ -435,9 +419,6 @@ func (m *manager) rotateCerts() (bool, error) {
 	req, err := csr.RequestCertificate(client, csrPEM, "", m.usages, privateKey)
 	if err != nil {
 		utilruntime.HandleError(fmt.Errorf("Failed while requesting a signed certificate from the master: %v", err))
-		if m.certificateRenewFailure != nil {
-			m.certificateRenewFailure.Inc()
-		}
 		return false, m.updateServerError(err)
 	}
 
@@ -452,18 +433,12 @@ func (m *manager) rotateCerts() (bool, error) {
 	crtPEM, err := csr.WaitForCertificate(ctx, client, req)
 	if err != nil {
 		utilruntime.HandleError(fmt.Errorf("certificate request was not signed: %v", err))
-		if m.certificateRenewFailure != nil {
-			m.certificateRenewFailure.Inc()
-		}
 		return false, nil
 	}
 
 	cert, err := m.certStore.Update(crtPEM, keyPEM)
 	if err != nil {
 		utilruntime.HandleError(fmt.Errorf("Unable to store the new cert/key pair: %v", err))
-		if m.certificateRenewFailure != nil {
-			m.certificateRenewFailure.Inc()
-		}
 		return false, nil
 	}
 

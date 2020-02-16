@@ -813,10 +813,8 @@ func AuthorizeClientBearerToken(loopback *restclient.Config, authn *Authenticati
 	tokenAuthenticator := authenticatorfactory.NewFromTokens(tokens)
 	authn.Authenticator = authenticatorunion.New(tokenAuthenticator, authn.Authenticator)
 
-	if !skipSystemMastersAuthorizer {
-		tokenAuthorizer := authorizerfactory.NewPrivilegedGroups(user.SystemPrivilegedGroup)
-		authz.Authorizer = authorizerunion.New(tokenAuthorizer, authz.Authorizer)
-	}
+	tokenAuthorizer := authorizerfactory.NewPrivilegedGroups(user.SystemPrivilegedGroup)
+	authz.Authorizer = authorizerunion.New(tokenAuthorizer, authz.Authorizer)
 }
 
 type nullEventSink struct{}

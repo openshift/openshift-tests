@@ -8,6 +8,7 @@ require (
 	github.com/apparentlymart/go-cidr v1.0.1
 	github.com/aws/aws-sdk-go v1.16.26
 	github.com/certifi/gocertifi v0.0.0-20190905060710-a5e0173ced67 // indirect
+	github.com/coreos/rkt v1.30.0 // indirect
 	github.com/davecgh/go-spew v1.1.1
 	github.com/docker/distribution v2.7.1+incompatible
 	github.com/fsouza/go-dockerclient v0.0.0-20171004212419-da3951ba2e9e

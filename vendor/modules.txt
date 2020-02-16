@@ -753,6 +753,8 @@ github.com/pmezard/go-difflib/difflib
 github.com/pquerna/cachecontrol
 github.com/pquerna/cachecontrol/cacheobject
 # github.com/prometheus/client_golang v1.1.0
+github.com/prometheus/client_golang/api
+github.com/prometheus/client_golang/api/prometheus/v1
 github.com/prometheus/client_golang/prometheus
 github.com/prometheus/client_golang/prometheus/internal
 github.com/prometheus/client_golang/prometheus/promhttp
@@ -2427,7 +2429,6 @@ k8s.io/kubernetes/test/e2e/apps
 k8s.io/kubernetes/test/e2e/auth
 k8s.io/kubernetes/test/e2e/autoscaling
 k8s.io/kubernetes/test/e2e/chaosmonkey
-k8s.io/kubernetes/test/e2e/cloud/gcp
 k8s.io/kubernetes/test/e2e/common
 k8s.io/kubernetes/test/e2e/framework
 k8s.io/kubernetes/test/e2e/framework/auth
@@ -2440,7 +2441,6 @@ k8s.io/kubernetes/test/e2e/framework/gpu
 k8s.io/kubernetes/test/e2e/framework/ingress
 k8s.io/kubernetes/test/e2e/framework/job
 k8s.io/kubernetes/test/e2e/framework/kubelet
-k8s.io/kubernetes/test/e2e/framework/lifecycle
 k8s.io/kubernetes/test/e2e/framework/log
 k8s.io/kubernetes/test/e2e/framework/metrics
 k8s.io/kubernetes/test/e2e/framework/network
@@ -2484,7 +2484,6 @@ k8s.io/kubernetes/test/e2e/scheduling
 k8s.io/kubernetes/test/e2e/servicecatalog
 k8s.io/kubernetes/test/e2e/storage
 k8s.io/kubernetes/test/e2e/storage/drivers
-k8s.io/kubernetes/test/e2e/storage/external
 k8s.io/kubernetes/test/e2e/storage/testpatterns
 k8s.io/kubernetes/test/e2e/storage/testsuites
 k8s.io/kubernetes/test/e2e/storage/utils
@@ -2492,7 +2491,6 @@ k8s.io/kubernetes/test/e2e/storage/vsphere
 k8s.io/kubernetes/test/e2e/system
 k8s.io/kubernetes/test/e2e/upgrades
 k8s.io/kubernetes/test/e2e/upgrades/apps
-k8s.io/kubernetes/test/e2e/upgrades/storage
 k8s.io/kubernetes/test/images/agnhost/net/common
 k8s.io/kubernetes/test/images/agnhost/net/nat
 k8s.io/kubernetes/test/integration

@@ -98,10 +98,7 @@ func GetVSphereInstances() (map[string]*VSphere, error) {
 
 func getConfig() (*ConfigFile, error) {
 	if confFileLocation == "" {
-		if framework.TestContext.CloudConfig.ConfigFile == "" {
-			return nil, fmt.Errorf("Env variable 'VSPHERE_CONF_FILE' is not set, and no config-file specified")
-		}
-		confFileLocation = framework.TestContext.CloudConfig.ConfigFile
+		return nil, fmt.Errorf("Env variable 'VSPHERE_CONF_FILE' is not set.")
 	}
 	confFile, err := os.Open(confFileLocation)
 	if err != nil {
