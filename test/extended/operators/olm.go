@@ -226,4 +226,35 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 		}
 
 	})
+
+	// OCP-24058 - OLM components should have resource limits defined
+	// author: tbuskey@redhat.com
+	g.It("components have resource limits defined", func() {
+		olmUnlimited := 0
+		olmNames := []string{""}
+		olmNamespace := "openshift-operator-lifecycle-manager"
+		olmJpath := "-o=jsonpath={range .items[*]}{@.metadata.name}{','}{@.spec.containers[0].resources.requests.*}{'\\n'}"
+		msg, err := oc.AsAdmin().WithoutNamespace().Run("get").Args("pod", "-n", olmNamespace, olmJpath).Output()
+		if err != nil {
+			e2e.Failf("Unable to get pod -n %v %v.", olmNamespace, olmJpath)
+		}
+		o.Expect(err).NotTo(o.HaveOccurred())
+		o.Expect(msg).NotTo(o.ContainSubstring("No resources found"))
+		lines := strings.Split(msg, "\n")
+		for _, line := range lines {
+			name := strings.Split(line, ",")
+			if len(name) > 1 {
+				if len(name) > 1 && len(name[1]) < 1 {
+					olmUnlimited++
+					olmNames = append(olmNames, name[0])
+				}
+			}
+		}
+		if olmUnlimited > 0 {
+			fmt.Printf("\n---------------\n%v\nerrors: %v of %v\n---------------\n", msg, olmUnlimited, len(lines))
+			e2e.Failf("There are no limits set on %v of %v OLM components: %v", olmUnlimited, len(lines), olmNames)
+		} else {
+			fmt.Printf("There are limits set on %v OLM components\n%v", len(lines), lines)
+		}
+	})
 })
