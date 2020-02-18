@@ -229,7 +229,7 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 
 	// OCP-24818 - Checking OLM descriptors
 	// author: tbuskey@redhat.com
-	g.It("to explain OLM descriptors", func() {
+	g.It("Checking OLM descriptors", func() {
 		olmErr := 0
 		olmErrDescriptor := []string{""}
 		olmExplains := []string{"InstallPlan", "ClusterServiceVersion", "Subscription", "CatalogSource", "OperatorSource", "OperatorGroup", "PackageManifest", "CatalogSourceConfig"}
