@@ -232,7 +232,7 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 	g.It("Checking OLM descriptors", func() {
 		olmErr := 0
 		olmErrDescriptor := []string{""}
-		olmExplains := []string{"InstallPlan", "ClusterServiceVersion", "Subscription", "CatalogSource", "OperatorSource", "OperatorGroup", "PackageManifest", "CatalogSourceConfig"}
+		olmExplains := []string{"InstallPlan", "ClusterServiceVersion", "Subscription", "CatalogSource", "OperatorSource", "OperatorGroup", "PackageManifest"}
 		for _, olmExplain := range olmExplains {
 			msg, err := oc.AsAdmin().WithoutNamespace().Run("explain").Args(olmExplain).Output()
 			if err != nil {
