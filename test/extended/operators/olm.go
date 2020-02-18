@@ -229,7 +229,7 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 
 	// OCP-24058 - OLM components should have resource limits defined
 	// author: tbuskey@redhat.com
-	g.It("components have resource limits defined", func() {
+	g.It("components should have resource limits defined", func() {
 		olmUnlimited := 0
 		olmNames := []string{""}
 		olmNamespace := "openshift-operator-lifecycle-manager"
@@ -251,10 +251,7 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 			}
 		}
 		if olmUnlimited > 0 {
-			fmt.Printf("\n---------------\n%v\nerrors: %v of %v\n---------------\n", msg, olmUnlimited, len(lines))
 			e2e.Failf("There are no limits set on %v of %v OLM components: %v", olmUnlimited, len(lines), olmNames)
-		} else {
-			fmt.Printf("There are limits set on %v OLM components\n%v", len(lines), lines)
 		}
 	})
 })
