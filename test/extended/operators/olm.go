@@ -226,4 +226,70 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 		}
 
 	})
+
+	// OCP-26044 (OLM) catalog-operator memory and time consumes 11GB RSS
+	// author: tbuskey@redhat.com
+	g.It("catalog-operator memory and time consumes", func() {
+		olmErrs := true
+		olmPodName := ""
+		olmMemoryRequest := ""
+		olmMemoryUsed := ""
+		olmAge := ""
+		olmPodSearch := "catalog-operator-"
+		olmNamespace := "openshift-operator-lifecycle-manager"
+		olmJpath := "-o=jsonpath={range .items[*]}{@.metadata.name}{','}{@.spec.containers[*].resources.requests.memory}{'\\n'}"
+		// Look for the catalog operator pod
+		pods, err := oc.AsAdmin().WithoutNamespace().Run("get").Args("pods", "-n", olmNamespace, olmJpath).Output()
+		if err != nil {
+			e2e.Failf("Unable to get pods -n %v %v.", olmNamespace, olmJpath)
+		}
+		o.Expect(err).NotTo(o.HaveOccurred())
+		o.Expect(pods).NotTo(o.ContainSubstring("No resources found"))
+		for _, pod := range strings.Split(pods, "\n") {
+			if len(pod) <= 0 {
+				continue
+			}
+			// Find the pod and get the full name and memory requested
+			if strings.Contains(pod, olmPodSearch) {
+				olmErrs = false
+				x := strings.Split(pod, ",")
+				olmPodName = x[0]
+				olmMemoryRequest = x[1]
+				// get the age of the pod
+				msg, err := oc.AsAdmin().WithoutNamespace().Run("get").Args("pods", "-n", olmNamespace, "--no-headers=true", olmPodName).Output()
+				if err != nil {
+					e2e.Logf("%v memory requested %v\n", olmPodName, olmMemoryRequest)
+					e2e.Failf("Unable to query pod -n %v %v.", olmNamespace, olmPodName)
+				}
+				o.Expect(err).NotTo(o.HaveOccurred())
+				o.Expect(pods).NotTo(o.ContainSubstring("No resources found"))
+				x = strings.Fields(msg)
+				if len(x) == 5 {
+					olmAge = x[4]
+				} else {
+					e2e.Logf("%v memory requested %v\n", olmPodName, olmMemoryRequest)
+					e2e.Failf("Could not find the age of the %v pod:\n%v", olmPodName, msg)
+				}
+				break
+			}
+		}
+		if olmErrs {
+			e2e.Failf("Could not find %v in pods:\n%v", olmPodSearch, pods)
+		}
+		// Get memory in use
+		pods, err = oc.AsAdmin().WithoutNamespace().Run("adm").Args("top", "pod", "-n", olmNamespace, "--no-headers=true", olmPodName).Output()
+		if err != nil {
+			e2e.Failf("Unable to get adm top pod -n %v %v.", olmNamespace, olmPodName)
+		}
+		o.Expect(err).NotTo(o.HaveOccurred())
+		o.Expect(pods).NotTo(o.ContainSubstring("No resources found"))
+		x := strings.Fields(pods)
+		if len(x) == 3 {
+			olmMemoryUsed = x[2]
+		} else {
+			e2e.Logf("%v aged %v memory requested %v\n", olmPodName, olmAge, olmMemoryRequest)
+			e2e.Failf("Could not find the memory used by %v pod:\n%v", olmPodName, pods)
+		}
+		e2e.Logf("%v aged %v, %v memory requested %v memory used\n", olmPodName, olmAge, olmMemoryRequest, olmMemoryUsed)
+	})
 })
