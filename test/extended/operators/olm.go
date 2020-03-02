@@ -226,4 +226,87 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 		}
 
 	})
+
+	// OCP-21953 Ensure that operator deployment is in the master node
+	// author: tbuskey@redhat.com
+	g.It("Ensure that operator deployment is in the master node", func() {
+		olmErrs := true
+		olmPodName := "marketplace-operator"
+		olmNamespace := "openshift-marketplace"
+		olmJpath := "-o=jsonpath={@.spec.template.spec.nodeSelector}"
+		nodeRole := "node-role.kubernetes.io/master"
+		olmMasterNode := false
+		olmPodFullName := ""
+		olmNodeName := ""
+		pods := ""
+		nodes := ""
+		nodeStatus := false
+
+		// Look at deployment for the marketplace-operator
+		msg, err := oc.AsAdmin().WithoutNamespace().Run("get").Args("deployment", "-n", olmNamespace, olmPodName, olmJpath).Output()
+		if err != nil {
+			e2e.Failf("Unable to get deployment -n %v %v %v.", olmNamespace, olmPodName, olmJpath)
+		}
+		o.Expect(err).NotTo(o.HaveOccurred())
+		// o.Expect(msg).NotTo(o.BeEmpty)
+		if strings.Contains(msg, nodeRole) {
+			olmMasterNode = true
+		}
+		if len(msg) < 1 || !olmMasterNode {
+			e2e.Failf("Could not find %v variable %v for %v: %v", olmJpath, nodeRole, olmPodName, msg)
+		}
+		// look for the marketplace-operator pod's full name
+		pods, err = oc.AsAdmin().WithoutNamespace().Run("get").Args("pods", "-n", olmNamespace, "-o", "wide").Output()
+		if err != nil {
+			e2e.Failf("Unable to query pods -n %v %v %v.", olmNamespace, err, pods)
+		}
+		o.Expect(err).NotTo(o.HaveOccurred())
+		o.Expect(pods).NotTo(o.ContainSubstring("No resources found"))
+		for _, pod := range strings.Split(pods, "\n") {
+			if len(pod) <= 0 {
+				continue
+			}
+			// Find the node in the pod
+			if strings.Contains(pod, olmPodName) {
+				x := strings.Fields(pod)
+				olmPodFullName = x[0]
+				olmNodeName = x[6]
+				olmErrs = false
+			}
+		}
+		if olmErrs {
+			e2e.Failf("Unable to find the full pod name for %v in %v: %v.", olmPodName, olmNamespace, pods)
+		}
+		// Look at the setting for the node to be on the master
+		olmErrs = true
+		olmJpath = fmt.Sprintf("-o=go-template=$'{{index .metadata.labels \"%v\"}}'", nodeRole)
+		nodes, err = oc.AsAdmin().WithoutNamespace().Run("get").Args("nodes", "-n", olmNamespace, olmNodeName, olmJpath).Output()
+		if err != nil {
+			e2e.Failf("Unable to query nodes -n %v %v %v.", olmNamespace, err, nodes)
+		}
+		o.Expect(err).NotTo(o.HaveOccurred())
+		o.Expect(nodes).NotTo(o.ContainSubstring("No resources found"))
+		// if nodes has no value, the variable was not set, so fail
+		if nodes == "$'<no value>'" {
+			e2e.Failf("The %v node of pod %v does not have %v set", olmNodeName, olmPodFullName, nodeRole)
+		}
+		// Found the setting, verify that it's really on the master node
+		msg, err = oc.AsAdmin().WithoutNamespace().Run("get").Args("nodes", "-n", olmNamespace, olmNodeName, "--show-labels", "--no-headers").Output()
+		if err != nil {
+			e2e.Failf("Unable to query the %v node of pod %v for %v's status", olmNodeName, olmPodFullName, err, msg)
+		}
+		o.Expect(err).NotTo(o.HaveOccurred())
+		o.Expect(msg).NotTo(o.ContainSubstring("No resources found"))
+		statuses := strings.Fields(msg)
+		for _, status := range statuses {
+			if status == "master" {
+				olmErrs = false
+				nodeStatus = true
+			}
+		}
+		if olmErrs || !nodeStatus {
+			e2e.Failf("The node %v of %v pod is not on master:%v", olmNodeName, olmPodFullName, msg)
+		}
+		e2e.Logf("The node %v of %v pod is on the master node", olmNodeName, olmPodFullName)
+	})
 })
