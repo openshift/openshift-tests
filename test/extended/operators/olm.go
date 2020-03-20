@@ -225,7 +225,6 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 			o.Expect(err).NotTo(o.HaveOccurred())
 			o.Expect(msg).To(o.ContainSubstring("Upgradeable True"))
 		}
-
 	})
 
 	// OCP-24818 - Checking OLM descriptors
@@ -281,5 +280,6 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 		}
 		if olmErrs > 0 {
 			e2e.Failf("%v ipv4 addresses found in these OLM components: %v", olmErrs, olmNames)
-    }
+                }
+     })
 })
