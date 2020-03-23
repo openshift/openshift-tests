@@ -286,6 +286,4 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 			e2e.Failf("No packages to evaluate if 404 works when a PackageManifest does not exists")
 		}
 	})
-
-
 })
