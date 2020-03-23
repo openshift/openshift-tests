@@ -303,5 +303,4 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 			e2e.Failf("OLM does not have all containers definied with FallbackToLogsOnError terminationMessagePolicy")
 		}
 	})
-
 })
