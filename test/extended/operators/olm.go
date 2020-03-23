@@ -436,36 +436,25 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 					olmUnlimited++
 					olmNames = append(olmNames, name[0])
 				}
-		if olmUnlimited > 0 {
-			e2e.Failf("There are no limits set on %v of %v OLM components: %v", olmUnlimited, len(lines), olmNames)
+			}
+		}
+		if olmErrs > 0 {
+			e2e.Failf("%v ipv4 addresses found in these OLM components: %v", olmErrs, olmNames)
 		}
 	})
 
-	// OCP-24058 - OLM components should have resource limits defined
-	// author: tbuskey@redhat.com
-	g.It("components should have resource limits defined", func() {
-		olmUnlimited := 0
-		olmNames := []string{""}
-		olmNamespace := "openshift-operator-lifecycle-manager"
-		olmJpath := "-o=jsonpath={range .items[*]}{@.metadata.name}{','}{@.spec.containers[0].resources.requests.*}{'\\n'}"
-		msg, err := oc.AsAdmin().WithoutNamespace().Run("get").Args("pod", "-n", olmNamespace, olmJpath).Output()
-		if err != nil {
-			e2e.Failf("Unable to get pod -n %v %v.", olmNamespace, olmJpath)
-		}
+	// OCP-21130 - [bug ALM-736] Fetching non-existent `PackageManifest` should return 404
+	// author: bandrade@redhat.com
+	g.It("Fetching non-existent `PackageManifest` should return 404", func() {
+		msg, err := oc.AsAdmin().WithoutNamespace().Run("get").Args("packagemanifest", "--all-namespaces", "--no-headers").Output()
 		o.Expect(err).NotTo(o.HaveOccurred())
-		o.Expect(msg).NotTo(o.ContainSubstring("No resources found"))
-		lines := strings.Split(msg, "\n")
-		for _, line := range lines {
-			name := strings.Split(line, ",")
-			if len(name) > 1 {
-				if len(name) > 1 && len(name[1]) < 1 {
-					olmUnlimited++
-					olmNames = append(olmNames, name[0])
-				}
-			}
-		}
-		if olmUnlimited > 0 {
-			e2e.Failf("There are no limits set on %v of %v OLM components: %v", olmUnlimited, len(lines), olmNames)
+		packageserverLines := strings.Split(msg, "\n")
+		if len(packageserverLines) > 0 {
+			raw, err := oc.AsAdmin().WithoutNamespace().Run("get").Args("packagemanifest", "a_package_that_not_exists", "-o yaml", "--loglevel=8").Output()
+			o.Expect(err).To(o.HaveOccurred())
+			o.Expect(raw).To(o.ContainSubstring("\"code\": 404"))
+		} else {
+			e2e.Failf("No packages to evaluate if 404 works when a PackageManifest does not exists")
 		}
 	})
 })
