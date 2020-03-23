@@ -3,7 +3,7 @@ package operators
 import (
 	"context"
 	"fmt"
-	"regexp"
+	// "regexp"
 
 	"github.com/google/go-github/github"
 	g "github.com/onsi/ginkgo"
