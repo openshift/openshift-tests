@@ -286,4 +286,22 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 			e2e.Failf("No packages to evaluate if 404 works when a PackageManifest does not exists")
 		}
 	})
+
+	// OCP-24057 - Check OLM pods termination message
+	// author: bandrade@redhat.com
+	g.It("OLM-Low-OCP-24057-Have terminationMessagePolicy defined as FallbackToLogsOnError", func() {
+		msg, err := oc.SetNamespace("openshift-operator-lifecycle-manager").AsAdmin().Run("get").Args("pods", "-o=jsonpath={range .items[*].spec}{.containers[*].name}{\"\t\"}").Output()
+		o.Expect(err).NotTo(o.HaveOccurred())
+		amountOfContainers := len(strings.Split(msg, "\t"))
+
+		msg, err = oc.SetNamespace("openshift-operator-lifecycle-manager").AsAdmin().Run("get").Args("pods", "-o=jsonpath={range .items[*].spec}{.containers[*].terminationMessagePolicy}{\"t\"}").Output()
+		o.Expect(err).NotTo(o.HaveOccurred())
+		regexp := regexp.MustCompile("FallbackToLogsOnError")
+		amountOfContainersWithFallbackToLogsOnError := len(regexp.FindAllStringIndex(msg, -1))
+		o.Expect(amountOfContainers).To(o.Equal(amountOfContainersWithFallbackToLogsOnError))
+		if amountOfContainers != amountOfContainersWithFallbackToLogsOnError {
+			e2e.Failf("OLM does not have all containers definied with FallbackToLogsOnError terminationMessagePolicy")
+		}
+	})
+
 })
