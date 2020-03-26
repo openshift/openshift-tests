@@ -227,9 +227,8 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 
 	})
 
-	// OCP-23670 - Checking description info for csc CRD￼
 	// author: tbuskey@redhat.com
-	g.It("Checking description info for csc CRD￼", func() {
+	g.It("OLM-Low-OCP-23670 Checking description info for csc CRD￼", func() {
 		olmExplain := "csc"
 		msg, err := oc.AsAdmin().WithoutNamespace().Run("explain").Args(olmExplain).Output()
 		if err != nil {
