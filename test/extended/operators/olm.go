@@ -415,9 +415,8 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 		}
 	})
 
-	// OCP-24058 - OLM components should have resource limits defined
 	// author: tbuskey@redhat.com
-	g.It("components should have resource limits defined", func() {
+	g.It("OLM-Low-OCP-24058-components should have resource limits defined", func() {
 		olmUnlimited := 0
 		olmNames := []string{""}
 		olmNamespace := "openshift-operator-lifecycle-manager"
