@@ -252,9 +252,8 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 	})
 
 
-	// OCP-26044 (OLM) catalog-operator memory and time consumes 11GB RSS
 	// author: tbuskey@redhat.com
-	g.It("catalog-operator memory and time consumes", func() {
+	g.It("OLM-Low-OCP-26044-catalog-operator memory and time consumes", func() {
 		olmErrs := true
 		olmPodName := ""
 		olmMemoryRequest := ""
