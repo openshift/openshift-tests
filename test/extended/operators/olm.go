@@ -251,9 +251,8 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 		}
 	})
 
-	// OCP-21953 Ensure that operator deployment is in the master node
 	// author: tbuskey@redhat.com
-	g.It("Ensure that operator deployment is in the master node", func() {
+	g.It("OLM-Low-OCP-21953-Ensure that operator deployment is in the master node", func() {
 		olmErrs := true
 		olmPodName := "marketplace-operator"
 		olmNamespace := "openshift-marketplace"
