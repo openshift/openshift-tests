@@ -286,19 +286,4 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 			e2e.Failf("No packages to evaluate if 404 works when a PackageManifest does not exists")
 		}
 	})
-
-	// author: tbuskey@redhat.com
-	g.It("OLM-Low-OCP-23670 Checking description info for csc CRD￼", func() {
-		olmExplain := "csc"
-		msg, err := oc.AsAdmin().WithoutNamespace().Run("explain").Args(olmExplain).Output()
-		if err != nil {
-			e2e.Failf("Could not run oc explain %v:\n%v", olmExplain, msg)
-		}
-		o.Expect(err).NotTo(o.HaveOccurred())
-		if strings.Contains(msg, "<empty>") {
-			e2e.Failf("oc explain %v is empty:\n%v", olmExplain, msg)
-		}
-	})
-
-
 })
