@@ -315,4 +315,34 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 		}
 	})
 
+	// OCP-23395 - Deleted catalog registry pods and verify if them are recreated automatically
+	// author: bandrade@redhat.com
+	g.It("OLM-Low-OCP-23395-Recreate catalog registry pods and if they are deleted", func() {
+		msg, err := oc.SetNamespace("openshift-marketplace").AsAdmin().Run("get").Args("operatorsource", "-o=jsonpath={range .items[*].metadata}{.name}{'\\n'}").Output()
+		o.Expect(err).NotTo(o.HaveOccurred())
+		catalogSources := strings.Split(msg, "\n")
+		e2e.Logf("Catalog sources: %s", catalogSources)
+		if len(catalogSources) > 0 {
+			catalogSourceLabel := "marketplace.operatorSource=" + catalogSources[0]
+			msg, err := oc.SetNamespace("openshift-marketplace").AsAdmin().Run("delete").Args("pods", "-l "+catalogSourceLabel).Output()
+			o.Expect(err).NotTo(o.HaveOccurred())
+			o.Expect(msg).To(o.ContainSubstring("deleted"))
+
+			poolErr := wait.Poll(5*time.Second, 60*time.Second, func() (bool, error) {
+				msg, err := oc.SetNamespace("openshift-marketplace").AsAdmin().Run("get").Args("pods", "-l "+catalogSourceLabel, "-o=jsonpath={range .items[*].status}{.phase}").Output()
+				if err != nil {
+					e2e.Logf("Fail to get catalogsource pod, error: %v", err)
+					return false, err
+				}
+				if strings.Contains(msg, "Running") {
+					return true, nil
+				}
+				return false, nil
+			})
+			o.Expect(poolErr).NotTo(o.HaveOccurred())
+		} else {
+			e2e.Failf("Fail to get catalogsource pod %s", msg)
+		}
+	})
+
 })
