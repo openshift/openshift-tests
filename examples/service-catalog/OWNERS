@@ -1,15 +1,6 @@
 reviewers:
   - bparees
   - pmorie
-<<<<<<< HEAD
 approvers:
   - bparees
   - pmorie
-=======
-  - jboyd01
-  - jpeeler
-approvers:
-  - bparees
-  - pmorie
-  - jboyd01
->>>>>>> Fix bindata
