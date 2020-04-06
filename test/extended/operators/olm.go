@@ -314,48 +314,68 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 		msg := ""
 		count := 0
 		pass := false
-		operatorWait = 5 * time.Minute
+		passPkg := false
 
 		err := oc.AsAdmin().SetNamespace("openshift-marketplace").Run("create").Args("-f", olmFile).Execute()
 		o.Expect(err).NotTo(o.HaveOccurred())
-		// e2e.Logf("Waiting 2 minutes after %v", msg)
-		// time.Sleep(120 * time.Second)
 
+		// Check for csc every 10 seconds until operatorWait
 		err = wait.Poll(10*time.Second, operatorWait, func() (bool, error) {
 			count++
 			msg, err = oc.AsAdmin().SetNamespace(currentNS).Run("get").Args("csc", "-n", "openshift-marketplace").Output()
 			o.Expect(err).NotTo(o.HaveOccurred())
 
 			if err != nil {
-				e2e.Failf("Failed to get CatalogSourceCatalog, error:%v, %v", err, msg)
+				e2e.Failf("Failed to get CatalogSourceConfig, error:%v, %v", err, msg)
 				return false, err
 			}
 			if strings.Contains(msg, "Succeeded") {
 				pass = true
 				return true, nil
 			}
-			e2e.Logf("Count %v, %v", count, msg)
+			//	e2e.Logf("Count %v, %v", count, msg)
 			return false, nil
 		})
 
-		if !pass {
-			e2e.Failf("Was not able to create CatalogSourceCatalog %v after %v tries:%v", olmResource, count, msg)
-		} else {
-			e2e.Logf("Was able to create CatalogSourceCatalog %v after %v tries:%v", olmResource, count, msg)
+		if !pass { // Fail on timeout
+			e2e.Failf("Was not able to create CatalogSourceConfig %v after checking %v times:%v", olmResource, count, msg)
+		}
+		//  e2e.Logf("Created CatalogSourceConfig %v after %v tries", olmResource, count)
+
+		// Make sure status is Succeeded
+		msg, err = oc.SetNamespace(currentNS).AsAdmin().Run("get").Args("catalogsourceconfig", "-n", "openshift-marketplace", olmResource, "-o=jsonpath={.status.currentPhase.phase.name}").Output()
+		o.Expect(err).NotTo(o.HaveOccurred())
+		if !strings.Contains(msg, "Succeeded") {
+			e2e.Failf("Did not find %v in:\n,%v", olmResource, msg)
 		}
 
-		// oc get packagemanifest -n openshift-operators etcd -o yaml | grep olmName
-		/* msg, err = oc.SetNamespace(currentNS).AsAdmin().Run("get").Args("packagemanifest", "-n", "openshift-marketplace", "etcd", "-o", "yaml").Output()
-		o.Expect(err).NotTo(o.HaveOccurred())
-		if !strings.Contains(msg, olmResource) {
-			e2e.Failf("Did not find %v in:\n,%v", olmResource, msg)
-		} else {
-			e2e.Logf("PackageManifest:\n%v\n", msg)
-		}
-		*/
-		if pass { // cleanup
+		// Loop over the PackageManifests to check for the custom etcd created above
+		// This has been looping through 3-4 times
+		count = 0
+		err = wait.Poll(10*time.Second, operatorWait, func() (bool, error) {
+			count++
+			msg, err = oc.SetNamespace(currentNS).AsAdmin().Run("get").Args("PackageManifest", "-n", "openshift-operators", "-o=jsonpath={.items[*].status.catalogSource}").Output()
+			o.Expect(err).NotTo(o.HaveOccurred())
+			if err != nil {
+				e2e.Failf("Failed to get PackageManifest, error:%v, %v", err, msg)
+				return false, err
+			}
+			if strings.Contains(msg, olmResource) {
+				passPkg = true
+				return true, nil
+			}
+			// e2e.Logf("Count %v, %v", count, msg)
+			return false, nil
+		})
+
+		if pass { // cleanup the csc
 			err = oc.AsAdmin().SetNamespace(currentNS).Run("delete").Args("csc", "-n", "openshift-marketplace", olmResource).Execute()
 			o.Expect(err).NotTo(o.HaveOccurred())
+		}
+
+		// Fail on timeout
+		if !strings.Contains(msg, olmResource) || !passPkg {
+			e2e.Failf("%v was not created after %v tries in %v seconds: %v.", olmResource, count, operatorWait, msg)
 		}
 
 	})
