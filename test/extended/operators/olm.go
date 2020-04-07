@@ -379,5 +379,4 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 		}
 
 	})
-
 })
