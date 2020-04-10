@@ -7,7 +7,7 @@ OpenShift Operator testing.
 Prerequisites
 -------------
 
-* Compile both `oc` and `openshift-tests` in this repository (with `go build`)
+* Compile both `oc` and `extended-platform-tests` in this repository (with `go build`)
 * Have the environment variable `KUBECONFIG` set pointing to your cluster.
 
 
