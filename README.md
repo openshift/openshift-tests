@@ -72,6 +72,22 @@ Or you can run it directly:
 $ ./extended-platform-tests run all --dry-run | grep "\[Feature:Platform\] OLM should" | ./extended-platform-tests run --junit-dir=./ -f -
 ```
 
+### How to run a specific test case
+It searches the test case title by RE(`Regular Expression`). So you need to specify the title string detailly.
+For example, to run this test case: ["[Serial] olm version should contain the source commit id"](https://github.com/openshift/openshift-tests/blob/master/test/extended/operators/olm.go#L117), you can do it with 2 ways:
+
+* You may filter the list and pass it back to the run command with the --file argument. You may also pipe a list of test names, one per line, on standard input by passing "-f -".
+ 
+```console
+$ ./extended-platform-tests run all --dry-run|grep "\[Serial\] olm version should contain the source commit id"|./extended-platform-tests run --junit-dir=./ -f -
+```
+
+* You can also run it as follows if you know which test suite it belongs to.
+
+```console
+$ ./extended-platform-tests run openshift/conformance/serial --run "\[Serial\] olm version should contain the source commit id"
+```
+
 ## Run ISV Operators test
 
 ```console
