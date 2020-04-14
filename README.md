@@ -19,6 +19,7 @@ If you want to compile the `openshift-tests` binary, please see the [origin](htt
 $ mkdir -p ${GOPATH}/src/github.com/openshift/
 $ cd ${GOPATH}/src/github.com/openshift/
 $ git clone git@github.com:openshift/openshift-tests.git
+$ make clean
 $ cd cmd/extended-platform-tests/ && go build 
 ```
 
