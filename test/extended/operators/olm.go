@@ -228,8 +228,8 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 	})
 
 	// author: tbuskey@redhat.com
-	g.It("OLM-Low-OCP-23670 Checking description info for csc CRD￼", func() {
-		olmExplain := "csc"
+	g.It("OLM-Low-OCP-23670-Checking description info for csc CRD￼", func() {
+		olmExplain := "CatalogSourceConfig"
 		msg, err := oc.AsAdmin().WithoutNamespace().Run("explain").Args(olmExplain).Output()
 		if err != nil {
 			e2e.Failf("Could not run oc explain %v:\n%v", olmExplain, msg)
