@@ -253,7 +253,7 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 
 
 	// author: tbuskey@redhat.com
-	g.It("OLM-Low-OCP-26044-catalog-operator memory and time consumes", func() {
+	g.It("OLM-Medium-OCP-26044-catalog-operator memory and time consumes", func() {
 		olmErrs := true
 		olmPodName := ""
 		olmMemoryRequest := ""
