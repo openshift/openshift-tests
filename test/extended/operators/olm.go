@@ -303,7 +303,6 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 		e2e.Logf(oc.Namespace())
 		e2e.Logf(fmt.Sprintf(oc.Namespace()))
 		e2e.Logf(fmt.Sprintf("NAMESPACE=%s", oc.Namespace()))
-
 		configFile, err := oc.AsAdmin().Run("process").Args("--ignore-unknown-parameters=true", "-f", etcdSubManual, "-p", "NAME=test-operator", fmt.Sprintf("NAMESPACE=%s", oc.Namespace()), "INSTALLPLAN=Manual", "SOURCENAME=community-operators", "SOURCENAMESPACE=openshift-marketplace").OutputToFile("config.json")
 		o.Expect(err).NotTo(o.HaveOccurred())
 		err = oc.AsAdmin().WithoutNamespace().Run("create").Args("-f", configFile).Execute()
@@ -334,6 +333,75 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 			e2e.Logf("NO CSV Installed")
 		} else {
 			e2e.Failf("No packages for evaluating if package namespace is not NULL")
+		}
+	})
+
+
+	// author: tbuskey@redhat.com
+	g.It("OLM-Medium-OCP-21611 package manifest object has the description from CSV", func() {
+		olmName := "csc"
+		olmResource := "etcd-custom-" + olmName
+		olmFilename := olmResource + ".yaml"
+		olmFile := filepath.Join(buildPruningBaseDir, olmFilename)
+		currentNS := oc.Namespace()
+		msg := ""
+		count := 0
+		pass := false
+		passPkg := false
+		err := oc.AsAdmin().SetNamespace("openshift-marketplace").Run("create").Args("-f", olmFile).Execute()
+		o.Expect(err).NotTo(o.HaveOccurred())
+		// Check for csc every 10 seconds until operatorWait
+		err = wait.Poll(10*time.Second, operatorWait, func() (bool, error) {
+			count++
+			msg, err = oc.AsAdmin().SetNamespace(currentNS).Run("get").Args("csc", "-n", "openshift-marketplace").Output()
+			o.Expect(err).NotTo(o.HaveOccurred())
+			if err != nil {
+				e2e.Failf("Failed to get CatalogSourceConfig, error:%v, %v", err, msg)
+				return false, err
+			}
+			if strings.Contains(msg, "Succeeded") {
+				pass = true
+				return true, nil
+			}
+			//	e2e.Logf("Count %v, %v", count, msg)
+			return false, nil
+		})
+
+		if !pass { // Fail on timeout
+			e2e.Failf("Was not able to create CatalogSourceConfig %v after checking %v times:%v", olmResource, count, msg)
+		}
+		// Make sure status is Succeeded
+		msg, err = oc.SetNamespace(currentNS).AsAdmin().Run("get").Args("catalogsourceconfig", "-n", "openshift-marketplace", olmResource, "-o=jsonpath={.status.currentPhase.phase.name}").Output()
+		o.Expect(err).NotTo(o.HaveOccurred())
+		if !strings.Contains(msg, "Succeeded") {
+			e2e.Failf("Did not find %v in:\n,%v", olmResource, msg)
+		}
+
+		// Loop over the PackageManifests to check for the custom etcd created above
+		// This has been looping through 3-4 times
+		count = 0
+		err = wait.Poll(10*time.Second, operatorWait, func() (bool, error) {
+			count++
+			msg, err = oc.SetNamespace(currentNS).AsAdmin().Run("get").Args("PackageManifest", "-n", "openshift-operators", "-o=jsonpath={.items[*].status.catalogSource}").Output()
+			o.Expect(err).NotTo(o.HaveOccurred())
+			if err != nil {
+				e2e.Failf("Failed to get PackageManifest, error:%v, %v", err, msg)
+				return false, err
+			}
+			if strings.Contains(msg, olmResource) {
+				passPkg = true
+				return true, nil
+			}
+			// e2e.Logf("Count %v, %v", count, msg)
+			return false, nil
+		})
+		if pass { // cleanup the csc
+			err = oc.AsAdmin().SetNamespace(currentNS).Run("delete").Args("csc", "-n", "openshift-marketplace", olmResource).Execute()
+			o.Expect(err).NotTo(o.HaveOccurred())
+		}
+		// Fail on timeout
+		if !strings.Contains(msg, olmResource) || !passPkg {
+			e2e.Failf("%v was not created after %v tries in %v seconds: %v.", olmResource, count, operatorWait, msg)
 		}
 	})
 
@@ -437,40 +505,29 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 				}
 			}
 		}
-		if olmErrs > 0 {
-			e2e.Failf("%v ipv4 addresses found in these OLM components: %v", olmErrs, olmNames)
-		}
 	})
 
-	// OCP-21130 - [bug ALM-736] Fetching non-existent `PackageManifest` should return 404
-	// author: bandrade@redhat.com
-	g.It("Fetching non-existent `PackageManifest` should return 404", func() {
-		msg, err := oc.AsAdmin().WithoutNamespace().Run("get").Args("packagemanifest", "--all-namespaces", "--no-headers").Output()
-		o.Expect(err).NotTo(o.HaveOccurred())
-		packageserverLines := strings.Split(msg, "\n")
-		if len(packageserverLines) > 0 {
-			raw, err := oc.AsAdmin().WithoutNamespace().Run("get").Args("packagemanifest", "a_package_that_not_exists", "-o yaml", "--loglevel=8").Output()
-			o.Expect(err).To(o.HaveOccurred())
-			o.Expect(raw).To(o.ContainSubstring("\"code\": 404"))
-		} else {
-			e2e.Failf("No packages to evaluate if 404 works when a PackageManifest does not exists")
-		}
-	})
-
-	// OCP-24057 - Check OLM pods termination message
-	// author: bandrade@redhat.com
-	g.It("OLM-Low-OCP-24057-Have terminationMessagePolicy defined as FallbackToLogsOnError", func() {
-		msg, err := oc.SetNamespace("openshift-operator-lifecycle-manager").AsAdmin().Run("get").Args("pods", "-o=jsonpath={range .items[*].spec}{.containers[*].name}{\"\t\"}").Output()
-		o.Expect(err).NotTo(o.HaveOccurred())
-		amountOfContainers := len(strings.Split(msg, "\t"))
-
-		msg, err = oc.SetNamespace("openshift-operator-lifecycle-manager").AsAdmin().Run("get").Args("pods", "-o=jsonpath={range .items[*].spec}{.containers[*].terminationMessagePolicy}{\"t\"}").Output()
-		o.Expect(err).NotTo(o.HaveOccurred())
-		regexp := regexp.MustCompile("FallbackToLogsOnError")
-		amountOfContainersWithFallbackToLogsOnError := len(regexp.FindAllStringIndex(msg, -1))
-		o.Expect(amountOfContainers).To(o.Equal(amountOfContainersWithFallbackToLogsOnError))
-		if amountOfContainers != amountOfContainersWithFallbackToLogsOnError {
-			e2e.Failf("OLM does not have all containers definied with FallbackToLogsOnError terminationMessagePolicy")
+  
+	// author: tbuskey@redhat.com
+	g.It("OLM-Medium-OCP-24058-components should have resource limits defined", func() {
+		olmUnlimited := 0
+		olmNames := []string{""}
+		olmNamespace := "openshift-operator-lifecycle-manager"
+		olmJpath := "-o=jsonpath={range .items[*]}{@.metadata.name}{','}{@.spec.containers[0].resources.requests.*}{'\\n'}"
+		msg, err := oc.AsAdmin().WithoutNamespace().Run("get").Args("pod", "-n", olmNamespace, olmJpath).Output()
+		if err != nil {
+			e2e.Failf("Unable to get pod -n %v %v.", olmNamespace, olmJpath)
+		o.Expect(msg).NotTo(o.ContainSubstring("No resources found"))
+		lines := strings.Split(msg, "\n")
+		for _, line := range lines {
+			name := strings.Split(line, ",")
+			if len(name) > 1 {
+				if len(name) > 1 && len(name[1]) < 1 {
+					olmUnlimited++
+					olmNames = append(olmNames, name[0])
+				}
+		if olmUnlimited > 0 {
+			e2e.Failf("There are no limits set on %v of %v OLM components: %v", olmUnlimited, len(lines), olmNames)
 		}
 	})
 
