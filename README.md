@@ -19,7 +19,7 @@ If you want to compile the `openshift-tests` binary, please see the [origin](htt
 $ mkdir -p ${GOPATH}/src/github.com/openshift/
 $ cd ${GOPATH}/src/github.com/openshift/
 $ git clone git@github.com:openshift/openshift-tests.git
-$ make WHAT=cmd/extended-platform-tests  
+$ cd cmd/extended-platform-tests/ && go build 
 ```
 
 Run `./extended-platform-tests --help` to get started.
@@ -86,6 +86,15 @@ $ ./extended-platform-tests run all --dry-run|grep "\[Serial\] olm version shoul
 
 ```console
 $ ./extended-platform-tests run openshift/conformance/serial --run "\[Serial\] olm version should contain the source commit id"
+```
+
+## How to generate bindata
+If you have some new YAML files used in your code, you have to generate the bindata first.
+Run `make update` to update the bindata. For example, you can see the bindata has been updated after running the `make update`. As follows: 
+```console
+$ git status
+	modified:   test/extended/testdata/bindata.go
+	new file:   test/extended/testdata/olm/etcd-subscription-manual.yaml
 ```
 
 ## Run ISV Operators test
