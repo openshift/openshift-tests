@@ -31,7 +31,7 @@ $(call build-image,ocp-extended-platform-tests,$(IMAGE_REGISTRY)/ocp/4.3:extende
 # $5 - output
 # It will generate targets {update,verify}-bindata-$(1) logically grouping them in unsuffixed versions of these targets
 # and also hooked into {update,verify}-generated for broader integration.
-$(call add-bindata,v4.1.0,./bindata/v4.1.0/...,bindata,v410_00_assets,pkg/operator/v410_00_assets/bindata.go)
+$(call add-bindata,testdata,test/extended/testdata/... examples/... test/integration/testdata/...,testextended,testdata,./test/extended/testdata/bindata.go)
 
 test-e2e: GO_TEST_PACKAGES :=./test/e2e/...
 test-e2e: GO_TEST_FLAGS += -v
@@ -41,5 +41,5 @@ test-e2e: test-unit
 .PHONY: test-e2e
 
 clean:
-	$(RM) ./extended-platform-tests
+	$(RM) ./cmd/extended-platform-tests/extended-platform-tests
 .PHONY: clean

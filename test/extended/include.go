@@ -39,6 +39,7 @@ import (
 	_ "github.com/openshift/openshift-tests/test/extended/imageapis"
 	_ "github.com/openshift/openshift-tests/test/extended/images"
 	_ "github.com/openshift/openshift-tests/test/extended/images/trigger"
+	_ "github.com/openshift/openshift-tests/test/extended/isv"
 	_ "github.com/openshift/openshift-tests/test/extended/jobs"
 	_ "github.com/openshift/openshift-tests/test/extended/localquota"
 	_ "github.com/openshift/openshift-tests/test/extended/machines"
