@@ -160,7 +160,7 @@ var _ = g.Describe("[sig-operators] OLM should", func() {
 	})
 
 	// author: tbuskey@redhat.com
-	g.It("Low-23670-Checking description info for csc CRD￼", func() {
+	g.It("OLM-Low-OCP-23670-Checking description info for csc CRD", func() {
 		olmExplain := "csc"
 		msg, err := oc.AsAdmin().WithoutNamespace().Run("explain").Args(olmExplain).Output()
 		if err != nil {
@@ -308,7 +308,6 @@ var _ = g.Describe("[sig-operators] an end user use OLM", func() {
 		e2e.Logf(oc.Namespace())
 		e2e.Logf(fmt.Sprintf(oc.Namespace()))
 		e2e.Logf(fmt.Sprintf("NAMESPACE=%s", oc.Namespace()))
-
 		configFile, err := oc.AsAdmin().Run("process").Args("--ignore-unknown-parameters=true", "-f", etcdSubManual, "-p", "NAME=test-operator", fmt.Sprintf("NAMESPACE=%s", oc.Namespace()), "INSTALLPLAN=Manual", "SOURCENAME=community-operators", "SOURCENAMESPACE=openshift-marketplace").OutputToFile("config.json")
 		o.Expect(err).NotTo(o.HaveOccurred())
 		err = oc.AsAdmin().WithoutNamespace().Run("create").Args("-f", configFile).Execute()
@@ -417,6 +416,34 @@ var _ = g.Describe("[sig-operators] an end user use OLM", func() {
 		}
 
 	})
+	
+	// author: tbuskey@redhat.com
+	g.It("OLM-Low-OCP-24058-components should have resource limits defined", func() {
+                olmUnlimited := 0
+                olmNames := []string{""}
+                olmNamespace := "openshift-operator-lifecycle-manager"
+                olmJpath := "-o=jsonpath={range .items[*]}{@.metadata.name}{','}{@.spec.containers[0].resources.requests.*}{'\\n'}"
+                msg, err := oc.AsAdmin().WithoutNamespace().Run("get").Args("pod", "-n", olmNamespace, olmJpath).Output()
+                if err != nil {
+                        e2e.Failf("Unable to get pod -n %v %v.", olmNamespace, olmJpath)
+                }
+                o.Expect(err).NotTo(o.HaveOccurred())
+                o.Expect(msg).NotTo(o.ContainSubstring("No resources found"))
+                lines := strings.Split(msg, "\n")
+                for _, line := range lines {
+                        name := strings.Split(line, ",")
+                        if len(name) > 1 {
+                                if len(name) > 1 && len(name[1]) < 1 {
+                                        olmUnlimited++
+                                        olmNames = append(olmNames, name[0])
+                                }
+                        }
+                }
+                if olmUnlimited > 0 {
+                        e2e.Failf("There are no limits set on %v of %v OLM components: %v", olmUnlimited, len(lines), olmNames)
+                }
+        })
+
 })
 
 var _ = g.Describe("[sig-operators] an end user handle OLM common object", func() {
