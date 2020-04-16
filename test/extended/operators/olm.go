@@ -23,7 +23,7 @@ import (
 	e2e "k8s.io/kubernetes/test/e2e/framework"
 )
 
-var _ = g.Describe("[Feature:Platform] OLM should", func() {
+var _ = g.Describe("[sig-operators] OLM should", func() {
 	defer g.GinkgoRecover()
 
 	var oc = exutil.NewCLIWithoutNamespace("default")
@@ -241,7 +241,7 @@ var _ = g.Describe("[Feature:Platform] OLM should", func() {
 	})
 })
 
-var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
+var _ = g.Describe("[sig-operators] an end user use OLM", func() {
 	defer g.GinkgoRecover()
 
 	var (
@@ -419,7 +419,7 @@ var _ = g.Describe("[Feature:Platform] an end user use OLM", func() {
 	})
 })
 
-var _ = g.Describe("[sig-operator] an end user handle OLM common object", func() {
+var _ = g.Describe("[sig-operators] an end user handle OLM common object", func() {
 	defer g.GinkgoRecover()
 
 	var (
@@ -642,7 +642,7 @@ var _ = g.Describe("[sig-operator] an end user handle OLM common object", func()
 
 })
 
-var _ = g.Describe("[sig-operator] an end user handle OLM within a namespace", func() {
+var _ = g.Describe("[sig-operators] an end user handle OLM within a namespace", func() {
 	defer g.GinkgoRecover()
 
 	var (
@@ -994,7 +994,7 @@ var _ = g.Describe("[sig-operator] an end user handle OLM within a namespace", f
 
 })
 
-var _ = g.Describe("[sig-operator] an end user handle OLM to support", func() {
+var _ = g.Describe("[sig-operators] an end user handle OLM to support", func() {
 	defer g.GinkgoRecover()
 
 	var (
@@ -1406,7 +1406,7 @@ var _ = g.Describe("[sig-operator] an end user handle OLM to support", func() {
 
 })
 
-var _ = g.Describe("[sig-operator] an end user handle OLM within all namespace", func() {
+var _ = g.Describe("[sig-operators] an end user handle OLM within all namespace", func() {
 	defer g.GinkgoRecover()
 
 	var (
