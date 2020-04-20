@@ -79,6 +79,7 @@ type CLI struct {
 	stdout             io.Writer
 	stderr             io.Writer
 	verbose            bool
+	showInfo           bool
 	withoutNamespace   bool
 	kubeFramework      *e2e.Framework
 
@@ -104,6 +105,7 @@ func NewCLI(project, adminConfigPath string) *CLI {
 	client.kubeFramework.SkipNamespaceCreation = true
 	client.username = "admin"
 	client.execPath = "oc"
+	client.showInfo = true
 	client.adminConfigPath = adminConfigPath
 
 	g.BeforeEach(client.SetupProject)
@@ -124,7 +126,7 @@ func NewCLIWithoutNamespace(project string) *CLI {
 	client.username = "admin"
 	client.execPath = "oc"
 	client.adminConfigPath = KubeConfigPath()
-
+	client.showInfo = true
 	return client
 }
 
@@ -178,6 +180,12 @@ func (c *CLI) SetNamespace(ns string) *CLI {
 			Name: ns,
 		},
 	}
+	return c
+}
+
+// WithoutNamespace instructs the command should be invoked without adding --namespace parameter
+func (c *CLI) NotShowInfo() *CLI {
+	c.showInfo = true
 	return c
 }
 
@@ -525,7 +533,9 @@ func (c *CLI) Output() (string, error) {
 	}
 	cmd := exec.Command(c.execPath, c.finalArgs...)
 	cmd.Stdin = c.stdin
-	e2e.Logf("Running '%s %s'", c.execPath, strings.Join(c.finalArgs, " "))
+	if c.showInfo {
+		e2e.Logf("Running '%s %s'", c.execPath, strings.Join(c.finalArgs, " "))
+	}
 	out, err := cmd.CombinedOutput()
 	trimmed := strings.TrimSpace(string(out))
 	switch err.(type) {
