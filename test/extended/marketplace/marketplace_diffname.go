@@ -19,19 +19,16 @@ var _ = g.Describe("[sig-operators] Marketplace should", func() {
 
 	var (
 		oc            = exutil.NewCLI("marketplace", exutil.KubeConfigPath())
-		allNs         = "openshift-operators"
 		marketplaceNs = "openshift-marketplace"
 		resourceWait  = 60 * time.Second
 
 		opsrcYamltem = exutil.FixturePath("testdata", "marketplace", "opsrc", "02-opsrc.yaml")
-		cscYamltem   = exutil.FixturePath("testdata", "marketplace", "csc", "02-csc.yaml")
 	)
 
 	g.AfterEach(func() {
 		// Clear the resource
 		allresourcelist := [][]string{
 			{"operatorsource", "samename", marketplaceNs},
-			{"catalogsourceconfig", "samename", marketplaceNs},
 		}
 
 		for _, source := range allresourcelist {
@@ -74,21 +71,5 @@ var _ = g.Describe("[sig-operators] Marketplace should", func() {
 			msg, _ := existResources(oc, source[0], source[1], source[2])
 			o.Expect(msg).Should(o.BeTrue())
 		}
-
-		// Create the csc samename
-		cscYaml, err := oc.AsAdmin().Run("process").Args("--ignore-unknown-parameters=true", "-f", cscYamltem, "-p", "NAME=samename", fmt.Sprintf("NAMESPACE=%s", allNs), fmt.Sprintf("MARKETPLACE=%s", marketplaceNs), "PACKAGES=camel-k-marketplace-e2e-tests", "DISPLAYNAME=samename", "PUBLISHER=samename").OutputToFile("config.json")
-		err = createResources(oc, cscYaml)
-		o.Expect(err).NotTo(o.HaveOccurred())
-
-		// Check the csc status
-		err = wait.Poll(5*time.Second, resourceWait, func() (bool, error) {
-			outStatus, _ := oc.AsAdmin().WithoutNamespace().Run("get").Args("catalogsourceconfig", "samename", "-o=jsonpath={.status.currentPhase.phase.name}", "-n", marketplaceNs).Output()
-			outMesg, _ := oc.AsAdmin().WithoutNamespace().Run("get").Args("catalogsourceconfig", "samename", "-o=jsonpath={.status.currentPhase.phase.message}", "-n", marketplaceNs).Output()
-			if strings.Contains(outStatus, "Configuring") && strings.Contains(outMesg, "Deployment samename exists") {
-				return true, nil
-			}
-			return false, nil
-		})
-		o.Expect(err).NotTo(o.HaveOccurred())
 	})
 })
