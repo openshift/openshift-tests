@@ -34,11 +34,11 @@ var _ = g.Describe("[Suite:openshift/isv] Operator", func() {
 	var (
 		oc                      = exutil.NewCLI("isv", exutil.KubeConfigPath())
 		catalogLabels           = []string{"certified-operators", "redhat-operators", "community-operators"}
-		output, _               = oc.AsAdmin().WithoutNamespace().Run("get").Args("packagemanifest", "-l catalog="+catalogLabels[0], "-o=jsonpath={range .items[*]}{.metadata.labels.catalog}:{.metadata.name}{'\\n'}{end}").Output()
+		output, _               = oc.AsAdmin().WithoutNamespace().NotShowInfo().Run("get").Args("packagemanifest", "-l catalog="+catalogLabels[0], "-o=jsonpath={range .items[*]}{.metadata.labels.catalog}:{.metadata.name}{'\\n'}{end}").Output()
 		certifiedPackages       = strings.Split(output, "\n")
-		output2, _              = oc.AsAdmin().WithoutNamespace().Run("get").Args("packagemanifest", "-l catalog="+catalogLabels[1], "-o=jsonpath={range .items[*]}{.metadata.labels.catalog}:{.metadata.name}{'\\n'}{end}").Output()
+		output2, _              = oc.AsAdmin().WithoutNamespace().NotShowInfo().Run("get").Args("packagemanifest", "-l catalog="+catalogLabels[1], "-o=jsonpath={range .items[*]}{.metadata.labels.catalog}:{.metadata.name}{'\\n'}{end}").Output()
 		redhatOperatorsPackages = strings.Split(output2, "\n")
-		output3, _              = oc.AsAdmin().WithoutNamespace().Run("get").Args("packagemanifest", "-l catalog="+catalogLabels[2], "-o=jsonpath={range .items[*]}{.metadata.labels.catalog}:{.metadata.name}{'\\n'}{end}").Output()
+		output3, _              = oc.AsAdmin().WithoutNamespace().NotShowInfo().Run("get").Args("packagemanifest", "-l catalog="+catalogLabels[2], "-o=jsonpath={range .items[*]}{.metadata.labels.catalog}:{.metadata.name}{'\\n'}{end}").Output()
 		communityPackages       = strings.Split(output3, "\n")
 		packages1               = append(certifiedPackages, redhatOperatorsPackages...)
 		allPackages             = append(packages1, communityPackages...)
