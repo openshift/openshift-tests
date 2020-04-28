@@ -1,9 +1,13 @@
 all: build
 .PHONY: all
 
+OUT_DIR=bin
+build:
+	mkdir -p "${OUT_DIR}"
+	go build -o "${OUT_DIR}" "./cmd/extended-platform-tests"
+
 # Include the library makefile
 include $(addprefix ./vendor/github.com/openshift/library-go/alpha-build-machinery/make/, \
-	golang.mk \
 	targets/openshift/bindata.mk \
 	targets/openshift/images.mk \
 	targets/openshift/deps.mk \

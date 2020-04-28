@@ -16,4 +16,6 @@
 
 /extended-platform-tests
 .idea/
+/bin
+/bin/*
 
