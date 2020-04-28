@@ -1,7 +1,7 @@
 FROM registry.svc.ci.openshift.org/openshift/release:golang-1.13 AS builder
 WORKDIR /go/src/github.com/openshift/extended-platform-tests
 COPY . .
-RUN make buil && \
+RUN make build && \
     mkdir -p /tmp/build && \
     cp /go/src/github.com/openshift/extended-platform-tests/bin/extended-platform-tests /tmp/build/extended-platform-tests
 
