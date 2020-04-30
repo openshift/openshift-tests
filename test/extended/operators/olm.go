@@ -418,7 +418,7 @@ var _ = g.Describe("[sig-operators] an end user use OLM", func() {
 	})
 	
 	// author: tbuskey@redhat.com
-	g.It("OLM-Low-OCP-24058-components should have resource limits defined", func() {
+	g.It("Low-24058-components should have resource limits defined", func() {
                 olmUnlimited := 0
                 olmNames := []string{""}
                 olmNamespace := "openshift-operator-lifecycle-manager"
