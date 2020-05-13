@@ -428,7 +428,6 @@ var _ = g.Describe("[sig-operators] an end user handle OLM common object", func(
 		buildPruningBaseDir = exutil.FixturePath("testdata", "olm")
 		catsrcGrpcTemplate  = filepath.Join(buildPruningBaseDir, "catalogsource-address.yaml")
 		opsrcTemlate        = filepath.Join(buildPruningBaseDir, "opsrc.yaml")
-		cscTemplate         = filepath.Join(buildPruningBaseDir, "csc.yaml")
 		dr                  = make(describerResrouce)
 	)
 
@@ -615,14 +614,6 @@ var _ = g.Describe("[sig-operators] an end user handle OLM common object", func(
 				publisher:         "opsrctestolm",
 				template:          opsrcTemlate,
 			}
-			csc = catalogSourceConfigDescription{
-				name:            "csctestolm",
-				namespace:       "openshift-marketplace",
-				packages:        "etcd",
-				targetnamespace: "openshift-operators",
-				source:          osrc.name,
-				template:        cscTemplate,
-			}
 			cl = checkList{}
 		)
 
@@ -634,10 +625,6 @@ var _ = g.Describe("[sig-operators] an end user handle OLM common object", func(
 
 		g.By("delete operatorsource")
 		osrc.delete(itName, dr)
-
-		g.By("create csc and check its failure")
-		csc.create(oc, itName, dr)
-		newCheck("expect", asAdmin, withoutNamespace, contain, "not exist", ok, []string{"csc", csc.name, "-n", csc.namespace, "-o=jsonpath={.status.currentPhase.phase.message}"}).check(oc)
 	})
 
 })
@@ -1498,6 +1485,7 @@ var _ = g.Describe("[sig-operators] an end user handle OLM within all namespace"
 				singleNamespace: false,
 			}
 			crdName      = "knativeeventings.eventing.knative.dev"
+			crName       = "KnativeEventing"
 			podLabelName = "knative-eventing-operator"
 			cl           = checkList{}
 		)
@@ -1520,7 +1508,7 @@ var _ = g.Describe("[sig-operators] an end user handle OLM within all namespace"
 
 		// OCP-21418
 		g.By("Check no resource of new crd")
-		cl.add(newCheck("present", asAdmin, withNamespace, notPresent, "", ok, []string{"KnativeEventing"}))
+		cl.add(newCheck("present", asAdmin, withNamespace, notPresent, "", ok, []string{crName}))
 		//do check parallelly
 		cl.check(oc)
 		cl.empty()
@@ -1593,7 +1581,7 @@ var _ = g.Describe("[sig-operators] an end user handle OLM within all namespace"
 				channel:                "preview",
 				ipApproval:             "Automatic",
 				operator:               "elasticsearch-operator",
-				catalogSourceName:      "redhat-operators",
+				catalogSourceName:      "qe-app-registry",
 				catalogSourceNamespace: "openshift-marketplace",
 				// startingCSV:            "elasticsearch-operator.4.1.37-202003021622",
 				startingCSV:     "", //get it from package based on currentCSV if ipApproval is Automatic
@@ -2258,9 +2246,9 @@ func getRandomString() string {
 
 func generateUpdatedKubernatesVersion(oc *exutil.CLI) string {
 	subKubeVersions := strings.Split(getKubernetesVersion(oc), ".")
-	zVersion, _ := strconv.Atoi(subKubeVersions[2])
-	subKubeVersions[2] = strconv.Itoa(zVersion + 1)
-	return strings.Join(subKubeVersions, ".")
+	zVersion, _ := strconv.Atoi(subKubeVersions[1])
+	subKubeVersions[1] = strconv.Itoa(zVersion + 1)
+	return strings.Join(subKubeVersions[0:2], ".") + ".0"
 }
 
 func getKubernetesVersion(oc *exutil.CLI) string {
@@ -2279,7 +2267,7 @@ func getKubernetesVersion(oc *exutil.CLI) string {
 func applyResourceFromTemplate(oc *exutil.CLI, parameters ...string) error {
 	var configFile string
 	err := wait.Poll(3*time.Second, 15*time.Second, func() (bool, error) {
-		output, err := oc.AsAdmin().Run("process").Args(parameters...).OutputToFile("olm-config.json")
+		output, err := oc.AsAdmin().Run("process").Args(parameters...).OutputToFile(getRandomString() + "olm-config.json")
 		if err != nil {
 			e2e.Logf("the err:%v, and try next round", err)
 			return false, nil
