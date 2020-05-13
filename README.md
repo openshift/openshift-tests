@@ -20,7 +20,7 @@ $ mkdir -p ${GOPATH}/src/github.com/openshift/
 $ cd ${GOPATH}/src/github.com/openshift/
 $ git clone git@github.com:openshift/openshift-tests.git
 $ make clean
-$ cd cmd/extended-platform-tests/ && go build 
+$ make build
 ```
 
 Run `./extended-platform-tests --help` to get started.
@@ -48,7 +48,7 @@ You can filter your test case by using `grep`. Such as,
 For example, to filter the [OLM test cases](https://github.com/openshift/openshift-tests/blob/master/test/extended/operators/olm.go#L21), you can run this command: 
 
 ```console
-$ ./extended-platform-tests run all --dry-run|grep "\[Feature:Platform\] OLM should"
+$ ./bin/extended-platform-tests run all --dry-run|grep "\[Feature:Platform\] OLM should"
 I0410 15:33:38.465141    7508 test_context.go:419] Tolerating taints "node-role.kubernetes.io/master" when considering if nodes are ready
 "[Feature:Platform] OLM should Implement packages API server and list packagemanifest info with namespace not NULL [Suite:openshift/conformance/parallel]"
 "[Feature:Platform] OLM should [Serial] olm version should contain the source commit id [Suite:openshift/conformance/serial]"
@@ -64,13 +64,13 @@ I0410 15:33:38.465141    7508 test_context.go:419] Tolerating taints "node-role.
 You can save the above output to a file and run it:
 
 ```console
-$ ./extended-platform-tests run -f <your file path/name>
+$ ./bin/extended-platform-tests run -f <your file path/name>
 ```
 
 Or you can run it directly:
 
 ```console
-$ ./extended-platform-tests run all --dry-run | grep "\[Feature:Platform\] OLM should" | ./extended-platform-tests run --junit-dir=./ -f -
+$ ./bin/extended-platform-tests run all --dry-run | grep "\[Feature:Platform\] OLM should" | ./bin/extended-platform-tests run --junit-dir=./ -f -
 ```
 
 ### How to run a specific test case
@@ -78,15 +78,15 @@ It searches the test case title by RE(`Regular Expression`). So you need to spec
 For example, to run this test case: ["[Serial] olm version should contain the source commit id"](https://github.com/openshift/openshift-tests/blob/master/test/extended/operators/olm.go#L117), you can do it with 2 ways:
 
 * You may filter the list and pass it back to the run command with the --file argument. You may also pipe a list of test names, one per line, on standard input by passing "-f -".
- 
+
 ```console
-$ ./extended-platform-tests run all --dry-run|grep "\[Serial\] olm version should contain the source commit id"|./extended-platform-tests run --junit-dir=./ -f -
+$ ./bin/extended-platform-tests run all --dry-run|grep "\[Serial\] olm version should contain the source commit id"|./bin/extended-platform-tests run --junit-dir=./ -f -
 ```
 
 * You can also run it as follows if you know which test suite it belongs to.
 
 ```console
-$ ./extended-platform-tests run openshift/conformance/serial --run "\[Serial\] olm version should contain the source commit id"
+$ ./bin/extended-platform-tests run openshift/conformance/serial --run "\[Serial\] olm version should contain the source commit id"
 ```
 
 ## How to generate bindata
@@ -101,5 +101,5 @@ $ git status
 ## Run ISV Operators test
 
 ```console
-$ ./extended-platform-tests run openshift/isv --dry-run | grep -E "<REGEX>" | ./extended-platform-tests run -f -
+$ ./bin/extended-platform-tests run openshift/isv --dry-run | grep -E "<REGEX>" | ./bin/extended-platform-tests run -f -
 ```
