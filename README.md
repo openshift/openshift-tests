@@ -11,6 +11,9 @@ Prerequisites
 * Golang installed.
 * Have the environment variable `KUBECONFIG` set pointing to your cluster.
 
+### New Test Folder
+If you create a new folder for your test case, please **add the path** to the [include.go file](https://github.com/openshift/openshift-tests/blob/master/test/extended/include.go).
+
 ## Compile the executable binary
 The generated `extended-platform-tests` binary in the `cmd/extended-platform-tests/` folder.
 If you want to compile the `openshift-tests` binary, please see the [origin](https://github.com/openshift/origin).
