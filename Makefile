@@ -45,5 +45,5 @@ test-e2e: test-unit
 .PHONY: test-e2e
 
 clean:
-	$(RM) ./cmd/extended-platform-tests/extended-platform-tests
+	$(RM) ./bin/extended-platform-tests
 .PHONY: clean
