@@ -258,11 +258,13 @@ var _ = g.Describe("[sig-operators] an end user handle OLM within a namespace", 
 		sub.namespace = oc.Namespace()
 
 		g.By("Create csv with failure because of no operator group")
-		sub.create(oc, itName, dr)
-		newCheck("expect", asUser, withNamespace, compare, "Failed"+"NoOperatorGroup", ok, []string{"csv", sub.installedCSV, "-o=jsonpath={.status.phase}{.status.reason}"}).check(oc)
+		sub.createWithoutCheck(oc, itName, dr)
+		newCheck("present", asUser, withNamespace, notPresent, "", ok, []string{"csv", sub.currentCSV}).check(oc)
+		sub.delete(itName, dr)
 
 		g.By("Create opertor group and then csv is created with success")
 		og.create(oc, itName, dr)
+		sub.create(oc, itName, dr)
 		newCheck("expect", asUser, withNamespace, compare, "Succeeded"+"InstallSucceeded", ok, []string{"csv", sub.installedCSV, "-o=jsonpath={.status.phase}{.status.reason}"}).check(oc)
 	})
 
@@ -473,23 +475,23 @@ var _ = g.Describe("[sig-operators] an end user handle OLM within all namespace"
 		var (
 			itName = g.CurrentGinkgoTestDescription().TestText
 			sub    = subscriptionDescription{
-				name:                   "knative-eventing-operator",
+				name:                   "teiid",
 				namespace:              "openshift-operators",
-				channel:                "alpha",
+				channel:                "beta",
 				ipApproval:             "Automatic",
-				operator:               "knative-eventing-operator",
+				operator:               "teiid",
 				catalogSourceName:      "community-operators",
 				catalogSourceNamespace: "openshift-marketplace",
-				// startingCSV:            "knative-eventing-operator.v0.12.0",
+				// startingCSV:            "teiid.v0.3.0",
 				startingCSV:     "", //get it from package based on currentCSV if ipApproval is Automatic
 				currentCSV:      "",
 				installedCSV:    "",
 				template:        subTemplate,
 				singleNamespace: false,
 			}
-			crdName      = "knativeeventings.eventing.knative.dev"
-			crName       = "KnativeEventing"
-			podLabelName = "knative-eventing-operator"
+			crdName      = "virtualdatabases.teiid.io"
+			crName       = "VirtualDatabase"
+			podLabelName = "teiid"
 			cl           = checkList{}
 		)
 
