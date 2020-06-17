@@ -11,7 +11,8 @@ objects:
   spec:
     selector:
       matchLabels:
-        env: "olmtestmultins"
+        env: "${MULTINSLABEL}"
 parameters:
 - name: NAME
 - name: NAMESPACE
+- name: MULTINSLABEL

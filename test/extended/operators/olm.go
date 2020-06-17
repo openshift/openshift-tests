@@ -395,9 +395,10 @@ var _ = g.Describe("[sig-operators] an end user handle OLM to support", func() {
 		var (
 			itName = g.CurrentGinkgoTestDescription().TestText
 			og     = operatorGroupDescription{
-				name:      "og-multinamespace",
-				namespace: "",
-				template:  ogMultiTemplate,
+				name:         "og-multinamespace",
+				namespace:    "",
+				multinslabel: "olmtestmultins",
+				template:     ogMultiTemplate,
 			}
 			p1 = projectDescription{
 				name:            "olm-enduser-multins-csv-1-fail",
@@ -834,15 +835,24 @@ func (catsrc *catalogSourceDescription) delete(itName string, dr describerResrou
 }
 
 type operatorGroupDescription struct {
-	name      string
-	namespace string
-	template  string
+	name         string
+	namespace    string
+	multinslabel string
+	template     string
 }
 
 func (og *operatorGroupDescription) create(oc *exutil.CLI, itName string, dr describerResrouce) {
-	err := applyResourceFromTemplate(oc, "--ignore-unknown-parameters=true", "-f", og.template, "-p", "NAME="+og.name, "NAMESPACE="+og.namespace)
+	var err error
+	if strings.Compare(og.multinslabel, "") == 0 {
+		err = applyResourceFromTemplate(oc, "--ignore-unknown-parameters=true", "-f", og.template, "-p", "NAME="+og.name, "NAMESPACE="+og.namespace)
+	} else {
+		err = applyResourceFromTemplate(oc, "--ignore-unknown-parameters=true", "-f", og.template, "-p", "NAME="+og.name, "NAMESPACE="+og.namespace, "MULTINSLABEL="+og.multinslabel)
+	}
 	o.Expect(err).NotTo(o.HaveOccurred())
 	dr.getIr(itName).add(newResource(oc, "og", og.name, requireNS, og.namespace))
+}
+func (og *operatorGroupDescription) delete(itName string, dr describerResrouce) {
+	dr.getIr(itName).remove(og.name, "og", og.namespace)
 }
 
 type operatorSourceDescription struct {
