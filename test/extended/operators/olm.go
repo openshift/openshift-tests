@@ -472,22 +472,23 @@ var _ = g.Describe("[sig-operators] an end user handle OLM within all namespace"
 		var (
 			itName = g.CurrentGinkgoTestDescription().TestText
 			sub    = subscriptionDescription{
-				name:                   "knative-eventing-operator",
+				name:                   "teiid",
 				namespace:              "openshift-operators",
-				channel:                "alpha",
+				channel:                "beta",
 				ipApproval:             "Automatic",
-				operator:               "knative-eventing-operator",
+				operator:               "teiid",
 				catalogSourceName:      "community-operators",
 				catalogSourceNamespace: "openshift-marketplace",
-				// startingCSV:            "knative-eventing-operator.v0.12.0",
+				// startingCSV:            "teiid.v0.3.0",
 				startingCSV:     "", //get it from package based on currentCSV if ipApproval is Automatic
 				currentCSV:      "",
 				installedCSV:    "",
 				template:        subTemplate,
 				singleNamespace: false,
 			}
-			crdName      = "knativeeventings.eventing.knative.dev"
-			podLabelName = "knative-eventing-operator"
+			crdName      = "virtualdatabases.teiid.io"
+			crName       = "VirtualDatabase"
+			podLabelName = "teiid"
 			cl           = checkList{}
 		)
 
@@ -509,7 +510,7 @@ var _ = g.Describe("[sig-operators] an end user handle OLM within all namespace"
 
 		// OCP-21418
 		g.By("Check no resource of new crd")
-		cl.add(newCheck("present", asAdmin, withNamespace, notPresent, "", ok, []string{"KnativeEventing"}))
+		cl.add(newCheck("present", asAdmin, withNamespace, notPresent, "", ok, []string{crName}))
 		//do check parallelly
 		cl.check(oc)
 		cl.empty()
