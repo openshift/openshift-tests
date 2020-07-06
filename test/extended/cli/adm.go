@@ -64,6 +64,12 @@ var _ = g.Describe("[cli] oc adm", func() {
 	g.It("oc adm node-logs --tail=5", func() {
 		o.Expect(oc.Run("adm", "node-logs").Args(randomNode(oc), "--tail=5").Execute()).To(o.Succeed())
 	})
+
+	g.It("oc adm node-logs --since today", func() {
+		out, err := oc.Run("adm", "node-logs").Args(randomNode(oc), "--since=today").Output()
+		o.Expect(err).To(o.HaveOccurred())
+		o.Expect(out).To(o.ContainSubstring("parameter 'since' is invalid: date must be a relative time of the form"))
+	})
 })
 
 func randomNode(oc *exutil.CLI) string {
