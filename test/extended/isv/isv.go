@@ -56,7 +56,7 @@ var _ = g.Describe("[Suite:openshift/isv] Operator", func() {
 
 			g.It(isv+" should work properly", func() {
 				g.By("by installing", func() {
-					currentPackage = createSubscription(packageName, oc)
+					currentPackage = createSubscription(packageName, oc, false, "")
 					checkDeployment(currentPackage, oc)
 				})
 				g.By("by uninstalling", func() {
@@ -88,7 +88,7 @@ func checkOperatorInstallModes(p packagemanifest, oc *exutil.CLI) packagemanifes
 	return p
 }
 
-func createSubscription(isv string, oc *exutil.CLI) packagemanifest {
+func createSubscription(isv string, oc *exutil.CLI, useAllNamespaces bool, namespace string) packagemanifest {
 
 	msg, err := oc.AsAdmin().WithoutNamespace().Run("get").Args("packagemanifest", isv, "-o=jsonpath={.status.catalogSource}:{.status.catalogSourceNamespace}:{.status.defaultChannel}").Output()
 	o.Expect(err).NotTo(o.HaveOccurred())
@@ -100,9 +100,14 @@ func createSubscription(isv string, oc *exutil.CLI) packagemanifest {
 	p.csvVersion = csvVersion
 
 	p = checkOperatorInstallModes(p, oc)
-
-	if p.supportsSingleNamespace || p.supportsOwnNamespace {
-		p = createNamespace(p, oc)
+	if useAllNamespaces {
+		if p.supportsAllNamespaces {
+			p.namespace = "openshift-operators"
+		} else {
+			g.Fail("Can't use AllNamespaces at Operator" + isv)
+		}
+	} else if p.supportsSingleNamespace || p.supportsOwnNamespace {
+		p = createNamespace(p, oc, namespace)
 		createOperatorGroup(p, oc)
 	} else if p.supportsAllNamespaces {
 		p.namespace = "openshift-operators"
@@ -116,11 +121,24 @@ func createSubscription(isv string, oc *exutil.CLI) packagemanifest {
 	return p
 }
 
-func createNamespace(p packagemanifest, oc *exutil.CLI) packagemanifest {
-	p.namespace = names.SimpleNameGenerator.GenerateName("test-operators-")
+func createNamespace(p packagemanifest, oc *exutil.CLI, namespace string) packagemanifest {
+	if namespace != "" {
+		p.namespace = namespace
+	} else {
+		p.namespace = names.SimpleNameGenerator.GenerateName("test-operators-")
+	}
 	_, err := oc.AsAdmin().WithoutNamespace().Run("create").Args("ns", p.namespace).Output()
 	o.Expect(err).NotTo(o.HaveOccurred())
 	return p
+}
+
+func removeNamespace(namespace string, oc *exutil.CLI) {
+	_, err := oc.AsAdmin().WithoutNamespace().Run("get").Args("ns", namespace).Output()
+
+	if err == nil {
+		_, err := oc.AsAdmin().WithoutNamespace().Run("delete").Args("ns", namespace).Output()
+		o.Expect(err).NotTo(o.HaveOccurred())
+	}
 }
 
 func createOperatorGroup(p packagemanifest, oc *exutil.CLI) {
@@ -208,8 +226,7 @@ func removeOperatorDependencies(p packagemanifest, oc *exutil.CLI, checkDeletion
 		}
 	}
 	if p.supportsSingleNamespace || p.supportsOwnNamespace {
-		_, err := oc.AsAdmin().WithoutNamespace().Run("delete").Args("ns", p.namespace).Output()
-		o.Expect(err).NotTo(o.HaveOccurred())
+		removeNamespace(p.namespace, oc)
 	}
 
 }
