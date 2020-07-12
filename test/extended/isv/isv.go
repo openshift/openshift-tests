@@ -119,7 +119,7 @@ func createSubscription(isv string, oc *exutil.CLI) packagemanifest {
 	return p
 }
 
-func createSubscriptionSpecificNamespace(isv string, oc *exutil.CLI, useAllNamespaces bool, namespaceCreate bool, operatorGroupCreate bool, namespace string) packagemanifest {
+func createSubscriptionSpecificNamespace(isv string, oc *exutil.CLI, namespaceCreate bool, operatorGroupCreate bool, namespace string) packagemanifest {
 	p := createPackageManifest(isv, oc)
 	p.namespace = namespace
 	if namespaceCreate {
