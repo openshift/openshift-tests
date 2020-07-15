@@ -56,11 +56,11 @@ var _ = g.Describe("[Suite:openshift/isv][Basic] Operator", func() {
 
 			g.It(isv+" should work properly", func() {
 				g.By("by installing", func() {
-					currentPackage = createSubscription(packageName, oc)
-					checkDeployment(currentPackage, oc)
+					currentPackage = CreateSubscription(packageName, oc)
+					CheckDeployment(currentPackage, oc)
 				})
 				g.By("by uninstalling", func() {
-					removeOperatorDependencies(currentPackage, oc, true)
+					RemoveOperatorDependencies(currentPackage, oc, true)
 				})
 			})
 		}
@@ -88,7 +88,7 @@ func checkOperatorInstallModes(p packagemanifest, oc *exutil.CLI) packagemanifes
 	return p
 }
 
-func createPackageManifest(isv string, oc *exutil.CLI) packagemanifest {
+func CreatePackageManifest(isv string, oc *exutil.CLI) packagemanifest {
 	msg, err := oc.AsAdmin().WithoutNamespace().Run("get").Args("packagemanifest", isv, "-o=jsonpath={.status.catalogSource}:{.status.catalogSourceNamespace}:{.status.defaultChannel}").Output()
 	o.Expect(err).NotTo(o.HaveOccurred())
 	packageData := strings.Split(msg, ":")
@@ -101,14 +101,14 @@ func createPackageManifest(isv string, oc *exutil.CLI) packagemanifest {
 	p = checkOperatorInstallModes(p, oc)
 	return p
 }
-func createSubscription(isv string, oc *exutil.CLI) packagemanifest {
-	p := createPackageManifest(isv, oc)
+func CreateSubscription(isv string, oc *exutil.CLI) packagemanifest {
+	p := CreatePackageManifest(isv, oc)
 	if p.supportsAllNamespaces {
 		p.namespace = "openshift-operators"
 
 	} else if p.supportsSingleNamespace || p.supportsOwnNamespace {
-		p = createNamespace(p, oc)
-		createOperatorGroup(p, oc)
+		p = CreateNamespace(p, oc)
+		CreateOperatorGroup(p, oc)
 	} else {
 		g.Skip("Install Modes AllNamespaces and  SingleNamespace are disabled for Operator: " + isv)
 	}
@@ -119,14 +119,14 @@ func createSubscription(isv string, oc *exutil.CLI) packagemanifest {
 	return p
 }
 
-func createSubscriptionSpecificNamespace(isv string, oc *exutil.CLI, namespaceCreate bool, operatorGroupCreate bool, namespace string) packagemanifest {
-	p := createPackageManifest(isv, oc)
+func CreateSubscriptionSpecificNamespace(isv string, oc *exutil.CLI, namespaceCreate bool, operatorGroupCreate bool, namespace string) packagemanifest {
+	p := CreatePackageManifest(isv, oc)
 	p.namespace = namespace
 	if namespaceCreate {
-		createNamespace(p, oc)
+		CreateNamespace(p, oc)
 	}
 	if operatorGroupCreate {
-		createOperatorGroup(p, oc)
+		CreateOperatorGroup(p, oc)
 	}
 	templateSubscriptionYAML := writeSubscription(p)
 	_, err := oc.SetNamespace(p.namespace).AsAdmin().Run("create").Args("-f", templateSubscriptionYAML).Output()
@@ -134,7 +134,7 @@ func createSubscriptionSpecificNamespace(isv string, oc *exutil.CLI, namespaceCr
 	return p
 }
 
-func createNamespace(p packagemanifest, oc *exutil.CLI) packagemanifest {
+func CreateNamespace(p packagemanifest, oc *exutil.CLI) packagemanifest {
 	if p.namespace == "" {
 		p.namespace = names.SimpleNameGenerator.GenerateName("test-operators-")
 	}
@@ -143,7 +143,7 @@ func createNamespace(p packagemanifest, oc *exutil.CLI) packagemanifest {
 	return p
 }
 
-func removeNamespace(namespace string, oc *exutil.CLI) {
+func RemoveNamespace(namespace string, oc *exutil.CLI) {
 	_, err := oc.AsAdmin().WithoutNamespace().Run("get").Args("ns", namespace).Output()
 
 	if err == nil {
@@ -152,7 +152,7 @@ func removeNamespace(namespace string, oc *exutil.CLI) {
 	}
 }
 
-func createOperatorGroup(p packagemanifest, oc *exutil.CLI) {
+func CreateOperatorGroup(p packagemanifest, oc *exutil.CLI) {
 
 	templateOperatorGroupYAML := writeOperatorGroup(p.namespace)
 	_, err := oc.SetNamespace(p.namespace).AsAdmin().Run("create").Args("-f", templateOperatorGroupYAML).Output()
@@ -189,7 +189,7 @@ func writeSubscription(p packagemanifest) (templateSubscriptionYAML string) {
 	e2e.Logf("Subscription: %s", operatorSubscription)
 	return
 }
-func checkDeployment(p packagemanifest, oc *exutil.CLI) {
+func CheckDeployment(p packagemanifest, oc *exutil.CLI) {
 	poolErr := wait.Poll(10*time.Second, 300*time.Second, func() (bool, error) {
 		msg, _ := oc.SetNamespace(p.namespace).AsAdmin().Run("get").Args("csv", p.csvVersion, "-o=jsonpath={.status.phase}").Output()
 		if strings.Contains(msg, "Succeeded") {
@@ -198,12 +198,12 @@ func checkDeployment(p packagemanifest, oc *exutil.CLI) {
 		return false, nil
 	})
 	if poolErr != nil {
-		removeOperatorDependencies(p, oc, false)
+		RemoveOperatorDependencies(p, oc, false)
 		g.Fail("Could not obtain CSV:" + p.csvVersion)
 	}
 }
 
-func removeOperatorDependencies(p packagemanifest, oc *exutil.CLI, checkDeletion bool) {
+func RemoveOperatorDependencies(p packagemanifest, oc *exutil.CLI, checkDeletion bool) {
 	ip, _ := oc.SetNamespace(p.namespace).AsAdmin().Run("get").Args("sub", p.name, "-o=jsonpath={.status.installplan.name}").Output()
 	e2e.Logf("IP: %s", ip)
 	if len(strings.TrimSpace(ip)) > 0 {
@@ -237,7 +237,7 @@ func removeOperatorDependencies(p packagemanifest, oc *exutil.CLI, checkDeletion
 		}
 	}
 	if p.supportsSingleNamespace || p.supportsOwnNamespace {
-		removeNamespace(p.namespace, oc)
+		RemoveNamespace(p.namespace, oc)
 	}
 
 }
