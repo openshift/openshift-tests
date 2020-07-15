@@ -22,31 +22,31 @@ var _ = g.Describe("[Suite:openshift/isv][Intermediate] Operator", func() {
 		kafkaPackageName := "amq-streams"
 		kafkaFile := "kafka.yaml"
 		namespace := "amq-streams"
-		currentPackage := createSubscriptionSpecificNamespace(kafkaPackageName, oc, true, true, namespace)
+		currentPackage := CreateSubscriptionSpecificNamespace(kafkaPackageName, oc, true, true, namespace)
 
-		checkDeployment(currentPackage, oc)
-		createCR(kafkaFile, oc)
-		checkCR(currentPackage, kafkaCR, kafkaClusterName, oc)
-		removeCR(currentPackage, kafkaCR, kafkaClusterName, oc)
-		removeOperatorDependencies(currentPackage, oc, false)
-		removeNamespace(currentPackage.namespace, oc)
+		CheckDeployment(currentPackage, oc)
+		CreateCR(kafkaFile, oc)
+		CheckCR(currentPackage, kafkaCR, kafkaClusterName, oc)
+		RemoveCR(currentPackage, kafkaCR, kafkaClusterName, oc)
+		RemoveOperatorDependencies(currentPackage, oc, false)
+		RemoveNamespace(currentPackage.namespace, oc)
 	})
 
 })
 
-func createCR(filename string, oc *exutil.CLI) {
+func CreateCR(filename string, oc *exutil.CLI) {
 	buildPruningBaseDir := exutil.FixturePath("testdata", "isv")
 	cr := filepath.Join(buildPruningBaseDir, filename)
 	err := oc.AsAdmin().WithoutNamespace().Run("create").Args("-f", cr).Execute()
 	o.Expect(err).NotTo(o.HaveOccurred())
 }
-func removeCR(p packagemanifest, CRName string, instanceName string, oc *exutil.CLI) {
+func RemoveCR(p packagemanifest, CRName string, instanceName string, oc *exutil.CLI) {
 	msg, err := oc.SetNamespace(p.namespace).AsAdmin().Run("delete").Args(CRName, instanceName).Output()
 	o.Expect(err).NotTo(o.HaveOccurred())
 	o.Expect(msg).To(o.ContainSubstring("deleted"))
 }
 
-func checkCR(p packagemanifest, CRName string, instanceName string, oc *exutil.CLI) {
+func CheckCR(p packagemanifest, CRName string, instanceName string, oc *exutil.CLI) {
 	poolErr := wait.Poll(10*time.Second, 300*time.Second, func() (bool, error) {
 		msg, _ := oc.SetNamespace(p.namespace).AsAdmin().Run("get").Args(CRName, instanceName, "-o=jsonpath={.status.conditions[0].type}").Output()
 		if msg == "Ready" {
@@ -56,8 +56,8 @@ func checkCR(p packagemanifest, CRName string, instanceName string, oc *exutil.C
 	})
 	if poolErr != nil {
 		e2e.Logf("Could not get CR " + CRName + " for " + p.csvVersion)
-		removeCR(p, CRName, instanceName, oc)
-		removeOperatorDependencies(p, oc, false)
+		RemoveCR(p, CRName, instanceName, oc)
+		RemoveOperatorDependencies(p, oc, false)
 		g.Fail("Could not get CR " + CRName + " for " + p.csvVersion)
 	}
 }
