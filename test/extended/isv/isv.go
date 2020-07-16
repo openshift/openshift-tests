@@ -17,16 +17,16 @@ import (
 	e2e "k8s.io/kubernetes/test/e2e/framework"
 )
 
-type packagemanifest struct {
-	name                    string
-	supportsOwnNamespace    bool
-	supportsSingleNamespace bool
-	supportsAllNamespaces   bool
-	csvVersion              string
-	namespace               string
-	defaultChannel          string
-	catalogSource           string
-	catalogSourceNamespace  string
+type Packagemanifest struct {
+	Name                    string
+	SupportsOwnNamespace    bool
+	SupportsSingleNamespace bool
+	SupportsAllNamespaces   bool
+	CsvVersion              string
+	Namespace               string
+	DefaultChannel          string
+	CatalogSource           string
+	CatalogSourceNamespace  string
 }
 
 var _ = g.Describe("[Suite:openshift/isv][Basic] Operator", func() {
@@ -43,7 +43,7 @@ var _ = g.Describe("[Suite:openshift/isv][Basic] Operator", func() {
 		packages1               = append(certifiedPackages, redhatOperatorsPackages...)
 		allPackages             = append(packages1, communityPackages...)
 		//allPackages    = []string{"community-operators:knative-camel-operator"}
-		currentPackage packagemanifest
+		currentPackage Packagemanifest
 	)
 	defer g.GinkgoRecover()
 
@@ -69,44 +69,44 @@ var _ = g.Describe("[Suite:openshift/isv][Basic] Operator", func() {
 
 })
 
-func checkOperatorInstallModes(p packagemanifest, oc *exutil.CLI) packagemanifest {
-	supportsAllNamespaces, err := oc.AsAdmin().WithoutNamespace().Run("get").Args("packagemanifest", p.name, "-o=jsonpath={.status.channels[?(.name=='"+p.defaultChannel+"')].currentCSVDesc.installModes[?(.type=='AllNamespaces')].supported}").Output()
+func checkOperatorInstallModes(p Packagemanifest, oc *exutil.CLI) Packagemanifest {
+	supportsAllNamespaces, err := oc.AsAdmin().WithoutNamespace().Run("get").Args("packagemanifest", p.Name, "-o=jsonpath={.status.channels[?(.name=='"+p.DefaultChannel+"')].currentCSVDesc.installModes[?(.type=='AllNamespaces')].supported}").Output()
 	o.Expect(err).NotTo(o.HaveOccurred())
 	supportsAllNamespacesAsBool, _ := strconv.ParseBool(supportsAllNamespaces)
 
-	supportsSingleNamespace, err := oc.AsAdmin().WithoutNamespace().Run("get").Args("packagemanifest", p.name, "-o=jsonpath={.status.channels[?(.name=='"+p.defaultChannel+"')].currentCSVDesc.installModes[?(.type=='SingleNamespace')].supported}").Output()
+	supportsSingleNamespace, err := oc.AsAdmin().WithoutNamespace().Run("get").Args("packagemanifest", p.Name, "-o=jsonpath={.status.channels[?(.name=='"+p.DefaultChannel+"')].currentCSVDesc.installModes[?(.type=='SingleNamespace')].supported}").Output()
 	o.Expect(err).NotTo(o.HaveOccurred())
 	supportsSingleNamespaceAsBool, _ := strconv.ParseBool(supportsSingleNamespace)
 
-	supportsOwnNamespace, err := oc.AsAdmin().WithoutNamespace().Run("get").Args("packagemanifest", p.name, "-o=jsonpath={.status.channels[?(.name=='"+p.defaultChannel+"')].currentCSVDesc.installModes[?(.type=='OwnNamespace')].supported}").Output()
+	supportsOwnNamespace, err := oc.AsAdmin().WithoutNamespace().Run("get").Args("packagemanifest", p.Name, "-o=jsonpath={.status.channels[?(.name=='"+p.DefaultChannel+"')].currentCSVDesc.installModes[?(.type=='OwnNamespace')].supported}").Output()
 	o.Expect(err).NotTo(o.HaveOccurred())
 	supportsOwnNamespaceAsBool, _ := strconv.ParseBool(supportsOwnNamespace)
 
-	p.supportsAllNamespaces = supportsAllNamespacesAsBool
-	p.supportsSingleNamespace = supportsSingleNamespaceAsBool
-	p.supportsOwnNamespace = supportsOwnNamespaceAsBool
+	p.SupportsAllNamespaces = supportsAllNamespacesAsBool
+	p.SupportsSingleNamespace = supportsSingleNamespaceAsBool
+	p.SupportsOwnNamespace = supportsOwnNamespaceAsBool
 	return p
 }
 
-func CreatePackageManifest(isv string, oc *exutil.CLI) packagemanifest {
+func CreatePackageManifest(isv string, oc *exutil.CLI) Packagemanifest {
 	msg, err := oc.AsAdmin().WithoutNamespace().Run("get").Args("packagemanifest", isv, "-o=jsonpath={.status.catalogSource}:{.status.catalogSourceNamespace}:{.status.defaultChannel}").Output()
 	o.Expect(err).NotTo(o.HaveOccurred())
 	packageData := strings.Split(msg, ":")
-	p := packagemanifest{catalogSource: packageData[0], catalogSourceNamespace: packageData[1], defaultChannel: packageData[2], name: isv}
+	p := Packagemanifest{CatalogSource: packageData[0], CatalogSourceNamespace: packageData[1], DefaultChannel: packageData[2], Name: isv}
 
-	csvVersion, err := oc.AsAdmin().WithoutNamespace().Run("get").Args("packagemanifest", p.name, "-o=jsonpath={.status.channels[?(.name=='"+p.defaultChannel+"')].currentCSV}").Output()
+	csvVersion, err := oc.AsAdmin().WithoutNamespace().Run("get").Args("packagemanifest", p.Name, "-o=jsonpath={.status.channels[?(.name=='"+p.DefaultChannel+"')].currentCSV}").Output()
 	o.Expect(err).NotTo(o.HaveOccurred())
-	p.csvVersion = csvVersion
+	p.CsvVersion = csvVersion
 
 	p = checkOperatorInstallModes(p, oc)
 	return p
 }
-func CreateSubscription(isv string, oc *exutil.CLI) packagemanifest {
+func CreateSubscription(isv string, oc *exutil.CLI) Packagemanifest {
 	p := CreatePackageManifest(isv, oc)
-	if p.supportsAllNamespaces {
-		p.namespace = "openshift-operators"
+	if p.SupportsAllNamespaces {
+		p.Namespace = "openshift-operators"
 
-	} else if p.supportsSingleNamespace || p.supportsOwnNamespace {
+	} else if p.SupportsSingleNamespace || p.SupportsOwnNamespace {
 		p = CreateNamespace(p, oc)
 		CreateOperatorGroup(p, oc)
 	} else {
@@ -114,14 +114,14 @@ func CreateSubscription(isv string, oc *exutil.CLI) packagemanifest {
 	}
 
 	templateSubscriptionYAML := writeSubscription(p)
-	_, err := oc.SetNamespace(p.namespace).AsAdmin().Run("create").Args("-f", templateSubscriptionYAML).Output()
+	_, err := oc.SetNamespace(p.Namespace).AsAdmin().Run("create").Args("-f", templateSubscriptionYAML).Output()
 	o.Expect(err).NotTo(o.HaveOccurred())
 	return p
 }
 
-func CreateSubscriptionSpecificNamespace(isv string, oc *exutil.CLI, namespaceCreate bool, operatorGroupCreate bool, namespace string) packagemanifest {
+func CreateSubscriptionSpecificNamespace(isv string, oc *exutil.CLI, namespaceCreate bool, operatorGroupCreate bool, namespace string) Packagemanifest {
 	p := CreatePackageManifest(isv, oc)
-	p.namespace = namespace
+	p.Namespace = namespace
 	if namespaceCreate {
 		CreateNamespace(p, oc)
 	}
@@ -129,16 +129,16 @@ func CreateSubscriptionSpecificNamespace(isv string, oc *exutil.CLI, namespaceCr
 		CreateOperatorGroup(p, oc)
 	}
 	templateSubscriptionYAML := writeSubscription(p)
-	_, err := oc.SetNamespace(p.namespace).AsAdmin().Run("create").Args("-f", templateSubscriptionYAML).Output()
+	_, err := oc.SetNamespace(p.Namespace).AsAdmin().Run("create").Args("-f", templateSubscriptionYAML).Output()
 	o.Expect(err).NotTo(o.HaveOccurred())
 	return p
 }
 
-func CreateNamespace(p packagemanifest, oc *exutil.CLI) packagemanifest {
-	if p.namespace == "" {
-		p.namespace = names.SimpleNameGenerator.GenerateName("test-operators-")
+func CreateNamespace(p Packagemanifest, oc *exutil.CLI) Packagemanifest {
+	if p.Namespace == "" {
+		p.Namespace = names.SimpleNameGenerator.GenerateName("test-operators-")
 	}
-	_, err := oc.AsAdmin().WithoutNamespace().Run("create").Args("ns", p.namespace).Output()
+	_, err := oc.AsAdmin().WithoutNamespace().Run("create").Args("ns", p.Namespace).Output()
 	o.Expect(err).NotTo(o.HaveOccurred())
 	return p
 }
@@ -152,10 +152,10 @@ func RemoveNamespace(namespace string, oc *exutil.CLI) {
 	}
 }
 
-func CreateOperatorGroup(p packagemanifest, oc *exutil.CLI) {
+func CreateOperatorGroup(p Packagemanifest, oc *exutil.CLI) {
 
-	templateOperatorGroupYAML := writeOperatorGroup(p.namespace)
-	_, err := oc.SetNamespace(p.namespace).AsAdmin().Run("create").Args("-f", templateOperatorGroupYAML).Output()
+	templateOperatorGroupYAML := writeOperatorGroup(p.Namespace)
+	_, err := oc.SetNamespace(p.Namespace).AsAdmin().Run("create").Args("-f", templateOperatorGroupYAML).Output()
 	o.Expect(err).NotTo(o.HaveOccurred())
 }
 
@@ -171,27 +171,27 @@ func writeOperatorGroup(namespace string) (templateOperatorYAML string) {
 	return
 }
 
-func writeSubscription(p packagemanifest) (templateSubscriptionYAML string) {
+func writeSubscription(p Packagemanifest) (templateSubscriptionYAML string) {
 	isvBaseDir := exutil.FixturePath("testdata", "isv")
 	subscriptionYAML := filepath.Join(isvBaseDir, "subscription.yaml")
 	fileSubscription, _ := os.Open(subscriptionYAML)
 	subscription, _ := ioutil.ReadAll(fileSubscription)
 	subscriptionTemplate := string(subscription)
 
-	templateSubscriptionYAML = strings.ReplaceAll(subscriptionYAML, "subscription.yaml", "subscription_"+p.csvVersion+"_.yaml")
-	operatorSubscription := strings.ReplaceAll(subscriptionTemplate, "$OPERATOR_PACKAGE_NAME", p.name)
-	operatorSubscription = strings.ReplaceAll(operatorSubscription, "$OPERATOR_CHANNEL", "\""+p.defaultChannel+"\"")
-	operatorSubscription = strings.ReplaceAll(operatorSubscription, "$OPERATOR_NAMESPACE", p.namespace)
-	operatorSubscription = strings.ReplaceAll(operatorSubscription, "$OPERATOR_SOURCE", p.catalogSource)
-	operatorSubscription = strings.ReplaceAll(operatorSubscription, "$OPERATOR_CATALOG_NAMESPACE", p.catalogSourceNamespace)
-	operatorSubscription = strings.ReplaceAll(operatorSubscription, "$OPERATOR_CURRENT_CSV_VERSION", p.csvVersion)
+	templateSubscriptionYAML = strings.ReplaceAll(subscriptionYAML, "subscription.yaml", "subscription_"+p.CsvVersion+"_.yaml")
+	operatorSubscription := strings.ReplaceAll(subscriptionTemplate, "$OPERATOR_PACKAGE_NAME", p.Name)
+	operatorSubscription = strings.ReplaceAll(operatorSubscription, "$OPERATOR_CHANNEL", "\""+p.DefaultChannel+"\"")
+	operatorSubscription = strings.ReplaceAll(operatorSubscription, "$OPERATOR_NAMESPACE", p.Namespace)
+	operatorSubscription = strings.ReplaceAll(operatorSubscription, "$OPERATOR_SOURCE", p.CatalogSource)
+	operatorSubscription = strings.ReplaceAll(operatorSubscription, "$OPERATOR_CATALOG_NAMESPACE", p.CatalogSourceNamespace)
+	operatorSubscription = strings.ReplaceAll(operatorSubscription, "$OPERATOR_CURRENT_CSV_VERSION", p.CsvVersion)
 	ioutil.WriteFile(templateSubscriptionYAML, []byte(operatorSubscription), 0644)
 	e2e.Logf("Subscription: %s", operatorSubscription)
 	return
 }
-func CheckDeployment(p packagemanifest, oc *exutil.CLI) {
+func CheckDeployment(p Packagemanifest, oc *exutil.CLI) {
 	poolErr := wait.Poll(10*time.Second, 300*time.Second, func() (bool, error) {
-		msg, _ := oc.SetNamespace(p.namespace).AsAdmin().Run("get").Args("csv", p.csvVersion, "-o=jsonpath={.status.phase}").Output()
+		msg, _ := oc.SetNamespace(p.Namespace).AsAdmin().Run("get").Args("csv", p.CsvVersion, "-o=jsonpath={.status.phase}").Output()
 		if strings.Contains(msg, "Succeeded") {
 			return true, nil
 		}
@@ -199,36 +199,36 @@ func CheckDeployment(p packagemanifest, oc *exutil.CLI) {
 	})
 	if poolErr != nil {
 		RemoveOperatorDependencies(p, oc, false)
-		g.Fail("Could not obtain CSV:" + p.csvVersion)
+		g.Fail("Could not obtain CSV:" + p.CsvVersion)
 	}
 }
 
-func RemoveOperatorDependencies(p packagemanifest, oc *exutil.CLI, checkDeletion bool) {
-	ip, _ := oc.SetNamespace(p.namespace).AsAdmin().Run("get").Args("sub", p.name, "-o=jsonpath={.status.installplan.name}").Output()
+func RemoveOperatorDependencies(p Packagemanifest, oc *exutil.CLI, checkDeletion bool) {
+	ip, _ := oc.SetNamespace(p.Namespace).AsAdmin().Run("get").Args("sub", p.Name, "-o=jsonpath={.status.installplan.name}").Output()
 	e2e.Logf("IP: %s", ip)
 	if len(strings.TrimSpace(ip)) > 0 {
-		msg, _ := oc.SetNamespace(p.namespace).AsAdmin().Run("get").Args("installplan", ip, "-o=jsonpath={.spec.clusterServiceVersionNames}").Output()
+		msg, _ := oc.SetNamespace(p.Namespace).AsAdmin().Run("get").Args("installplan", ip, "-o=jsonpath={.spec.clusterServiceVersionNames}").Output()
 		msg = strings.ReplaceAll(msg, "[", "")
 		msg = strings.ReplaceAll(msg, "]", "")
 		e2e.Logf("CSVS: %s", msg)
 		csvs := strings.Split(msg, " ")
 		for i := range csvs {
 			e2e.Logf("CSV_: %s", csvs[i])
-			msg, err := oc.SetNamespace(p.namespace).AsAdmin().Run("delete").Args("csv", csvs[i]).Output()
+			msg, err := oc.SetNamespace(p.Namespace).AsAdmin().Run("delete").Args("csv", csvs[i]).Output()
 			if checkDeletion {
 				o.Expect(err).NotTo(o.HaveOccurred())
 				o.Expect(msg).To(o.ContainSubstring("deleted"))
 			}
 		}
 
-		subsOutput, _ := oc.SetNamespace(p.namespace).AsAdmin().Run("get").Args("subs", "-o=jsonpath={range .items[?(.status.installplan.name=='"+ip+"')].metadata}{.name}{' '}").Output()
+		subsOutput, _ := oc.SetNamespace(p.Namespace).AsAdmin().Run("get").Args("subs", "-o=jsonpath={range .items[?(.status.installplan.name=='"+ip+"')].metadata}{.name}{' '}").Output()
 		e2e.Logf("SUBS OUTPUT: %s", subsOutput)
 		if len(strings.TrimSpace(subsOutput)) > 0 {
 			subs := strings.Split(subsOutput, " ")
 			e2e.Logf("SUBS: %s", subs)
 			for i := range subs {
 				e2e.Logf("SUB_: %s", subs[i])
-				msg, err := oc.SetNamespace(p.namespace).AsAdmin().Run("delete").Args("subs", subs[i]).Output()
+				msg, err := oc.SetNamespace(p.Namespace).AsAdmin().Run("delete").Args("subs", subs[i]).Output()
 				if checkDeletion {
 					o.Expect(err).NotTo(o.HaveOccurred())
 					o.Expect(msg).To(o.ContainSubstring("deleted"))
@@ -236,8 +236,8 @@ func RemoveOperatorDependencies(p packagemanifest, oc *exutil.CLI, checkDeletion
 			}
 		}
 	}
-	if p.supportsSingleNamespace || p.supportsOwnNamespace {
-		RemoveNamespace(p.namespace, oc)
+	if p.SupportsSingleNamespace || p.SupportsOwnNamespace {
+		RemoveNamespace(p.Namespace, oc)
 	}
 
 }

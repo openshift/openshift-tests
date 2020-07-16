@@ -29,7 +29,7 @@ var _ = g.Describe("[Suite:openshift/isv][Intermediate] Operator", func() {
 		CheckCR(currentPackage, kafkaCR, kafkaClusterName, oc)
 		RemoveCR(currentPackage, kafkaCR, kafkaClusterName, oc)
 		RemoveOperatorDependencies(currentPackage, oc, false)
-		RemoveNamespace(currentPackage.namespace, oc)
+		RemoveNamespace(currentPackage.Namespace, oc)
 	})
 
 })
@@ -40,24 +40,24 @@ func CreateCR(filename string, oc *exutil.CLI) {
 	err := oc.AsAdmin().WithoutNamespace().Run("create").Args("-f", cr).Execute()
 	o.Expect(err).NotTo(o.HaveOccurred())
 }
-func RemoveCR(p packagemanifest, CRName string, instanceName string, oc *exutil.CLI) {
-	msg, err := oc.SetNamespace(p.namespace).AsAdmin().Run("delete").Args(CRName, instanceName).Output()
+func RemoveCR(p Packagemanifest, CRName string, instanceName string, oc *exutil.CLI) {
+	msg, err := oc.SetNamespace(p.Namespace).AsAdmin().Run("delete").Args(CRName, instanceName).Output()
 	o.Expect(err).NotTo(o.HaveOccurred())
 	o.Expect(msg).To(o.ContainSubstring("deleted"))
 }
 
-func CheckCR(p packagemanifest, CRName string, instanceName string, oc *exutil.CLI) {
+func CheckCR(p Packagemanifest, CRName string, instanceName string, oc *exutil.CLI) {
 	poolErr := wait.Poll(10*time.Second, 300*time.Second, func() (bool, error) {
-		msg, _ := oc.SetNamespace(p.namespace).AsAdmin().Run("get").Args(CRName, instanceName, "-o=jsonpath={.status.conditions[0].type}").Output()
+		msg, _ := oc.SetNamespace(p.Namespace).AsAdmin().Run("get").Args(CRName, instanceName, "-o=jsonpath={.status.conditions[0].type}").Output()
 		if msg == "Ready" {
 			return true, nil
 		}
 		return false, nil
 	})
 	if poolErr != nil {
-		e2e.Logf("Could not get CR " + CRName + " for " + p.csvVersion)
+		e2e.Logf("Could not get CR " + CRName + " for " + p.CsvVersion)
 		RemoveCR(p, CRName, instanceName, oc)
 		RemoveOperatorDependencies(p, oc, false)
-		g.Fail("Could not get CR " + CRName + " for " + p.csvVersion)
+		g.Fail("Could not get CR " + CRName + " for " + p.CsvVersion)
 	}
 }
