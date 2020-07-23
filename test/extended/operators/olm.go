@@ -566,11 +566,12 @@ var _ = g.Describe("[sig-operators] an end user handle OLM within all namespace"
 				channel:                "preview",
 				ipApproval:             "Automatic",
 				operator:               "elasticsearch-operator",
-				catalogSourceName:      "qe-app-registry",
+				catalogSourceName:      "redhat-operators",
 				catalogSourceNamespace: "openshift-marketplace",
 				// startingCSV:            "elasticsearch-operator.4.1.37-202003021622",
-				startingCSV:     "", //get it from package based on currentCSV if ipApproval is Automatic
-				currentCSV:      "",
+				startingCSV: "", //get it from package based on currentCSV if ipApproval is Automatic
+				// currentCSV:  "",
+				currentCSV:      "elasticsearch-operator.4.1.41-202004130646",
 				installedCSV:    "",
 				template:        subTemplate,
 				singleNamespace: false,
