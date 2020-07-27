@@ -100,9 +100,3 @@ $ git status
 	modified:   test/extended/testdata/bindata.go
 	new file:   test/extended/testdata/olm/etcd-subscription-manual.yaml
 ```
-
-## Run ISV Operators test
-
-```console
-$ ./bin/extended-platform-tests run openshift/isv --dry-run | grep -E "<REGEX>" | ./bin/extended-platform-tests run -f -
-```
