@@ -329,21 +329,24 @@ var _ = g.Describe("[Feature:DisasterRecovery][Disruptive]", func() {
 })
 
 func scaleEtcdQuorum(client kubernetes.Interface, replicas int) error {
-	etcdQGScale, err := client.AppsV1().Deployments("openshift-machine-config-operator").GetScale("etcd-quorum-guard", metav1.GetOptions{})
+	// As of 4.6 it's in etcd, see https://github.com/openshift/machine-config-operator/pull/1928/commits/f0a4088fc3a0bad224780ed3202143aabd73354f
+	ns := "openshift-etcd"
+	quorumGuard := "etcd-quorum-guard"
+	etcdQGScale, err := client.AppsV1().Deployments(ns).GetScale(quorumGuard, metav1.GetOptions{})
 	if err != nil {
 		return err
 	}
 	if etcdQGScale.Spec.Replicas == int32(replicas) {
 		return nil
 	}
-	framework.Logf("Scale etcd-quorum-guard to %d replicas", replicas)
+	framework.Logf("Scale %s/%s to %d replicas", ns, quorumGuard, replicas)
 	etcdQGScale.Spec.Replicas = int32(replicas)
-	_, err = client.AppsV1().Deployments("openshift-machine-config-operator").UpdateScale("etcd-quorum-guard", etcdQGScale)
+	_, err = client.AppsV1().Deployments(ns).UpdateScale(quorumGuard, etcdQGScale)
 	if err != nil {
 		return err
 	}
 
-	etcdQGScale, err = client.AppsV1().Deployments("openshift-machine-config-operator").GetScale("etcd-quorum-guard", metav1.GetOptions{})
+	etcdQGScale, err = client.AppsV1().Deployments(ns).GetScale(quorumGuard, metav1.GetOptions{})
 	if err != nil {
 		return err
 	}
