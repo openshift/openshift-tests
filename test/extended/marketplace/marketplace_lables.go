@@ -13,7 +13,7 @@ import (
 	e2e "k8s.io/kubernetes/test/e2e/framework"
 )
 
-var _ = g.Describe("[sig-operators] Marketplace could", func() {
+var _ = g.Describe("[sig-operators] OLM Marketplace could", func() {
 
 	defer g.GinkgoRecover()
 
@@ -38,7 +38,7 @@ var _ = g.Describe("[sig-operators] Marketplace could", func() {
 	})
 
 	// author: jfan@redhat.com
-	g.It("OLM-High-ocp-21728-create opsrc with labels", func() {
+	g.It("High-21728-create opsrc with labels", func() {
 
 		// Create one opsrc with label
 		opsrcYaml, err := oc.AsAdmin().Run("process").Args("--ignore-unknown-parameters=true", "-f", opsrcYamltem, "-p", "NAME=opsrctestlabel", "NAMESPACE=marketplace_e2e", "LABEL=optestlabel", "DISPLAYNAME=optestlabel", "PUBLISHER=optestlabel", fmt.Sprintf("MARKETPLACE=%s", marketplaceNs)).OutputToFile("config.json")
