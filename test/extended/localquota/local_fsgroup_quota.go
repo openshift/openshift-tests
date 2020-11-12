@@ -11,7 +11,6 @@ import (
 
 	g "github.com/onsi/ginkgo"
 	o "github.com/onsi/gomega"
-	"k8s.io/kubernetes/pkg/volume/emptydirquota"
 
 	exutil "github.com/openshift/openshift-tests/test/extended/util"
 )
@@ -41,6 +40,11 @@ func lookupFSGroup(oc *exutil.CLI, project string) (int, error) {
 	return fsGroup, nil
 }
 
+func getFSDevice(volDir string) (string, error) {
+	outBytes, err := exec.Command("df", "--output=source", volDir).Output()
+	return string(outBytes), err
+}
+
 // lookupXFSQuota runs an xfs_quota report and parses the output
 // looking for the given fsGroup ID's hard quota.
 //
@@ -58,7 +62,7 @@ func lookupFSGroup(oc *exutil.CLI, project string) (int, error) {
 func lookupXFSQuota(oc *exutil.CLI, fsGroup int, volDir string) (int, error) {
 
 	// First lookup the filesystem device the volumeDir resides on:
-	fsDevice, err := emptydirquota.GetFSDevice(volDir)
+	fsDevice, err := getFSDevice(volDir)
 	if err != nil {
 		return 0, err
 	}
