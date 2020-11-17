@@ -68,7 +68,7 @@ var _ = g.Describe("[sig-operators] OLM should", func() {
 
 	for i := range providedAPIs {
 		api := providedAPIs[i]
-		g.It(fmt.Sprintf("be installed with %s at version %s", api.plural, api.version), func() {
+		g.It(fmt.Sprintf("High-36803-OLM is installed with %s at version %s", api.plural, api.version), func() {
 			if api.fromAPIService {
 				// Ensure spec.version matches expected
 				raw, err := oc.AsAdmin().Run("get").Args("apiservices", fmt.Sprintf("%s.%s", api.version, api.group), "-o=jsonpath={.spec.version}").Output()
