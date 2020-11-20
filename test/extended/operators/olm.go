@@ -247,7 +247,7 @@ var _ = g.Describe("[sig-operators] OLM for an end user handle within a namespac
 	g.AfterEach(func() {})
 
 	// It will cover test case: OCP-24870, author: kuiwang@redhat.com
-	g.It("High-24870-can not create csv without operator group", func() {
+	g.It("ConnectedOnly-High-24870-can not create csv without operator group", func() {
 		var (
 			itName = g.CurrentGinkgoTestDescription().TestText
 			og     = ogD
@@ -267,7 +267,7 @@ var _ = g.Describe("[sig-operators] OLM for an end user handle within a namespac
 	})
 
 	// It will cover part of test case: OCP-25855, author: kuiwang@redhat.com
-	g.It("High-25855-Add the channel field to subscription_sync_count", func() {
+	g.It("ConnectedOnly-High-25855-Add the channel field to subscription_sync_count", func() {
 		var (
 			itName = g.CurrentGinkgoTestDescription().TestText
 			og     = ogD
@@ -356,7 +356,7 @@ var _ = g.Describe("[sig-operators] OLM for an end user handle to support", func
 	g.AfterEach(func() {})
 
 	// It will cover part of test case: OCP-22226, author: kuiwang@redhat.com
-	g.It("High-22226-the csv without support AllNamespaces fails for og with allnamespace", func() {
+	g.It("ConnectedOnly-High-22226-the csv without support AllNamespaces fails for og with allnamespace", func() {
 		var (
 			itName = g.CurrentGinkgoTestDescription().TestText
 			og     = operatorGroupDescription{
@@ -391,7 +391,7 @@ var _ = g.Describe("[sig-operators] OLM for an end user handle to support", func
 	})
 
 	// It will cover part of test case: OCP-22226, author: kuiwang@redhat.com
-	g.It("High-22226-the csv without support MultiNamespace fails for og with MultiNamespace", func() {
+	g.It("ConnectedOnly-High-22226-the csv without support MultiNamespace fails for og with MultiNamespace", func() {
 		var (
 			itName = g.CurrentGinkgoTestDescription().TestText
 			og     = operatorGroupDescription{
@@ -468,7 +468,7 @@ var _ = g.Describe("[sig-operators] OLM for an end user handle within all namesp
 	})
 
 	// It will cover test case: OCP-25679, OCP-21418(acutally it covers OCP-25679), author: kuiwang@redhat.com
-	g.It("High-25679-Medium-21418-Cluster resource created and deleted correctly", func() {
+	g.It("ConnectedOnly-High-25679-Medium-21418-Cluster resource created and deleted correctly", func() {
 		var (
 			itName = g.CurrentGinkgoTestDescription().TestText
 			sub    = subscriptionDescription{
@@ -539,7 +539,7 @@ var _ = g.Describe("[sig-operators] OLM for an end user handle within all namesp
 	})
 
 	// It will cover test case: OCP-25783, author: kuiwang@redhat.com
-	g.It("High-25783-Subscriptions are not getting processed taking very long to get processed [Serial]", func() {
+	g.It("ConnectedOnly-High-25783-Subscriptions are not getting processed taking very long to get processed [Serial]", func() {
 		var (
 			itName           = g.CurrentGinkgoTestDescription().TestText
 			subElasticSearch = subscriptionDescription{
