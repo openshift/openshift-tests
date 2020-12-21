@@ -8,7 +8,6 @@ import (
 	"k8s.io/client-go/rest"
 
 	corev1 "k8s.io/api/core/v1"
-	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -31,7 +30,7 @@ var _ = g.Describe("[Conformance][templates] template-api", func() {
 		g.Skip("Bug 1731222: skip template tests until we determine what is broken")
 		t := g.GinkgoT()
 
-		for _, version := range []schema.GroupVersion{v1.SchemeGroupVersion} {
+		for _, version := range []schema.GroupVersion{corev1.SchemeGroupVersion} {
 			config := rest.CopyConfig(oc.AdminConfig())
 			config.GroupVersion = &version
 
@@ -49,12 +48,12 @@ var _ = g.Describe("[Conformance][templates] template-api", func() {
 			corev1Codec := serializer.NewCodecFactory(corev1Scheme).LegacyCodec(corev1.SchemeGroupVersion)
 
 			template.Objects = append(template.Objects, runtime.RawExtension{
-				Raw: []byte(runtime.EncodeOrDie(corev1Codec, &v1.Service{
+				Raw: []byte(runtime.EncodeOrDie(corev1Codec, &corev1.Service{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      "${NAME}-tester",
 						Namespace: "somevalue",
 					},
-					Spec: v1.ServiceSpec{
+					Spec: corev1.ServiceSpec{
 						ClusterIP:       "1.2.3.4",
 						SessionAffinity: "some-bad-${VALUE}",
 					},
