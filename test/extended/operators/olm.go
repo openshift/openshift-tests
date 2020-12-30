@@ -172,7 +172,6 @@ var _ = g.Describe("[sig-operators] OLM for an end user use", func() {
 		defer sub.getCSV().delete(itName, dr)
 		newCheck("expect", asAdmin, true, compare, "Succeeded", ok, []string{"csv", sub.installedCSV, "-o=jsonpath={.status.phase}"}).check(oc)
 
-
 		g.By("Switch to common user to create the resources provided by the operator")
 		etcdClusterName := "example-etcd-cluster"
 		configFile, err := oc.Run("process").Args("-f", etcdCluster, "-p", fmt.Sprintf("NAME=%s", etcdClusterName), fmt.Sprintf("NAMESPACE=%s", oc.Namespace())).OutputToFile("config.json")
@@ -241,6 +240,7 @@ var _ = g.Describe("[sig-operators] OLM for an end user handle within a namespac
 		sub.namespace = oc.Namespace()
 
 		g.By("Create csv with failure because of no operator group")
+		sub.currentCSV = "hawtio-operator.v0.2.0"
 		sub.createWithoutCheck(oc, itName, dr)
 		newCheck("present", asUser, withNamespace, notPresent, "", ok, []string{"csv", sub.currentCSV}).check(oc)
 		sub.delete(itName, dr)
