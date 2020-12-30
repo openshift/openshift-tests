@@ -2,6 +2,7 @@ package operators
 
 import (
 	"fmt"
+	"os/exec"
 	"regexp"
 
 	g "github.com/onsi/ginkgo"
@@ -276,9 +277,8 @@ var _ = g.Describe("[sig-operators] OLM for an end user handle within a namespac
 
 		g.By("check the subscription_sync_total")
 		err := wait.Poll(10*time.Second, 120*time.Second, func() (bool, error) {
-			subscriptionSyncTotal := execResource(oc, asAdmin, withoutNamespace, "-c", "catalog-operator", infoCatalogOperator[0], "-n", "openshift-operator-lifecycle-manager", "--", "curl",
-				"-s", "-k", "-H \"Authorization: Bearer $(oc sa get-token prometheus-k8s -n openshift-monitoring)\"", fmt.Sprintf("https://%s/metrics", infoCatalogOperator[1]))
-			if !strings.Contains(subscriptionSyncTotal, sub.installedCSV) {
+			subscriptionSyncTotal, _ := exec.Command("bash", "-c", "oc exec -c catalog-operator "+infoCatalogOperator[0]+" -n openshift-operator-lifecycle-manager -- curl -s -k -H 'Authorization: Bearer $(oc sa get-token prometheus-k8s -n openshift-monitoring)' https://"+infoCatalogOperator[1]+"/metrics").Output()
+			if !strings.Contains(string(subscriptionSyncTotal), sub.installedCSV) {
 				e2e.Logf("the metric is not counted and try next round")
 				return false, nil
 			}
