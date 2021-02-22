@@ -1,4 +1,4 @@
-all: build
+all: update build
 .PHONY: all
 
 OUT_DIR=bin
