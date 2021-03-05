@@ -168,10 +168,10 @@ var _ = g.Describe("[sig-operators] OLM for an end user use", func() {
 			singleNamespace:        false,
 			template:               subTemplate,
 		}
-		sub.create(oc, itName, dr)
 		defer sub.delete(itName, dr)
+		sub.create(oc, itName, dr)
 		defer sub.getCSV().delete(itName, dr)
-		newCheck("expect", asAdmin, true, compare, "Succeeded", ok, []string{"csv", sub.installedCSV, "-o=jsonpath={.status.phase}"}).check(oc)
+		newCheck("expect", asAdmin, true, compare, "Succeeded", ok, []string{"csv", sub.installedCSV, "-n", "openshift-operators", "-o=jsonpath={.status.phase}"}).check(oc)
 
 		g.By("Switch to common user to create the resources provided by the operator")
 		etcdClusterName := "example-etcd-cluster"
@@ -185,8 +185,7 @@ var _ = g.Describe("[sig-operators] OLM for an end user use", func() {
 			o.Expect(err).NotTo(o.HaveOccurred())
 		}()
 
-		newCheck("expect", false, true, compare, "Running", ok, []string{"etcdCluster", etcdClusterName, "-o=jsonpath={.status.phase}"}).check(oc)
-
+		newCheck("expect", false, true, compare, "Running", ok, []string{"etcdCluster", etcdClusterName, "-n", oc.Namespace(), "-o=jsonpath={.status.phase}"}).check(oc)
 	})
 })
 
