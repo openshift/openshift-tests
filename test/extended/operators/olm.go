@@ -1308,6 +1308,11 @@ func getResource(oc *exutil.CLI, asAdmin bool, withoutNamespace bool, parameters
 }
 
 func expectedResource(oc *exutil.CLI, asAdmin bool, withoutNamespace bool, isCompare bool, content string, expect bool, parameters ...string) error {
+	expectMap := map[bool]string{
+		true:  "do",
+		false: "do not",
+	}
+
 	cc := func(a, b string, ic bool) bool {
 		bs := strings.Split(b, "+2+")
 		ret := false
@@ -1318,13 +1323,14 @@ func expectedResource(oc *exutil.CLI, asAdmin bool, withoutNamespace bool, isCom
 		}
 		return ret
 	}
+	e2e.Logf("Running: oc get asAdmin(%t) withoutNamespace(%t) %s", asAdmin, withoutNamespace, strings.Join(parameters, " "))
 	return wait.Poll(3*time.Second, 150*time.Second, func() (bool, error) {
 		output, err := doAction(oc, "get", asAdmin, withoutNamespace, parameters...)
 		if err != nil {
 			e2e.Logf("the get error is %v, and try next", err)
 			return false, nil
 		}
-		e2e.Logf("the queried resource:%s", output)
+		e2e.Logf("---> we %v expect value: %s, in returned value: %s", expectMap[expect], content, output)
 		if isCompare && expect && cc(output, content, isCompare) {
 			e2e.Logf("the output %s matches one of the content %s, expected", output, content)
 			return true, nil
