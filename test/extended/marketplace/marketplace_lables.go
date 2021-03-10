@@ -38,7 +38,7 @@ var _ = g.Describe("[sig-operators] OLM Marketplace could", func() {
 	})
 
 	// author: jfan@redhat.com
-	g.It("High-21728-create opsrc with labels", func() {
+	g.It("Author:jfan-High-21728-create opsrc with labels", func() {
 
 		// Create one opsrc with label
 		opsrcYaml, err := oc.AsAdmin().Run("process").Args("--ignore-unknown-parameters=true", "-f", opsrcYamltem, "-p", "NAME=opsrctestlabel", "NAMESPACE=marketplace_e2e", "LABEL=optestlabel", "DISPLAYNAME=optestlabel", "PUBLISHER=optestlabel", fmt.Sprintf("MARKETPLACE=%s", marketplaceNs)).OutputToFile("config.json")
