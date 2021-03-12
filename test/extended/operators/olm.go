@@ -169,7 +169,35 @@ var _ = g.Describe("[sig-operators] OLM for an end user use", func() {
 			template:               subTemplate,
 		}
 		defer sub.delete(itName, dr)
-		sub.create(oc, itName, dr)
+		sub.createWithoutCheck(oc, itName, dr)
+
+		g.By("try to get installPlan and CSV of the sub")
+		var installedPlan string
+		errIP := wait.Poll(10*time.Second, 150*time.Second, func() (bool, error) {
+			output := getResource(oc, asAdmin, withoutNamespace, "ip", "-n", "openshift-operators", "-o=jsonpath={.items[*].metadata.name}")
+			ips := strings.Fields(output)
+			if len(ips) == 0 {
+				e2e.Logf("no ip is found, and try next")
+				return false, nil
+			}
+
+			for _, ip := range ips {
+				subNames := getResource(oc, asAdmin, withoutNamespace, "ip", ip, "-n", "openshift-operators", "-o=jsonpath={.metadata.ownerReferences[*].name}")
+				if strings.Contains(subNames, sub.subName) {
+					e2e.Logf("found installplan and try to get csv")
+					installedPlan = ip
+					return true, nil
+				}
+
+			}
+			return false, nil
+		})
+		o.Expect(errIP).NotTo(o.HaveOccurred())
+		installedCSVs := getResource(oc, asAdmin, withoutNamespace, "ip", installedPlan, "-n", "openshift-operators", "-o=jsonpath={.spec.clusterServiceVersionNames[*]}")
+		o.Expect(installedCSVs).NotTo(o.BeEmpty())
+		sub.installedCSV = strings.Fields(installedCSVs)[0]
+		dr.getIr(itName).add(newResource(oc, "csv", sub.installedCSV, requireNS, sub.namespace))
+
 		defer sub.getCSV().delete(itName, dr)
 		newCheck("expect", asAdmin, true, compare, "Succeeded", ok, []string{"csv", sub.installedCSV, "-n", "openshift-operators", "-o=jsonpath={.status.phase}"}).check(oc)
 
