@@ -205,13 +205,13 @@ var _ = g.Describe("[sig-operators] OLM for an end user use", func() {
 		etcdClusterName := "example-etcd-cluster"
 		configFile, err := oc.Run("process").Args("-f", etcdCluster, "-p", fmt.Sprintf("NAME=%s", etcdClusterName), fmt.Sprintf("NAMESPACE=%s", oc.Namespace())).OutputToFile("config.json")
 		o.Expect(err).NotTo(o.HaveOccurred())
-		err = oc.Run("create").Args("-f", configFile).Execute()
-		o.Expect(err).NotTo(o.HaveOccurred())
 
 		defer func() {
 			_, err := oc.Run("delete").Args("etcdcluster", etcdClusterName, "-n", oc.Namespace()).Output()
 			o.Expect(err).NotTo(o.HaveOccurred())
 		}()
+		err = oc.Run("create").Args("-f", configFile).Execute()
+		o.Expect(err).NotTo(o.HaveOccurred())
 
 		newCheck("expect", false, true, compare, "Running", ok, []string{"etcdCluster", etcdClusterName, "-n", oc.Namespace(), "-o=jsonpath={.status.phase}"}).check(oc)
 	})
@@ -624,19 +624,19 @@ var _ = g.Describe("[sig-operators] OLM for an end user handle within all namesp
 		}
 
 		g.By("create operator ElasticSearch")
+		defer crdElasticSearch.delete(oc)
+		defer subElasticSearch.delete(itName, dr)
 		subElasticSearch.create(oc, itName, dr)
 		csvElasticSearch.name = subElasticSearch.installedCSV
-		defer crdElasticSearch.delete(oc)
 		defer csvElasticSearch.delete(itName, dr)
-		defer subElasticSearch.delete(itName, dr)
 		newCheck("expect", asAdmin, withoutNamespace, compare, "Succeeded", ok, []string{"csv", subElasticSearch.installedCSV, "-n", subElasticSearch.namespace, "-o=jsonpath={.status.phase}"}).check(oc)
 
 		g.By("create operator Jaeger")
+		defer crdJaegers.delete(oc)
+		defer subJaeger.delete(itName, dr)
 		subJaeger.create(oc, itName, dr)
 		csvJaeger.name = subJaeger.installedCSV
-		defer crdJaegers.delete(oc)
 		defer csvJaeger.delete(itName, dr)
-		defer subJaeger.delete(itName, dr)
 		newCheck("expect", asAdmin, withoutNamespace, compare, "Succeeded", ok, []string{"csv", subJaeger.installedCSV, "-n", subJaeger.namespace, "-o=jsonpath={.status.phase}"}).check(oc)
 
 	})
