@@ -345,10 +345,6 @@ github.com/google/go-cmp/cmp/internal/diff
 github.com/google/go-cmp/cmp/internal/flags
 github.com/google/go-cmp/cmp/internal/function
 github.com/google/go-cmp/cmp/internal/value
-# github.com/google/go-github v17.0.0+incompatible
-github.com/google/go-github/github
-# github.com/google/go-querystring v1.0.0
-github.com/google/go-querystring/query
 # github.com/google/gofuzz v1.0.0
 github.com/google/gofuzz
 # github.com/google/uuid v1.1.1
@@ -1430,7 +1426,7 @@ k8s.io/cli-runtime/pkg/kustomize/k8sdeps/transformer/patch
 k8s.io/cli-runtime/pkg/kustomize/k8sdeps/validator
 k8s.io/cli-runtime/pkg/printers
 k8s.io/cli-runtime/pkg/resource
-# k8s.io/client-go v0.17.1 => github.com/openshift/kubernetes-client-go v0.0.0-20200106170045-1fda2942f64d
+# k8s.io/client-go v1.5.2 => github.com/openshift/kubernetes-client-go v0.0.0-20200106170045-1fda2942f64d
 k8s.io/client-go/discovery
 k8s.io/client-go/discovery/cached
 k8s.io/client-go/discovery/cached/disk
@@ -1764,7 +1760,7 @@ k8s.io/kubectl/pkg/util/term
 k8s.io/kubelet/config/v1beta1
 k8s.io/kubelet/pkg/apis/deviceplugin/v1beta1
 k8s.io/kubelet/pkg/apis/pluginregistration/v1
-# k8s.io/kubernetes v1.17.1 => github.com/openshift/kubernetes v1.17.0-alpha.0.0.20200120180958-5945c3b07163
+# k8s.io/kubernetes v1.21.0 => github.com/openshift/kubernetes v1.17.0-alpha.0.0.20200120180958-5945c3b07163
 k8s.io/kubernetes/cmd/kube-apiserver/app
 k8s.io/kubernetes/cmd/kube-apiserver/app/options
 k8s.io/kubernetes/cmd/kube-proxy/app
