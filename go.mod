@@ -8,6 +8,7 @@ require (
 	github.com/apparentlymart/go-cidr v1.0.1
 	github.com/aws/aws-sdk-go v1.16.26
 	github.com/certifi/gocertifi v0.0.0-20190905060710-a5e0173ced67 // indirect
+	github.com/coreos/rkt v1.30.0 // indirect
 	github.com/davecgh/go-spew v1.1.1
 	github.com/docker/distribution v2.7.1+incompatible
 	github.com/fsouza/go-dockerclient v0.0.0-20171004212419-da3951ba2e9e
@@ -15,7 +16,6 @@ require (
 	github.com/ghodss/yaml v1.0.0
 	github.com/google/cadvisor v0.35.1-0.20200116204205-4abc562912f0 // indirect
 	github.com/google/go-cmp v0.3.1 // indirect
-	github.com/google/go-github v17.0.0+incompatible
 	github.com/googleapis/gnostic v0.3.1 // indirect
 	github.com/imdario/mergo v0.3.8 // indirect
 	github.com/jteeuwen/go-bindata v3.0.8-0.20151023091102-a0ff2567cfb7+incompatible
@@ -54,12 +54,12 @@ require (
 	k8s.io/apimachinery v0.17.1
 	k8s.io/apiserver v0.17.1
 	k8s.io/cli-runtime v0.17.1
-	k8s.io/client-go v0.17.1
+	k8s.io/client-go v1.5.2
 	k8s.io/component-base v0.17.1
 	k8s.io/klog v1.0.0
 	k8s.io/kube-openapi v0.0.0-20191107075043-30be4d16710a
 	k8s.io/kubectl v0.0.0
-	k8s.io/kubernetes v1.17.1
+	k8s.io/kubernetes v1.21.0
 	k8s.io/legacy-cloud-providers v0.0.0
 	sigs.k8s.io/yaml v1.1.0
 )
