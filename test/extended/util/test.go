@@ -466,6 +466,7 @@ var (
 		// tests that must be run without competition
 		"[Serial]": {
 			`\[Disruptive\]`,
+			`\[Exclusive\]`,
 			`\[Feature:Performance\]`,            // requires isolation
 			`\[Feature:ManualPerformance\]`,      // requires isolation
 			`\[Feature:HighDensityPerformance\]`, // requires no other namespaces
@@ -566,6 +567,7 @@ var (
 	excludedTests = []string{
 		`\[Disabled:`,
 		`\[Disruptive\]`,
+		`\[Exclusive\]`,
 		`\[Skipped\]`,
 		`\[Slow\]`,
 		`\[Flaky\]`,
