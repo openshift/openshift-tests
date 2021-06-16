@@ -92,6 +92,24 @@ $ ./bin/extended-platform-tests run all --dry-run|grep "\[Serial\] olm version s
 $ ./bin/extended-platform-tests run openshift/conformance/serial --run "\[Serial\] olm version should contain the source commit id"
 ```
 
+## Debug
+Sometime, we want to **keep the generated namespace for debugging**. Just add the Env Var: `export DELETE_NAMESPACE=false`. These random namespaces will be keep, like below:
+```console
+...
+Dec 18 09:39:33.448: INFO: Running AfterSuite actions on all nodes
+Dec 18 09:39:33.448: INFO: Waiting up to 7m0s for all (but 100) nodes to be ready
+Dec 18 09:39:33.511: INFO: Found DeleteNamespace=false, skipping namespace deletion!
+Dec 18 09:39:33.511: INFO: Running AfterSuite actions on node 1
+...
+1 pass, 0 skip (2m50s)
+[root@preserve-olm-env openshift-tests-private]# oc get ns
+NAME                                               STATUS   AGE
+default                                            Active   4h46m
+e2e-test-olm-a-a92jyymd-lmgj6                      Active   4m28s
+e2e-test-olm-a-a92jyymd-pr8hx                      Active   4m29s
+...
+```
+
 ## How to generate bindata
 If you have some new YAML files used in your code, you have to generate the bindata first.
 Run `make update` to update the bindata. For example, you can see the bindata has been updated after running the `make update`. As follows: 
