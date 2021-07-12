@@ -222,31 +222,7 @@ var _ = g.Describe("[sig-operators] OLM for an end user handle within a namespac
 
 	var (
 		oc = exutil.NewCLI("olm-a-"+getRandomString(), exutil.KubeConfigPath())
-
-		buildPruningBaseDir = exutil.FixturePath("testdata", "olm")
-		ogSingleTemplate    = filepath.Join(buildPruningBaseDir, "operatorgroup.yaml")
-		subTemplate         = filepath.Join(buildPruningBaseDir, "olm-subscription.yaml")
-		dr                  = make(describerResrouce)
-
-		ogD = operatorGroupDescription{
-			name:      "og-singlenamespace",
-			namespace: "",
-			template:  ogSingleTemplate,
-		}
-		subD = subscriptionDescription{
-			subName:                "hawtio-operator",
-			namespace:              "",
-			channel:                "alpha",
-			ipApproval:             "Automatic",
-			operatorPackage:        "hawtio-operator",
-			catalogSourceName:      "community-operators",
-			catalogSourceNamespace: "openshift-marketplace",
-			startingCSV:            "",
-			currentCSV:             "",
-			installedCSV:           "",
-			template:               subTemplate,
-			singleNamespace:        true,
-		}
+		dr = make(describerResrouce)
 	)
 
 	g.BeforeEach(func() {
@@ -259,16 +235,37 @@ var _ = g.Describe("[sig-operators] OLM for an end user handle within a namespac
 	// It will cover test case: OCP-24870, author: kuiwang@redhat.com
 	g.It("ConnectedOnly-Author:kuiwang-High-24870-can not create csv without operator group", func() {
 		var (
-			itName = g.CurrentGinkgoTestDescription().TestText
-			og     = ogD
-			sub    = subD
+			itName              = g.CurrentGinkgoTestDescription().TestText
+			buildPruningBaseDir = exutil.FixturePath("testdata", "olm")
+			ogSingleTemplate    = filepath.Join(buildPruningBaseDir, "operatorgroup.yaml")
+			subTemplate         = filepath.Join(buildPruningBaseDir, "olm-subscription.yaml")
+
+			og = operatorGroupDescription{
+				name:      "og-singlenamespace",
+				namespace: "",
+				template:  ogSingleTemplate,
+			}
+			sub = subscriptionDescription{
+				subName:                "mta-operator",
+				namespace:              "",
+				channel:                "alpha",
+				ipApproval:             "Automatic",
+				operatorPackage:        "mta-operator",
+				catalogSourceName:      "community-operators",
+				catalogSourceNamespace: "openshift-marketplace",
+				startingCSV:            "",
+				currentCSV:             "",
+				installedCSV:           "",
+				template:               subTemplate,
+				singleNamespace:        true,
+			}
 		)
 		oc.SetupProject() //project and its resource are deleted automatically when out of It, so no need derfer or AfterEach
 		og.namespace = oc.Namespace()
 		sub.namespace = oc.Namespace()
 
 		g.By("Create csv with failure because of no operator group")
-		sub.currentCSV = "hawtio-operator.v0.2.0"
+		sub.currentCSV = "windup-operator.0.0.5"
 		sub.createWithoutCheck(oc, itName, dr)
 		newCheck("present", asUser, withNamespace, notPresent, "", ok, []string{"csv", sub.currentCSV}).check(oc)
 		sub.delete(itName, dr)
@@ -282,9 +279,30 @@ var _ = g.Describe("[sig-operators] OLM for an end user handle within a namespac
 	// It will cover part of test case: OCP-25855, author: kuiwang@redhat.com
 	g.It("ConnectedOnly-Author:kuiwang-High-25855-Add the channel field to subscription_sync_count", func() {
 		var (
-			itName = g.CurrentGinkgoTestDescription().TestText
-			og     = ogD
-			sub    = subD
+			itName              = g.CurrentGinkgoTestDescription().TestText
+			buildPruningBaseDir = exutil.FixturePath("testdata", "olm")
+			ogSingleTemplate    = filepath.Join(buildPruningBaseDir, "operatorgroup.yaml")
+			subTemplate         = filepath.Join(buildPruningBaseDir, "olm-subscription.yaml")
+
+			og = operatorGroupDescription{
+				name:      "og-singlenamespace",
+				namespace: "",
+				template:  ogSingleTemplate,
+			}
+			sub = subscriptionDescription{
+				subName:                "mta-operator",
+				namespace:              "",
+				channel:                "alpha",
+				ipApproval:             "Automatic",
+				operatorPackage:        "mta-operator",
+				catalogSourceName:      "community-operators",
+				catalogSourceNamespace: "openshift-marketplace",
+				startingCSV:            "",
+				currentCSV:             "",
+				installedCSV:           "",
+				template:               subTemplate,
+				singleNamespace:        true,
+			}
 		)
 		oc.SetupProject() //project and its resource are deleted automatically when out of It, so no need derfer or AfterEach
 		og.namespace = oc.Namespace()
@@ -485,23 +503,22 @@ var _ = g.Describe("[sig-operators] OLM for an end user handle within all namesp
 		var (
 			itName = g.CurrentGinkgoTestDescription().TestText
 			sub    = subscriptionDescription{
-				subName:                "teiid",
+				subName:                "keda",
 				namespace:              "openshift-operators",
-				channel:                "beta",
+				channel:                "alpha",
 				ipApproval:             "Automatic",
-				operatorPackage:        "teiid",
+				operatorPackage:        "keda",
 				catalogSourceName:      "community-operators",
 				catalogSourceNamespace: "openshift-marketplace",
-				// startingCSV:            "teiid.v0.3.0",
-				startingCSV:     "", //get it from package based on currentCSV if ipApproval is Automatic
-				currentCSV:      "",
-				installedCSV:    "",
-				template:        subTemplate,
-				singleNamespace: false,
+				startingCSV:            "", //get it from package based on currentCSV if ipApproval is Automatic
+				currentCSV:             "",
+				installedCSV:           "",
+				template:               subTemplate,
+				singleNamespace:        false,
 			}
-			crdName      = "virtualdatabases.teiid.io"
-			crName       = "VirtualDatabase"
-			podLabelName = "teiid"
+			crdName      = "kedacontrollers.keda.sh"
+			crName       = "KedaController"
+			podLabelName = "keda"
 			cl           = checkList{}
 		)
 
@@ -554,90 +571,78 @@ var _ = g.Describe("[sig-operators] OLM for an end user handle within all namesp
 	// It will cover test case: OCP-25783, author: kuiwang@redhat.com
 	g.It("ConnectedOnly-Author:kuiwang-High-25783-Subscriptions are not getting processed taking very long to get processed [Serial]", func() {
 		var (
-			itName           = g.CurrentGinkgoTestDescription().TestText
-			subElasticSearch = subscriptionDescription{
-				subName:                "elasticsearch-operator",
+			itName              = g.CurrentGinkgoTestDescription().TestText
+			buildPruningBaseDir = exutil.FixturePath("testdata", "olm")
+			catsrcImageTemplate = filepath.Join(buildPruningBaseDir, "catalogsource-image.yaml")
+			subTemplate         = filepath.Join(buildPruningBaseDir, "olm-subscription.yaml")
+
+			subkeda = subscriptionDescription{
+				subName:                "keda",
 				namespace:              "openshift-operators",
-				channel:                "preview",
+				channel:                "alpha",
 				ipApproval:             "Automatic",
-				operatorPackage:        "elasticsearch-operator",
-				catalogSourceName:      "redhat-operators",
+				operatorPackage:        "keda",
+				catalogSourceName:      "community-operators",
 				catalogSourceNamespace: "openshift-marketplace",
-				// startingCSV:            "elasticsearch-operator.4.1.37-202003021622",
-				startingCSV: "", //get it from package based on currentCSV if ipApproval is Automatic
-				// currentCSV:  "",
-				currentCSV:      "elasticsearch-operator.4.1.41-202004130646",
-				installedCSV:    "",
-				template:        subTemplate,
-				singleNamespace: false,
+				startingCSV:            "", //get it from package based on currentCSV if ipApproval is Automatic
+				currentCSV:             "",
+				installedCSV:           "",
+				template:               subTemplate,
+				singleNamespace:        false,
 			}
 
-			csvElasticSearch = csvDescription{
+			csvkeda = csvDescription{
 				name:      "",
 				namespace: "openshift-operators",
 			}
 
-			subJaeger = subscriptionDescription{
-				subName:                "jaeger-product",
+			catsrc = catalogSourceDescription{
+				name:        "catsrc-25783-operator",
+				namespace:   "openshift-marketplace",
+				displayName: "Test Catsrc 25783 Operators",
+				publisher:   "Red Hat",
+				sourceType:  "grpc",
+				address:     "quay.io/olmqe/olm-api:v2",
+				template:    catsrcImageTemplate,
+			}
+			subCockroachdb = subscriptionDescription{
+				subName:                "cockroachdb33241",
 				namespace:              "openshift-operators",
-				channel:                "stable",
+				channel:                "stable-5.x",
 				ipApproval:             "Automatic",
-				operatorPackage:        "jaeger-product",
-				catalogSourceName:      "redhat-operators",
-				catalogSourceNamespace: "openshift-marketplace",
-				// startingCSV:            "jaeger-operator.v1.17.1",
-				startingCSV:     "", //get it from package based on currentCSV if ipApproval is Automatic
-				currentCSV:      "",
-				installedCSV:    "",
-				template:        subTemplate,
-				singleNamespace: false,
+				operatorPackage:        "cockroachdb",
+				catalogSourceName:      catsrc.name,
+				catalogSourceNamespace: catsrc.namespace,
+				startingCSV:            "", //get it from package based on currentCSV if ipApproval is Automatic
+				currentCSV:             "",
+				installedCSV:           "",
+				template:               subTemplate,
+				singleNamespace:        false,
 			}
 
-			csvJaeger = csvDescription{
+			csvCockroachdb = csvDescription{
 				name:      "",
 				namespace: "openshift-operators",
-			}
-
-			crdJaegers = crdDescription{
-				name:     "jaegers.jaegertracing.io",
-				template: "",
-			}
-
-			crdElasticSearch = crdDescription{
-				name:     "elasticsearches.logging.openshift.io",
-				template: "",
 			}
 		)
 
-		// check ElasticSearch, Jaeger exit and if existing, return
-		output, err := doAction(oc, "get", asAdmin, withoutNamespace, "crd", crdElasticSearch.name, "--ignore-not-found")
-		o.Expect(err).NotTo(o.HaveOccurred())
-		if strings.Compare(output, "") != 0 {
-			e2e.Logf("operator ElasticSearch already exist")
-			return
-		}
-		output, err = doAction(oc, "get", asAdmin, withoutNamespace, "crd", crdJaegers.name, "--ignore-not-found")
-		o.Expect(err).NotTo(o.HaveOccurred())
-		if strings.Compare(output, "") != 0 {
-			e2e.Logf("operator Jaeger already exist")
-			return
-		}
+		g.By("create catsrc")
+		catsrc.create(oc, itName, dr)
+		defer catsrc.delete(itName, dr)
 
-		g.By("create operator ElasticSearch")
-		defer crdElasticSearch.delete(oc)
-		defer subElasticSearch.delete(itName, dr)
-		subElasticSearch.create(oc, itName, dr)
-		csvElasticSearch.name = subElasticSearch.installedCSV
-		defer csvElasticSearch.delete(itName, dr)
-		newCheck("expect", asAdmin, withoutNamespace, compare, "Succeeded", ok, []string{"csv", subElasticSearch.installedCSV, "-n", subElasticSearch.namespace, "-o=jsonpath={.status.phase}"}).check(oc)
+		g.By("create operator keda")
+		defer subkeda.delete(itName, dr)
+		subkeda.create(oc, itName, dr)
+		csvkeda.name = subkeda.installedCSV
+		defer csvkeda.delete(itName, dr)
+		newCheck("expect", asAdmin, withoutNamespace, compare, "Succeeded", ok, []string{"csv", subkeda.installedCSV, "-n", subkeda.namespace, "-o=jsonpath={.status.phase}"}).check(oc)
 
-		g.By("create operator Jaeger")
-		defer crdJaegers.delete(oc)
-		defer subJaeger.delete(itName, dr)
-		subJaeger.create(oc, itName, dr)
-		csvJaeger.name = subJaeger.installedCSV
-		defer csvJaeger.delete(itName, dr)
-		newCheck("expect", asAdmin, withoutNamespace, compare, "Succeeded", ok, []string{"csv", subJaeger.installedCSV, "-n", subJaeger.namespace, "-o=jsonpath={.status.phase}"}).check(oc)
+		g.By("create operator Cockroachdb")
+		defer subCockroachdb.delete(itName, dr)
+		subCockroachdb.create(oc, itName, dr)
+		csvCockroachdb.name = subCockroachdb.installedCSV
+		defer csvCockroachdb.delete(itName, dr)
+		newCheck("expect", asAdmin, withoutNamespace, compare, "Succeeded", ok, []string{"csv", subCockroachdb.installedCSV, "-n", subCockroachdb.namespace, "-o=jsonpath={.status.phase}"}).check(oc)
 
 	})
 
