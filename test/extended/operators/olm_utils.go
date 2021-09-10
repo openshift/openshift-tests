@@ -121,7 +121,7 @@ func (sub *subscriptionDescription) expectCSV(oc *exutil.CLI, itName string, dr 
 		}
 		return false, nil
 	})
-	o.Expect(err).NotTo(o.HaveOccurred())
+	exutil.AssertWaitPollNoErr(err, fmt.Sprintf("expected csv %s not found", cv))
 }
 
 //the method is to approve the install plan when you create sub with sub.ipApproval != Automatic
@@ -151,11 +151,11 @@ func (sub *subscriptionDescription) approve(oc *exutil.CLI, itName string, dr de
 				}
 				return true, nil
 			})
-			o.Expect(err).NotTo(o.HaveOccurred())
+			exutil.AssertWaitPollNoErr(err, fmt.Sprintf("installPlan %s is not Complete", installPlan))
 		}
 		return true, nil
 	})
-	o.Expect(err).NotTo(o.HaveOccurred())
+	exutil.AssertWaitPollNoErr(err, fmt.Sprintf("not found installed csv for %s", sub.subName))
 }
 
 //the method is to construct one csv object.
@@ -479,7 +479,7 @@ func (sa *serviceAccountDescription) checkAuth(oc *exutil.CLI, expected string, 
 		}
 		return false, nil
 	})
-	o.Expect(err).NotTo(o.HaveOccurred())
+	exutil.AssertWaitPollNoErr(err, fmt.Sprintf("sa %s expects %s permssion to create %s, but no", sa.name, expected, cr))
 }
 
 type roleDescription struct {
@@ -594,7 +594,7 @@ func (ck checkDescription) check(oc *exutil.CLI) {
 		o.Expect(ok).To(o.BeTrue())
 	case "expect":
 		err := expectedResource(oc, ck.executor, ck.inlineNamespace, ck.expectAction, ck.expectContent, ck.expect, ck.resource...)
-		o.Expect(err).NotTo(o.HaveOccurred())
+		exutil.AssertWaitPollNoErr(err, fmt.Sprintf("expected content %s not found by %v", ck.expectContent, ck.resource))
 	default:
 		err := fmt.Errorf("unknown method")
 		o.Expect(err).NotTo(o.HaveOccurred())
@@ -793,7 +793,7 @@ func applyResourceFromTemplate(oc *exutil.CLI, parameters ...string) error {
 		configFile = output
 		return true, nil
 	})
-	o.Expect(err).NotTo(o.HaveOccurred())
+	exutil.AssertWaitPollNoErr(err, fmt.Sprintf("cat not process %v", parameters))
 
 	e2e.Logf("the file of resource is %s", configFile)
 	return oc.AsAdmin().WithoutNamespace().Run("apply").Args("-f", configFile).Execute()
@@ -847,7 +847,7 @@ func execResource(oc *exutil.CLI, asAdmin bool, withoutNamespace bool, parameter
 		result = output
 		return true, nil
 	})
-	o.Expect(err).NotTo(o.HaveOccurred())
+	exutil.AssertWaitPollNoErr(err, fmt.Sprintf("cat not exec %v", parameters))
 	e2e.Logf("the result of exec resource:%v", result)
 	return result
 }
@@ -866,7 +866,7 @@ func getResource(oc *exutil.CLI, asAdmin bool, withoutNamespace bool, parameters
 		result = output
 		return true, nil
 	})
-	o.Expect(err).NotTo(o.HaveOccurred())
+	exutil.AssertWaitPollNoErr(err, fmt.Sprintf("cat not get %v", parameters))
 	e2e.Logf("the result of queried resource:%v", result)
 	return result
 }
@@ -941,7 +941,7 @@ func removeResource(oc *exutil.CLI, asAdmin bool, withoutNamespace bool, paramet
 		}
 		return false, nil
 	})
-	o.Expect(err).NotTo(o.HaveOccurred())
+	exutil.AssertWaitPollNoErr(err, fmt.Sprintf("cat not remove %v", parameters))
 }
 
 //the method is to do something with oc.
