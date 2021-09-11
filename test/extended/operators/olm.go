@@ -192,7 +192,7 @@ var _ = g.Describe("[sig-operators] OLM for an end user use", func() {
 			}
 			return false, nil
 		})
-		o.Expect(errIP).NotTo(o.HaveOccurred())
+		exutil.AssertWaitPollNoErr(errIP, fmt.Sprintf("the ip of openshift-operators does not belong to sub %s", sub.subName))
 		installedCSVs := getResource(oc, asAdmin, withoutNamespace, "ip", installedPlan, "-n", "openshift-operators", "-o=jsonpath={.spec.clusterServiceVersionNames[*]}")
 		o.Expect(installedCSVs).NotTo(o.BeEmpty())
 		sub.installedCSV = strings.Fields(installedCSVs)[0]
@@ -329,7 +329,7 @@ var _ = g.Describe("[sig-operators] OLM for an end user handle within a namespac
 			}
 			return true, nil
 		})
-		o.Expect(err).NotTo(o.HaveOccurred())
+		exutil.AssertWaitPollNoErr(err, fmt.Sprintf("csv %s is not included in metric", sub.installedCSV))
 	})
 
 })
