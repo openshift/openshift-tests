@@ -142,9 +142,9 @@ func (sub *subscriptionDescription) approve(oc *exutil.CLI, itName string, dr de
 			installPlan := strings.Fields(ipCsv)[0]
 			o.Expect(installPlan).NotTo(o.BeEmpty())
 			e2e.Logf("try to approve installPlan %s", installPlan)
-			patchResource(oc, asAdmin, withoutNamespace, "ip", installPlan, "-n", sub.namespace, "--type", "merge", "-p", "{\"spec\": {\"approved\": true}}")
+			patchResource(oc, asAdmin, withoutNamespace, "installplan", installPlan, "-n", sub.namespace, "--type", "merge", "-p", "{\"spec\": {\"approved\": true}}")
 			err := wait.Poll(3*time.Second, 10*time.Second, func() (bool, error) {
-				err := newCheck("expect", asAdmin, withoutNamespace, compare, "Complete", ok, []string{"ip", installPlan, "-n", sub.namespace, "-o=jsonpath={.status.phase}"}).checkWithoutAssert(oc)
+				err := newCheck("expect", asAdmin, withoutNamespace, compare, "Complete", ok, []string{"installplan", installPlan, "-n", sub.namespace, "-o=jsonpath={.status.phase}"}).checkWithoutAssert(oc)
 				if err != nil {
 					e2e.Logf("the get error is %v, and try next", err)
 					return false, nil
