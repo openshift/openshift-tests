@@ -174,7 +174,7 @@ var _ = g.Describe("[sig-operators] OLM for an end user use", func() {
 		g.By("try to get installPlan and CSV of the sub")
 		var installedPlan string
 		errIP := wait.Poll(10*time.Second, 150*time.Second, func() (bool, error) {
-			output := getResource(oc, asAdmin, withoutNamespace, "ip", "-n", "openshift-operators", "-o=jsonpath={.items[*].metadata.name}")
+			output := getResource(oc, asAdmin, withoutNamespace, "installplan", "-n", "openshift-operators", "-o=jsonpath={.items[*].metadata.name}")
 			ips := strings.Fields(output)
 			if len(ips) == 0 {
 				e2e.Logf("no ip is found, and try next")
@@ -182,7 +182,7 @@ var _ = g.Describe("[sig-operators] OLM for an end user use", func() {
 			}
 
 			for _, ip := range ips {
-				subNames := getResource(oc, asAdmin, withoutNamespace, "ip", ip, "-n", "openshift-operators", "-o=jsonpath={.metadata.ownerReferences[*].name}")
+				subNames := getResource(oc, asAdmin, withoutNamespace, "installplan", ip, "-n", "openshift-operators", "-o=jsonpath={.metadata.ownerReferences[*].name}")
 				if strings.Contains(subNames, sub.subName) {
 					e2e.Logf("found installplan and try to get csv")
 					installedPlan = ip
@@ -193,7 +193,7 @@ var _ = g.Describe("[sig-operators] OLM for an end user use", func() {
 			return false, nil
 		})
 		exutil.AssertWaitPollNoErr(errIP, fmt.Sprintf("the ip of openshift-operators does not belong to sub %s", sub.subName))
-		installedCSVs := getResource(oc, asAdmin, withoutNamespace, "ip", installedPlan, "-n", "openshift-operators", "-o=jsonpath={.spec.clusterServiceVersionNames[*]}")
+		installedCSVs := getResource(oc, asAdmin, withoutNamespace, "installplan", installedPlan, "-n", "openshift-operators", "-o=jsonpath={.spec.clusterServiceVersionNames[*]}")
 		o.Expect(installedCSVs).NotTo(o.BeEmpty())
 		sub.installedCSV = strings.Fields(installedCSVs)[0]
 		dr.getIr(itName).add(newResource(oc, "csv", sub.installedCSV, requireNS, sub.namespace))
