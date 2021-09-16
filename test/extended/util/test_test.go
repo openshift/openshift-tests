@@ -85,7 +85,7 @@ func TestStockRules(t *testing.T) {
 		{
 			name:         "not skipped",
 			provider:     "gce",
-			netSkips:     []string{"OpenShiftSDN"},
+			netSkips:     []string{"OpenShiftSdn"},
 			testName:     `[sig-network] Networking Granular Checks: Pods should function for intra-pod communication: http [LinuxOnly] [NodeConformance] [Conformance]`,
 			expectedText: `[sig-network] Networking Granular Checks: Pods should function for intra-pod communication: http [LinuxOnly] [NodeConformance] [Conformance] [Suite:openshift/conformance/parallel/minimal]`,
 		},
@@ -97,9 +97,9 @@ func TestStockRules(t *testing.T) {
 		},
 		{
 			name:         "should skip NetworkPolicy tests on multitenant",
-			netSkips:     []string{"OpenShiftSDN", "OpenShiftSDN/Multitenant"},
+			netSkips:     []string{"OpenShiftSdn", "OpenShiftSdn/Multitenant"},
 			testName:     `[Feature:NetworkPolicy] should do something with NetworkPolicy`,
-			expectedText: `[Feature:NetworkPolicy] should do something with NetworkPolicy [Skipped:Network/OpenShiftSDN/Multitenant]`,
+			expectedText: `[Feature:NetworkPolicy] should do something with NetworkPolicy [Skipped:Network/OpenShiftSdn/Multitenant]`,
 		},
 	}
 
