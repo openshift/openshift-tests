@@ -525,11 +525,11 @@ var (
 		},
 		// tests that don't pass under openshift-sdn but that are expected to pass
 		// with other network plugins (particularly ovn-kubernetes)
-		"[Skipped:Network/OpenShiftSDN]": {
+		"[Skipped:Network/OpenShiftSdn]": {
 			`NetworkPolicy between server and client should allow egress access on one named port`, // not yet implemented
 		},
 		// tests that don't pass under openshift-sdn multitenant mode
-		"[Skipped:Network/OpenShiftSDN/Multitenant]": {
+		"[Skipped:Network/OpenShiftSdn/Multitenant]": {
 			`\[Feature:NetworkPolicy\]`, // not compatible with multitenant mode
 			`\[sig-network\] Services should preserve source pod IP for traffic thru service cluster IP`, // known bug, not planned to be fixed
 		},
