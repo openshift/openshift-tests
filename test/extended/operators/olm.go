@@ -146,7 +146,7 @@ var _ = g.Describe("[sig-operators] OLM for an end user use", func() {
 	var oc = exutil.NewCLI("olm", exutil.KubeConfigPath())
 
 	// author: jiazha@redhat.com
-	g.It("Author:jiazha-Critical-23440-can subscribe to the etcd operator  [Serial]", func() {
+	g.It("ConnectedOnly-Author:jiazha-Critical-23440-can subscribe to the etcd operator  [Serial]", func() {
 		buildPruningBaseDir := exutil.FixturePath("testdata", "olm")
 		etcdCluster := filepath.Join(buildPruningBaseDir, "etcd-cluster.yaml")
 		subTemplate := filepath.Join(buildPruningBaseDir, "olm-subscription.yaml")
