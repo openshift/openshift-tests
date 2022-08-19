@@ -95,7 +95,7 @@ var _ = g.Describe("[sig-operators] OLM should", func() {
 	})
 
 	// author: bandrade@redhat.com
-	g.It("Author:bandrade-High-24829-Report Upgradeable in OLM ClusterOperators status", func() {
+	g.It("Author:bandrade-High-24829-Report Upgradeable in OLM ClusterOperators status [Serial]", func() {
 		olmCOs := []string{"operator-lifecycle-manager", "operator-lifecycle-manager-catalog", "operator-lifecycle-manager-packageserver"}
 		for _, co := range olmCOs {
 			msg, err := oc.AsAdmin().WithoutNamespace().Run("get").Args("co", co, "-o=jsonpath={range .status.conditions[*]}{.type}{' '}{.status}").Output()
