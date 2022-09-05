@@ -602,7 +602,7 @@ var _ = g.Describe("[sig-operators] OLM for an end user handle within all namesp
 				displayName: "Test Catsrc 25783 Operators",
 				publisher:   "Red Hat",
 				sourceType:  "grpc",
-				address:     "quay.io/olmqe/olm-api:v2",
+				address:     "quay.io/olmqe/olm-api:v21",
 				template:    catsrcImageTemplate,
 			}
 			subCockroachdb = subscriptionDescription{
