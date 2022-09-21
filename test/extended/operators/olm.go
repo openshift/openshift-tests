@@ -147,6 +147,7 @@ var _ = g.Describe("[sig-operators] OLM for an end user use", func() {
 
 	// author: jiazha@redhat.com
 	g.It("ConnectedOnly-Author:jiazha-Critical-23440-can subscribe to the etcd operator  [Serial]", func() {
+		exutil.SkipARM64(oc)
 		buildPruningBaseDir := exutil.FixturePath("testdata", "olm")
 		etcdCluster := filepath.Join(buildPruningBaseDir, "etcd-cluster.yaml")
 		subTemplate := filepath.Join(buildPruningBaseDir, "olm-subscription.yaml")
@@ -234,6 +235,7 @@ var _ = g.Describe("[sig-operators] OLM for an end user handle within a namespac
 
 	// It will cover test case: OCP-24870, author: kuiwang@redhat.com
 	g.It("ConnectedOnly-Author:kuiwang-High-24870-can not create csv without operator group", func() {
+		exutil.SkipARM64(oc)
 		var (
 			itName              = g.CurrentGinkgoTestDescription().TestText
 			buildPruningBaseDir = exutil.FixturePath("testdata", "olm")
@@ -278,6 +280,7 @@ var _ = g.Describe("[sig-operators] OLM for an end user handle within a namespac
 
 	// It will cover part of test case: OCP-25855, author: kuiwang@redhat.com
 	g.It("ConnectedOnly-Author:kuiwang-High-25855-Add the channel field to subscription_sync_count", func() {
+		exutil.SkipARM64(oc)
 		var (
 			itName              = g.CurrentGinkgoTestDescription().TestText
 			buildPruningBaseDir = exutil.FixturePath("testdata", "olm")
@@ -570,6 +573,7 @@ var _ = g.Describe("[sig-operators] OLM for an end user handle within all namesp
 
 	// It will cover test case: OCP-25783, author: kuiwang@redhat.com
 	g.It("ConnectedOnly-Author:kuiwang-High-25783-Subscriptions are not getting processed taking very long to get processed [Serial]", func() {
+		exutil.SkipARM64(oc)
 		var (
 			itName              = g.CurrentGinkgoTestDescription().TestText
 			buildPruningBaseDir = exutil.FixturePath("testdata", "olm")

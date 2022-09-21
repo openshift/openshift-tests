@@ -1907,3 +1907,22 @@ func IsClusterOperated(oc *CLI) bool {
 	}
 	return true
 }
+
+// GetClusterArchitecture return ClusterArchitecture
+func GetClusterArchitecture(oc *CLI) string {
+	output, err := oc.WithoutNamespace().AsAdmin().Run("get").Args("nodes", "-o=jsonpath={.items[0].status.nodeInfo.architecture}").Output()
+	if err != nil {
+		e2e.Logf("Get nodes failed with err %v .", err)
+		return ""
+	}
+	return output
+}
+
+// SkipARM64 skip the test if cluster is arm64
+func SkipARM64(oc *CLI) {
+	arch := GetClusterArchitecture(oc)
+	e2e.Logf("architecture is " + arch)
+	if arch == "arm64" {
+		g.Skip("Skip for arm64")
+	}
+}
